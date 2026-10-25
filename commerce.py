@@ -167,15 +167,38 @@ def success():
         return "Download period expired. Please contact support.", 410
     main = download_link(session, "ebook")
     bonus = download_link(session, "bonus")
-    return render_template_string("""<!doctype html><title>HER POV | Your Downloads</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<body style="font:16px Arial;background:#11151c;color:#eee;padding:6vw">
-<main style="max-width:680px;margin:auto"><h1 style="color:#d8b987">Payment confirmed.</h1>
-<p>Thank you. Your digital guide and complimentary bonus are ready.</p>
-<p><a style="color:#d8b987" href="{{ main }}">Download your e-book (PDF)</a></p>
-<p><a style="color:#d8b987" href="{{ bonus }}">Download your bonus cheat sheet (PDF)</a></p>
-<small>Links expire 30 days after purchase. Do not share them.</small></main></body>""",
-         main=main, bonus=bonus)
+    return render_template_string("""<!doctype html><html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+<title>HER POV — Your Purchase Is Ready</title>
+<style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#10151d;color:#f4ede3;font:16px/1.65 Arial,sans-serif}
+main{max-width:790px;padding:40px 22px 90px;margin:auto}.logo{font:30px Georgia,serif;color:#d8b987}
+.header{display:flex;justify-content:space-between;align-items:center;margin:0 0 65px;border-bottom:1px solid #3d4144;padding-bottom:20px}
+.hint{font-size:11px;letter-spacing:.14em;color:#d8b987;font-weight:700}
+h1,h2{font-family:Georgia,serif;font-weight:400}h1{font-size:clamp(43px,8vw,67px);line-height:1.08;margin:18px 0}
+h2{font-size:32px}h1 em{font-style:italic;color:#d8b987}.lead{color:#bfc0bc;font-size:18px}
+.files{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:42px 0}.file{border:1px solid #6b5840;padding:26px 22px;background:#1d242e;min-width:0}
+.file strong{font:25px/1.15 Georgia,serif;display:block;margin:12px 0;color:#f5e2c0}.file small{display:block;font-size:12px;color:#aaa8a3}.file a{display:inline-block;background:#d8b987;color:#131922;font-weight:800;text-decoration:none;font-size:12px;
+padding:14px 17px;margin-top:24px}.note{padding:20px 24px;border:1px solid #49463e;color:#b8b8b2;font-size:13px;line-height:1.6}
+.next{margin-top:45px;padding:24px 27px;background:#f2ebe0;color:#252522}.next h2{margin:12px 0}.next p{color:#59554c}.next small{letter-spacing:.1em;color:#88734d}
+footer{font-size:11px;color:#929390;margin-top:45px}@media(max-width:520px){.files{grid-template-columns:1fr}.header{margin-bottom:35px}}
+</style></head><body><main><div class="header"><span class="logo">HER POV.</span><span class="hint">VOL. 01 / YOUR LIBRARY</span></div>
+<p class="hint">PAYMENT CONFIRMED</p><h1>Your next message starts <em>here.</em></h1>
+<p class="lead">Thank you for your purchase. Your e-book and complimentary quick-reference sheet are ready to save.</p>
+<div class="files"><div class="file"><small>01 / YOUR MAIN GUIDE</small>
+<strong>The First Message Formula</strong><small>56-page digital PDF</small>
+<a href="{{ main }}">DOWNLOAD YOUR GUIDE ↗</a></div>
+<div class="file"><small>02 / YOUR FREE BONUS</small>
+<strong>First Message Cheat Sheet</strong><small>One-page quick reference PDF</small>
+<a href="{{ bonus }}">DOWNLOAD YOUR BONUS ↗</a></div></div>
+<div class="note">These personal links are valid for 30 days after your purchase. Save the PDFs to your device for future reference.
+For help with your order, contact the support address shown on your payment receipt. Please do not share your personal links.</div>
+<div class="next"><small>WHAT COMES NEXT / THE HER POV SERIES</small>
+<h2>The Reply Decoder</h2><p>Our next planned guide explores how to think more clearly about replies and avoid overanalyzing the conversation.
+It's currently in development and is not included in your purchase.</p></div>
+<footer>HER POV · Digital edition · No guaranteed replies, dates, or romantic outcomes.</footer>
+</main></body></html>""",main=main,bonus=bonus)
+
 
 @bp.get("/download")
 def download():
