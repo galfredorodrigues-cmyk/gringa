@@ -30,6 +30,31 @@ class UpgradePreviewTests(unittest.TestCase):
         self.assertEqual(response.headers["Cache-Control"], "no-store, private")
         self.assertIn("noindex", response.headers["X-Robots-Tag"])
 
+    def test_original_homepage_has_both_clear_purchase_choices(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        page = response.data
+        self.assertIn(b'id="choose"', page)
+        self.assertIn(b'id="starter-choice"', page)
+        self.assertIn(b'id="complete-choice"', page)
+        self.assertIn(b"THE FOUNDATION", page)
+        self.assertIn(b"THE COMPLETE LIBRARY", page)
+        self.assertIn(b"STARTER CHECKOUT OPENING SOON", page)
+        self.assertIn(b"BUNDLE CHECKOUT OPENING SOON", page)
+        self.assertIn(b"$9.90", page)
+        self.assertIn(b"$29.90", page)
+        self.assertLess(page.index(b'id="choose"'), page.index(b'id="bundle"'))
+        for retained in (
+            b'id="problem"', b'id="method"', b'id="example"',
+            b'id="inside"', b'id="offer"', b'id="series"',
+            b'id="faq"', b"You had something to say.",
+            b"Then you deleted it.", b"Four real-world skills.",
+        ):
+            self.assertIn(retained, page)
+        self.assertNotIn(b'/upgrade', page)
+        self.assertNotIn(b'https://pay.hotmart.com/', page)
+        self.assertNotIn(b'https://buy.stripe.com/', page)
+
     def test_preview_never_shows_live_purchase_link(self):
         response = self.client.get("/upgrade")
         page = response.data
