@@ -1,4 +1,5 @@
 import os
+from urllib.parse import urlsplit
 from flask import Flask, render_template_string, render_template, jsonify, make_response, abort
 app=Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"]=False
@@ -7,28 +8,95 @@ CSS="""
 SHELL="""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="The First Message Formula by HER POV: 50 adaptable openers, a practical C.A.R.E. framework and a free bonus cheat sheet."><title>HER POV | The First Message Formula</title><style>{{css}}</style></head><body><header><div class="brand">HER POV.</div><nav><a href="/">THE GUIDE</a><a href="/terms">TERMS</a><a href="/privacy">PRIVACY</a><a href="/refunds">REFUNDS</a></nav></header>{{body|safe}}<footer><div class="wrap">HER POV · An educational guide for adults. No guaranteed replies or outcomes. · <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a> · <a href="/refunds">Refunds</a></div></footer></body></html>"""
 def render(body):
     return render_template_string(SHELL,css=CSS,body=body)
+# Prepared but OFF by default: Hotmart direct-checkout links for all four
+# individual guides and the bundle. No Hotmart credentials or paid files here.
+HOTMART_LINK_KEYS = ("HOTMART_LINK_01", "HOTMART_LINK_02",
+                     "HOTMART_LINK_03", "HOTMART_LINK_04",
+                     "HOTMART_LINK_BUNDLE")
+HOTMART_VERIFICATION_FLAGS = (
+    "HOTMART_ALL_OFFERS_VERIFIED", "HOTMART_USD_PRICES_VERIFIED",
+    "HOTMART_DELIVERY_TESTED", "HOTMART_BUNDLE_CONTENT_VERIFIED",
+    "HOTMART_PAYOUTS_CONFIRMED", "MERCHANT_POLICIES_APPROVED",
+    "MERCHANT_TAX_REVIEWED", "LIVE_READY",
+)
+
+def _hotmart_checkout_link(value):
+    """Only direct links on approved Hotmart domains, never arbitrary redirects."""
+    value = (value or "").strip()
+    if not value or len(value) > 600:
+        return ""
+    try:
+        parsed = urlsplit(value)
+        if (parsed.scheme != "https"
+                or parsed.netloc.lower() not in ("pay.hotmart.com", "go.hotmart.com")
+                or not parsed.path.strip("/")
+                or parsed.username or parsed.password
+                or parsed.fragment or any(c.isspace() for c in value)):
+            return ""
+    except ValueError:
+        return ""
+    return value
+
+def _hotmart_checkout_links():
+    return {key: _hotmart_checkout_link(os.environ.get(key, ""))
+            for key in HOTMART_LINK_KEYS}
+
+def _merchant_data_confirmed():
+    required = ("MERCHANT_LEGAL_NAME", "MERCHANT_COUNTRY",
+                "MERCHANT_CONTACT_ADDRESS", "SUPPORT_EMAIL")
+    email = os.environ.get("SUPPORT_EMAIL", "").strip()
+    return (all(os.environ.get(key, "").strip() for key in required)
+            and "@" in email and len(email) < 256)
+
+def hotmart_checkout_open():
+    """Explicitly closed until *all* products, delivery and seller checks pass."""
+    links = _hotmart_checkout_links()
+    return (os.environ.get("CHECKOUT_PROVIDER") == "hotmart"
+            and all(os.environ.get(flag) == "yes"
+                    for flag in HOTMART_VERIFICATION_FLAGS)
+            and _merchant_data_confirmed()
+            and all(links.values())
+            and len(set(links.values())) == len(HOTMART_LINK_KEYS))
+
 # One-switch launch gate for SendOwl. NEVER turn on until external app has
 # delivered both PDFs in an actual end-to-end test and Stripe payouts are enabled.
 def checkout_open():
+    provider = os.environ.get("CHECKOUT_PROVIDER", "stripe").lower()
+    if provider == "hotmart":
+        return hotmart_checkout_open()
+    if provider != "stripe":
+        return False
+    # Dormant legacy Stripe + SendOwl path, kept for backward compatibility.
     flags = ("SENDOWL_PRODUCT_LINKED", "SENDOWL_ALL_PRODUCTS_LINKED",
              "SENDOWL_DELIVERY_TESTED", "SENDOWL_BUNDLE_TESTED",
              "STRIPE_PAYOUTS_CONFIRMED", "STRIPE_LINKS_ACTIVE_CONFIRMED",
              "MERCHANT_POLICIES_APPROVED", "MERCHANT_TAX_REVIEWED", "LIVE_READY")
-    required_merchant_fields = ("MERCHANT_LEGAL_NAME", "MERCHANT_COUNTRY",
-                                "MERCHANT_CONTACT_ADDRESS", "SUPPORT_EMAIL")
-    fields_complete = all(os.environ.get(name, "").strip() for name in required_merchant_fields)
-    contact_email = os.environ.get("SUPPORT_EMAIL", "").strip()
     return (os.environ.get("STRIPE_MODE") == "live"
             and all(os.environ.get(flag) == "yes" for flag in flags)
-            and fields_complete and "@" in contact_email
-            and len(contact_email) < 256)
+            and _merchant_data_confirmed())
 
 @app.get("/")
 def home():
     ready = checkout_open()
+    provider = os.environ.get("CHECKOUT_PROVIDER", "stripe").lower()
+    if provider == "hotmart":
+        links = _hotmart_checkout_links() if ready else {}
+        return render_template(
+            "home.html", checkout_ready=ready,
+            checkout_provider="hotmart",
+            checkout_url=links.get("HOTMART_LINK_01", ""),
+            bundle_checkout_ready=ready,
+            bundle_checkout_url=links.get("HOTMART_LINK_BUNDLE", ""),
+            hotmart_links={
+                "02": links.get("HOTMART_LINK_02", ""),
+                "03": links.get("HOTMART_LINK_03", ""),
+                "04": links.get("HOTMART_LINK_04", ""),
+            },
+        )
     bundle_link = os.environ.get("BUNDLE_PAYMENT_LINK_URL", "")
     valid_bundle_link = bundle_link.startswith("https://buy.stripe.com/") and len(bundle_link) < 300
     return render_template("home.html", checkout_ready=ready,
+        checkout_provider="stripe", hotmart_links={},
         checkout_url="https://buy.stripe.com/14A9ANbXgfdicJXb1N3cc00",
         bundle_checkout_ready=ready and valid_bundle_link,
         bundle_checkout_url=bundle_link if valid_bundle_link else "")
