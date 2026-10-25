@@ -97,16 +97,17 @@ def _symbol(img, name, color, center=(696, 570)):
 
 def _background(accent):
     img=Image.new("RGB",(SIZE,SIZE),INK)
-    pix=img.load()
+    # Efficient vertical light falloff (no per-pixel Python loops).
+    d=ImageDraw.Draw(img)
     for y in range(SIZE):
-        for x in range(SIZE):
-            # dark editorial spotlights and a subtle halftone-like paper grain
-            v1=max(0,1-((x-760)**2/(900**2)+(y-480)**2/(800**2)))
-            v2=max(0,1-((x-185)**2/(910**2)+(y-105)**2/(1050**2)))
-            grain=((x*17+y*37+x*y*3)%13)-6
-            pix[x,y]=(max(0,min(255,int(13+12*v1+3*v2+grain*.15))),
-                      max(0,min(255,int(18+14*v1+4*v2+grain*.14))),
-                      max(0,min(255,int(27+16*v1+5*v2+grain*.17))))
+        t=y/(SIZE-1)
+        d.line((0,y,SIZE,y),fill=(int(20-7*t),int(25-7*t),int(36-9*t)),width=1)
+    glow=Image.new("RGBA",(SIZE,SIZE),(0,0,0,0))
+    gd=ImageDraw.Draw(glow)
+    gd.ellipse((390,50,1380,1100),fill=accent+(37,))
+    gd.ellipse((-430,-490,530,490),fill=(220,173,102,28))
+    glow=glow.filter(ImageFilter.GaussianBlur(125))
+    img=Image.alpha_composite(img.convert("RGBA"),glow).convert("RGB")
     return img
 
 def _cover(slug):
