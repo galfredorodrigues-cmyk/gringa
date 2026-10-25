@@ -91,3 +91,11 @@
 @media(prefers-reduced-motion:reduce){
   .sample-card,.sample-card__action span,.btn,.nav-cta,.journey__cover,.launch-bundle__covers img{animation:none!important;transition:none!important;transform:none!important}
 }
+
+
+/* Authentic one-page vector previews: compact until opened, crisp at full-size zoom */
+.sample-paper__source{margin:18px 0 20px;padding:11px;background:#e8e1d7;border:1px solid #d3c8b8}
+.sample-paper__source a{display:block;outline-offset:4px}
+.sample-paper__source img{display:block;width:100%;height:auto;max-height:390px;object-fit:contain;background:#fffdf9;box-shadow:0 6px 14px #26211d28}
+.sample-paper__source figcaption{text-align:center;color:#74664f;font-size:9px;letter-spacing:.08em;font-weight:800;margin-top:10px}
+@media(max-width:430px){.sample-paper__source{padding:8px}.sample-paper__source img{max-height:300px}}
