@@ -22,8 +22,8 @@ HOTMART_VERIFICATION_FLAGS = (
 
 def _hotmart_checkout_link(value):
     """Only direct links on approved Hotmart domains, never arbitrary redirects."""
-    value = (value or "").strip()
-    if not value or len(value) > 600:
+    value = value or ""
+    if not value or len(value) > 600 or any(c.isspace() for c in value):
         return ""
     try:
         parsed = urlsplit(value)
