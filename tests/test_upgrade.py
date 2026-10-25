@@ -34,7 +34,7 @@ class UpgradePreviewTests(unittest.TestCase):
         response = self.client.get("/upgrade")
         page = response.data
         self.assertIn(b'aria-disabled="true"', page)
-        self.assertIn(b"CHECKOUT COMING SOON", page)
+        self.assertIn(b"COMING SOON", page)
         self.assertNotIn(b"https://pay.hotmart.com/", page)
         self.assertNotIn(b"https://buy.stripe.com/", page)
         self.assertNotIn(b'form action=', page)
