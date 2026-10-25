@@ -14,3 +14,19 @@
 .add-charge{font-size:10px;letter-spacing:.16em;font-weight:800;color:#cec5b7;margin:0}
 .price-line{margin-top:9px}
 @media(max-width:630px){.upgrade-total strong{font-size:45px}}
+
+/* Last Chance Offer: primary and decline are equally legible checkout options. */
+.offer-actions{display:grid;gap:12px;margin-top:21px}
+.offer-button,.skip-offer{box-sizing:border-box;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px;width:100%;border-radius:4px;text-align:center;padding:17px 14px;line-height:1.45;text-decoration:none;letter-spacing:.045em;font:800 11px 'DM Sans',sans-serif;min-height:58px}
+.offer-button{background:#e8c88e;color:#17202b;border:1px solid #e8c88e}
+.offer-button--active{opacity:1;cursor:pointer}
+.offer-button--active:hover{background:#f2d6a2;color:#10151d;opacity:1}
+.offer-button:disabled{opacity:.75}
+.skip-offer{background:transparent;color:#d3c8b8;border:1px solid #888077}
+.skip-offer--active{color:#ede4d7;cursor:pointer;text-decoration:none}
+.skip-offer--active:hover{border-color:#e8c88e;color:#f7e9d4;opacity:1}
+.skip-offer--disabled{opacity:.68;cursor:not-allowed}
+.offer-pending{display:block;flex-basis:100%;font-weight:700;font-size:9px;letter-spacing:.10em;opacity:.75}
+.offer-includes{margin-bottom:0}
+.no-charge{margin-top:17px}
+@media(max-width:630px){.offer-button,.skip-offer{font-size:10px;padding:17px 10px}}
