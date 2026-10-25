@@ -58,6 +58,16 @@ class LastOfferTests(unittest.TestCase):
             self.assertIn(b"$29.90", page)
             self.assertEqual(page.count(b'href="/last-offer"'), 2)
             self.assertLess(page.index(b'id="choose"'), page.index(b'id="bundle"'))
+            self.assertLess(page.index(b'id="offer"'), page.index(b'id="bundle"'))
+            self.assertLess(page.index(b'id="starter-choice"'), page.index(b'id="complete-choice"'))
+            hero = page.split(b'<section class="hero section-dark"')[1].split(b'</section>')[0]
+            self.assertNotIn(b"$29.90", hero)
+            self.assertNotIn(b"$9.90", hero)
+            self.assertIn(b"START WITH A BETTER MESSAGE", hero)
+            self.assertIn(b"SEE A REAL EXAMPLE", hero)
+            self.assertIn(b"Do I need to memorize pickup lines?", page)
+            self.assertIn(b"A PRACTICAL TIP YOU CAN USE RIGHT NOW", page)
+            self.assertEqual(page.count(b"journey__checkout-link"), 0)
             for retained in (
                 b'id="problem"', b'id="method"', b'id="example"',
                 b'id="inside"', b'id="offer"', b'id="series"',
