@@ -73,6 +73,25 @@ class StorefrontTests(unittest.TestCase):
         self.assertIn(b"BUNDLE CHECKOUT OPENING SOON",page)
         self.assertNotIn(b"https://buy.stripe.com/",page)
 
+    def test_authentic_sample_excerpt_gallery_and_future_app_pricing(self):
+        html=self.client.get("/").data
+        self.assertIn(b"READ BEFORE YOU BUY",html)
+        self.assertEqual(html.count(b'class="sample-card"'),4)
+        self.assertIn(b"The C.A.R.E. Formula",html)
+        self.assertIn(b"The S.I.G.N.A.L. Check",html)
+        self.assertIn(b"The O.P.E.N. Bio Framework",html)
+        self.assertIn(b"The C.L.E.A.R. Invitation",html)
+        for source_page in [b"PDF PAGE 13 OF 56",b"PDF PAGE 6 OF 19",
+                            b"PDF PAGE 7 OF 19",b"PDF PAGE 5 OF 19"]:
+            self.assertIn(source_page,html)
+        self.assertIn(b"EXCERPT",html)
+        self.assertIn(b"reformatted for easy reading",html)
+        self.assertIn(b"$24.90",html)
+        self.assertIn(b"PROPOSED PRICE",html)
+        self.assertIn(b"NOT AVAILABLE FOR PURCHASE",html)
+        self.assertNotIn(b"buy.stripe.com",html)
+        self.assertNotIn(b"<script",html)
+
     def test_bundle_payment_url_needs_valid_link_and_every_approval(self):
         ready = {
             "STRIPE_MODE":"live",
