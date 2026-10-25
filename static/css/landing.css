@@ -115,3 +115,41 @@
 .journey__checkout-link{display:block;margin-top:13px;padding:10px 9px;border:1px solid #ad8953;background:#181f28;color:#f4dfb4;font-size:10px;font-weight:800;letter-spacing:.045em;line-height:1.4;text-decoration:none;text-align:center;border-radius:4px}
 .journey__checkout-link:hover,.journey__checkout-link:focus-visible{background:#2b3239;border-color:#d8b987;opacity:1}
 .journey__checkout-link span{margin-left:3px}
+
+/* HER POV two-path selection: starter guide or complete library. Existing sections stay intact. */
+.choice{padding:82px 0 85px;scroll-margin-top:35px}
+.choice__head{max-width:760px;margin:0 auto 34px;text-align:center}
+.choice__head h2{margin:14px 0 14px;font-size:clamp(36px,4.5vw,58px);line-height:1.08}
+.choice__head h2 em{color:#a78351}
+.choice__head p{font-size:15px;color:#616065;margin:0 auto;max-width:620px}
+.choice__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:stretch}
+.choice__card{display:flex;flex-direction:column;position:relative;min-width:0;padding:34px;background:#fff;border:1px solid #d7cabb;border-radius:8px;scroll-margin-top:25px;box-shadow:0 12px 32px #191a1b0c;color:#141b24}
+.choice__card--complete{background:#161d27;color:#f7eee3;border-color:#9c7a4e}
+.choice__eyebrow{font-size:10px;letter-spacing:.17em;font-weight:800;color:#937143}
+.choice__card--complete .choice__eyebrow{color:#e4c590}
+.choice__card h3{font:400 clamp(29px,3vw,42px)/1.08 Georgia,serif;letter-spacing:-.04em;min-height:84px;margin:17px 0 13px}
+.choice__card h3 em{font-style:italic;color:#a17d4c}
+.choice__card--complete h3 em{color:#e2c28c}
+.choice__description{font-size:14px;line-height:1.65;color:#65676b;min-height:71px;margin-bottom:15px;max-width:470px}
+.choice__card--complete .choice__description{color:#c4c2bd}
+.choice__price{font:400 clamp(42px,5vw,58px)/1.1 Georgia,serif;letter-spacing:-.055em;color:#171e26;margin-bottom:17px}
+.choice__price span{font:700 10px var(--body);letter-spacing:.1em;color:#78716b;white-space:nowrap;margin-left:9px}
+.choice__card--complete .choice__price{color:#ecd19f}
+.choice__card--complete .choice__price span{color:#bcaf9c}
+.choice__list{list-style:none;padding:18px 0 20px;margin:0 0 20px;border-top:1px solid #e6ded4;display:grid;gap:10px;flex:1}
+.choice__card--complete .choice__list{border-top-color:#4b4b48}
+.choice__list li{font-size:13px;line-height:1.55;color:#4d5560;padding-left:22px;position:relative}
+.choice__list li:before{content:"✓";font-weight:800;color:#a47f51;position:absolute;left:0;top:0}
+.choice__card--complete .choice__list li{color:#f0e4d5}
+.choice__card--complete .choice__list li:before{color:#dec18f}
+.choice__actions{display:grid;gap:14px}
+.choice__button{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:53px;padding:14px 15px;text-align:center;font:800 11px var(--body);letter-spacing:.065em;text-decoration:none;border:0;border-radius:4px;cursor:pointer}
+.choice__button--dark{background:#151d27;color:#fbf6ef}
+.choice__button--gold{background:#dfc08b;color:#19202a}
+.choice__button--disabled{background:#bbb6ae;color:#37352f;cursor:not-allowed}
+.choice__card--complete .choice__button--disabled{background:#99958e;color:#19202a}
+.choice__learn{font-size:12px;line-height:1.4;font-weight:700;text-align:center;text-underline-offset:4px;color:#63543c}
+.choice__card--complete .choice__learn{color:#d8bc8d}
+.choice__footnote{font-size:11px;color:#74716c;text-align:center;margin:18px 0 0}
+@media(max-width:740px){.choice{padding:58px 0 63px}.choice__grid{grid-template-columns:1fr}.choice__card{padding:27px}.choice__card h3{min-height:0}.choice__description{min-height:0}.choice__price{font-size:51px}}
+@media(prefers-reduced-motion:reduce){.choice *{scroll-behavior:auto!important}}
