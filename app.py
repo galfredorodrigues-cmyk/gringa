@@ -223,6 +223,20 @@ def marketing_product_art(slug):
     response.headers["X-Content-Type-Options"] = "nosniff"
     return response
 
+@app.get("/upgrade")
+def upgrade_preview():
+    """Unlinked, non-indexed upsell mockup. No checkout or buyer access here.
+
+    Production activation requires a verified post-purchase Hotmart funnel,
+    purchase eligibility checks, a distinct $20 product, tested delivery,
+    buyer-facing policies and an explicitly approved release.
+    """
+    response = make_response(render_template("upgrade.html"))
+    response.headers["Cache-Control"] = "no-store, private"
+    response.headers["X-Robots-Tag"] = "noindex, nofollow, noarchive"
+    return response
+
+
 @app.get("/terms")
 @app.get("/privacy")
 @app.get("/refunds")
