@@ -32,6 +32,8 @@ class StorefrontTests(unittest.TestCase):
         ready = {
             "STRIPE_MODE": "live",
             "SENDOWL_PRODUCT_LINKED": "yes",
+            "SENDOWL_ALL_PRODUCTS_LINKED": "yes",
+            "SENDOWL_BUNDLE_TESTED": "yes",
             "SENDOWL_DELIVERY_TESTED": "yes",
             "STRIPE_PAYOUTS_CONFIRMED": "yes",
             "MERCHANT_POLICIES_APPROVED": "yes",
