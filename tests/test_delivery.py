@@ -62,6 +62,12 @@ class StorefrontTests(unittest.TestCase):
     def test_american_bundle_offer_appears_before_long_copy(self):
         page = self.client.get("/").data
         self.assertIn(b"SEE ALL 4 GUIDES",page)
+        self.assertIn(b"Four real-world skills.",page)
+        self.assertIn(b"One complete library.",page)
+        self.assertIn(b"24 common texting scenarios",page)
+        self.assertIn(b"Know what you get.",page)
+        self.assertNotIn(b"not a stock mockup or an invented testimonial",page)
+        self.assertIn(b"Can I buy the guides separately?",page)
         self.assertIn(b"$29.90",page)
         self.assertIn(b"114",page)
         self.assertLess(page.index(b'id="bundle"'),page.index(b'id="problem"'))
@@ -85,7 +91,7 @@ class StorefrontTests(unittest.TestCase):
                             b"PDF PAGE 7 OF 19",b"PDF PAGE 5 OF 19"]:
             self.assertIn(source_page,html)
         self.assertIn(b"EXCERPT",html)
-        self.assertIn(b"reformatted for easy reading",html)
+        self.assertIn(b"Sample excerpts and SVG page previews are drawn",html)
         self.assertIn(b"$24.90",html)
         self.assertIn(b"PROPOSED PRICE",html)
         self.assertIn(b"NOT AVAILABLE FOR PURCHASE",html)
