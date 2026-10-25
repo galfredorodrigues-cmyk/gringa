@@ -1,60 +1,48 @@
-# HER POV — production delivery checklist (PT-BR)
-**Status:** loja de demonstração online, sem cobranças. NÃO alterar a cobrança para ativo antes dos testes e da regularização de repasses.
+# HER POV — fastest verified launch route
 
-## 1. Private object storage (Cloudflare R2 or S3)
-Use a *private* bucket. Do NOT enable public object URLs, do NOT add PDFs to GitHub.
-Set these Render environment variables from your bucket service credentials:
-- S3_ENDPOINT_URL: HTTPS endpoint for the S3-compatible API (not a public download URL)
-- S3_ACCESS_KEY_ID
-- S3_SECRET_ACCESS_KEY
-- S3_BUCKET
-- S3_REGION: "auto" for R2 (or your provider region)
+**Delivery provider: SendOwl for Stripe.** Do **not** set up Cloudflare R2, S3 or Resend for this route. Old R2/Resend code remains dormant, not needed for SendOwl.
 
-Owner-only upload portal after ADMIN_USERNAME and a unique 20+ character ADMIN_PASSWORD are set:
-https://her-pov-preview.onrender.com/admin/assets
-Upload e-book and bonus separately. Storage keys: "her-pov/volume-01/ebook.pdf" and "her-pov/volume-01/bonus.pdf".
+## Already configured
+- English sales funnel: https://her-pov-preview.onrender.com
+- Product in existing live Stripe account Magic Universal: prod_VVIj3wtkTG7eNW
+- USD $9.90 one-time price: price_1UUI8S8n16yukLPqFcJ9YTIk
+- Existing live Stripe Payment Link plink_1UUIU78n16yukLPqLqyBhpjt, currently INACTIVE
+- Stripe hosted confirmation mentions email delivery.
+- Safe buy-button release gate in app.py (closed until every check passes).
+- Owner dashboard: https://her-pov-preview.onrender.com/admin/setup
+- Both original PDFs verified (56 pages and one page), included in private upload pack provided to owner.
+- Legacy first-party Stripe webhook is disabled: we_1UUJd38n16yukLPqv3VwN2i0; leave disabled for SendOwl.
 
-## 2. Transactional delivery email
-Verify a sender domain with Resend, then set:
-- RESEND_API_KEY (in Render secrets; NEVER in GitHub)
-- RESEND_FROM_EMAIL (authorized address at verified sending domain)
-- SUPPORT_EMAIL
-The backend uses Resend HTTPS API and a per-order Idempotency-Key to avoid duplicate email delivery during webhook retries.
+## One required owner authorization
+Open https://marketplace.stripe.com/apps/sendowl while signed into Magic Universal Stripe.
+Select Install app and review the permissions and actual offered price. Account creation and third-party installation require the owner's action, not possible using the connected Stripe API.
+IMPORTANT: the SendOwl Stripe app page says a free starting plan is offered, but SendOwl's general pricing page lists paid plans from $39/month. Verify the specific plan offered and do NOT enroll in a paid plan without explicit approval.
 
-## 3. Stripe configuration
-Payment Link: plink_1UUIU78n16yukLPqLqyBhpjt — REAL, currently **inactive**.
-Account: Magic Universal (live account acct_1UUFxK8n16yukLPq).
-Product: prod_VVIj3wtkTG7eNW, price price_1UUI8S8n16yukLPqFcJ9YTIk, $9.90 USD one-time.
-Payment Link is set to redirect to:
-https://her-pov-preview.onrender.com/success?session_id={CHECKOUT_SESSION_ID}
-A production Stripe webhook exists but is **disabled**:
-we_1UUJd38n16yukLPqv3VwN2i0
-https://her-pov-preview.onrender.com/webhook/stripe
-Its signing secret is securely configured in Render; it was never committed.
-Create a restricted live Stripe API key with checkout session READ permissions. Save as STRIPE_SECRET_KEY in Render secrets. Do not paste it in ChatGPT.
-For test orders, use a separate Stripe sandbox key and TEST_PAYMENT_LINK_ID; NEVER use the live Payment Link for fake purchases.
+## Product delivery inside SendOwl
+1. Add a new SendOwl digital item with BOTH original PDFs attached.
+2. Upload HER_POV_01_The_First_Message_Formula.pdf (56 pages).
+3. Upload HER_POV_02_First_Message_Cheat_Sheet_Bonus.pdf (1 page).
+4. Link the SendOwl files to existing Stripe product prod_VVIj3wtkTG7eNW. Do not duplicate this Stripe product.
+5. Confirm the buyer email contains access to BOTH PDF files, secure links and sensible download limits.
+6. SendOwl's Stripe App currently runs in Live mode only, not Stripe Sandboxes. Validate available testing method in account; do not accept live customer funds until full fulfillment is proven.
 
-## 4. Safety gates before activation
-Review and finalize Terms, Privacy, Refund policy, merchant identity, customer support contact and taxes.
-Verify Stripe payouts_enabled and charges_enabled, and resolve all payout issues.
-Configure DOWNLOAD_SIGNING_SECRET (random 32+ characters, stable across redeploys).
-Confirm a complete **sandbox** checkout.session.completed / async_payment_succeeded flow:
-a) signed webhook accepted
-b) Stripe session independently verified as paid and matching expected Payment Link
-c) Resend e-mail actually delivered to a mailbox you control
-d) BOTH download links work and the PDFs open
-e) tampered links and unpaid sessions blocked
-f) repeated webhook does not resend duplicate email.
-Only after completing these checks should an authorized owner set flags:
-MERCHANT_POLICIES_APPROVED=yes
-MERCHANT_TAX_REVIEWED=yes
-FULFILLMENT_TESTED=yes
-LIVE_READY=yes
-STRIPE_MODE=live
-Then update storefront code from pre-launch to live state, re-enable production Stripe webhook and **last** reactivate the real Payment Link.
+## Mandatory launch blockers
+- Stripe payouts_enabled is currently false. Resolve directly in Stripe and verify it becomes true.
+- Approve merchant identity, support contact, refund/privacy/terms policies and taxes. Current website pages are explicitly marked DRAFT.
+- Verify payment-to-delivery: checkout paid, SendOwl order created, delivery email received, BOTH PDFs downloaded/opened, fraudulent/unpaid attempts denied.
+- Only after verification may the owner approve these Render Environment flags:
+  STRIPE_MODE=live
+  SENDOWL_PRODUCT_LINKED=yes
+  SENDOWL_DELIVERY_TESTED=yes
+  STRIPE_PAYOUTS_CONFIRMED=yes
+  MERCHANT_POLICIES_APPROVED=yes
+  MERCHANT_TAX_REVIEWED=yes
+  LIVE_READY=yes
+- Activate the existing Stripe Payment Link only AFTER files and email are verified. The public buy button is only enabled when all flags are yes.
+- No PDF files or passwords may be committed into the PUBLIC GitHub repository.
 
-## Security and platform notes
-The application currently keeps the buy button disabled in source code, regardless of environment flag values.
-The Render free service has an ephemeral filesystem and spins down on inactivity; external private storage is required.
-The GitHub repository is PUBLIC. Never commit private PDF files or credentials.
-Review webhook logs, delivery logs, and failed deliveries before launch.
+## Architecture
+Stripe: payment and hosted receipt.
+SendOwl: private digital file storage and buyer email/delivery.
+Render: English marketing funnel, no private files.
+Legacy Flask webhook / private storage functionality is unused for this SendOwl workflow. Do not configure those legacy provider secrets unless deliberately returning to that alternate approach.
