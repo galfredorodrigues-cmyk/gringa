@@ -27,7 +27,7 @@ The HER POV AI Coach is a future idea, not sold in this launch.
 
 ## Pre-checkout Last Chance Offer (no payments active)
 
-- Main storefront: `https://vitrinyx.com/` retains all original editorial copy and sections, with two options: **Volume 01 + bonus for USD $9.90**, or **four volumes + bonus for USD $29.90**.
+- Main storefront: `https://vitrinyx.com/` preserves the original core story, method, educational example, guide details, real PDF excerpts and FAQ, but prioritizes **Volume 01 + bonus for USD $9.90**. The hero CTA communicates the benefit (not the price), prices are explicit in the two-option selector (starter first, **four volumes + bonus for USD $29.90** second), and the longer bundle pitch now follows the full starter-guide story. Added a real practical tip and concise objections near the selection point.
 - Clicking either "start with one" button opens `https://vitrinyx.com/last-offer` **before any payment**. The old `/upgrade` path redirects to `/last-offer`.
 - The optional offer is **USD $21.90 for all four e-books + bonus in a single checkout**, saving USD $8.00 vs the direct USD $29.90 full library (before any applicable taxes/fees). The buyer has paid **$0** at this stage: do not call the $21.90 checkout a $12 upgrade or charge $9.90 first.
 - The intended two actions are (a) **accept** → separately verified Hotmart offer containing all five PDFs for USD $21.90; (b) **pass / lose the offer** → existing starter Hotmart offer containing Volume 01 and bonus for USD $9.90. Direct bundle choice on homepage keeps its own USD $29.90 checkout.
