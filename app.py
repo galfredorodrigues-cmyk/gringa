@@ -23,10 +23,9 @@ def policy(policy):
     return render(f'<main class="wrap section"><div class="eyebrow">HER POV · CUSTOMER POLICIES</div><h1>{name}</h1><p class="lead">{desc}</p><p><a href="/">Back to the guide</a></p></main>')
 @app.get("/health")
 def health():
-    return jsonify(status="ok",live_ready=False,checkout_enabled=False,fulfillment_status="not_configured",mode="preview")
-@app.get("/success")
-@app.get("/download")
-def unavailable():
-    return "Digital delivery is not enabled in this preview.",503
+    from commerce import readiness
+    return jsonify(status="ok",live_ready=False,checkout_enabled=False,fulfillment_configured=not readiness(),mode="preview")
+from commerce import register as register_delivery
+register_delivery(app)
 if __name__=="__main__":
     app.run(host="0.0.0.0",port=int(os.environ.get("PORT","8000")))
