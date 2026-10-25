@@ -407,6 +407,8 @@ def register(app):
     def protect_delivery(response):
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["Referrer-Policy"] = "no-referrer"
-        response.headers["Cache-Control"] = "no-store"
+        response.headers["Cache-Control"] = ("public, max-age=86400, s-maxage=86400"
+                                              if request.path.startswith("/product-art/")
+                                              else "no-store")
         response.headers["X-Frame-Options"] = "DENY"
         return response
