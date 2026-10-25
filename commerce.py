@@ -337,66 +337,21 @@ def admin_setup():
     if not admin_auth():
         return ("Owner credentials required", 401,
                 {"WWW-Authenticate": 'Basic realm="HER POV private setup"'})
-    flags = {
-       "S3_BUCKET": storage.configured(),
-       "EBOOK": storage.exists("ebook"),
-       "BONUS": storage.exists("bonus"),
-       "RESEND_API_KEY": bool(env("RESEND_API_KEY")),
-       "RESEND_FROM_EMAIL": bool(env("RESEND_FROM_EMAIL")),
-       "SUPPORT_EMAIL": bool(env("SUPPORT_EMAIL")),
-       "STRIPE_SECRET_KEY": bool(env("STRIPE_SECRET_KEY")),
-       "STRIPE_WEBHOOK_SECRET": bool(env("STRIPE_WEBHOOK_SECRET")),
-       "DOWNLOAD_SIGNING_SECRET": len(env("DOWNLOAD_SIGNING_SECRET")) >= 32,
-    }
-    return render_template_string("""<!doctype html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HER POV | Owner Setup</title><style>
-body{background:#11151c;color:#f5ebdb;font:16px/1.6 Arial;margin:0}
-main{max-width:780px;margin:30px auto;padding:25px}
-h1,h2{font-family:Georgia,serif;color:#d8b987}h1{font-size:42px}
-section{border:1px solid #544b3e;border-radius:14px;margin:18px 0;padding:20px}
-a{color:#ddc296}small{color:#bbb2a7}
-li{margin:10px 0}strong.ok{color:#8ad6a2}strong.missing{color:#f6b77a}
-code{padding:4px 7px;color:#eed0a4;background:#26282b}
-</style></head><body><main>
-<p>HER POV · PRIVATE OWNER DASHBOARD</p><h1>Delivery readiness</h1>
-<p>The live checkout is disabled. This page only reports connection and file status, without showing your keys.</p>
-<section><h2>Private storage · Cloudflare R2</h2>
-<p>Bucket: <strong class="{{'ok' if flags.S3_BUCKET else 'missing'}}">{{'Configured' if flags.S3_BUCKET else 'Not connected'}}</strong></p>
-<p>E-book: <strong class="{{'ok' if flags.EBOOK else 'missing'}}">{{'Uploaded' if flags.EBOOK else 'Not uploaded'}}</strong></p>
-<p>Bonus: <strong class="{{'ok' if flags.BONUS else 'missing'}}">{{'Uploaded' if flags.BONUS else 'Not uploaded'}}</strong></p>
-<p>Create a private R2 bucket named <code>her-pov-private-files</code> and a bucket-limited read/write S3 token.
-Add these keys in your Render environment: <code>S3_ENDPOINT_URL</code>, <code>S3_ACCESS_KEY_ID</code>,
-<code>S3_SECRET_ACCESS_KEY</code>, <code>S3_BUCKET</code>, <code>S3_REGION</code> (auto).</p>
-<p><a href="https://dash.cloudflare.com/?to=/:account/r2/overview">Open Cloudflare R2</a> ·
-<a href="/admin/assets">Upload private PDFs</a></p></section>
-<section><h2>Buyer email · Resend</h2>
-<p>API key: <strong class="{{'ok' if flags.RESEND_API_KEY else 'missing'}}">{{'Configured' if flags.RESEND_API_KEY else 'Not connected'}}</strong></p>
-<p>Sending address: <strong class="{{'ok' if flags.RESEND_FROM_EMAIL else 'missing'}}">{{'Configured (not verified here)' if flags.RESEND_FROM_EMAIL else 'Not configured'}}</strong></p>
-<p>Support address: <strong class="{{'ok' if flags.SUPPORT_EMAIL else 'missing'}}">{{'Configured' if flags.SUPPORT_EMAIL else 'Not configured'}}</strong></p>
-<p>Verify the domain in your Resend account and add your sending-only API key in the Render environment as
-<code>RESEND_API_KEY</code>, <code>RESEND_FROM_EMAIL</code> and <code>SUPPORT_EMAIL</code>.</p>
-<p><a href="https://resend.com/domains">Resend domains</a> · <a href="https://resend.com/api-keys">Resend API keys</a></p>
-<button type="button" id="test-email" style="padding:10px;background:#d8b987;color:#11151c;border:0;border-radius:6px;cursor:pointer">
-Send a real test email to the support inbox</button>
-<p id="email-result" role="status" aria-live="polite"></p>
-<script>document.getElementById('test-email').addEventListener('click',async()=>{
-const area=document.getElementById('email-result');area.textContent='Sending test...';
-try{
-const response=await fetch('/admin/test-email',{method:'POST',headers:{'X-HERPOV-Upload':'authorized'},
-cache:'no-store',credentials:'same-origin'});
-const body=await response.json();
-area.textContent=body.accepted_by_provider?'Accepted by email provider. Check the support inbox: '+body.check_inbox:
-(body.error || 'Sender not ready');
-}catch(error){area.textContent='Request failed: '+error.message;}
-});</script></section>
-<section><h2>Payment protection</h2>
-<ul><li>Stripe API key: {{'Present' if flags.STRIPE_SECRET_KEY else 'Not configured'}}</li>
-<li>Stripe webhook signing: {{'Configured' if flags.STRIPE_WEBHOOK_SECRET else 'Missing'}}</li>
-<li>Download-link signing: {{'Configured' if flags.DOWNLOAD_SIGNING_SECRET else 'Missing'}}</li>
-<li>Real checkout: <strong class="missing">DISABLED — pre-launch</strong></li></ul></section>
-<small>All credentials belong in Render's secure Environment screen, never GitHub, chat messages or static HTML. Connection checks do not substitute for an actual paid test order.</small>
-</main></body></html>""",flags=flags)
+    flags = (
+        ("SENDOWL_PRODUCT_LINKED", "Both PDFs are linked to the existing Stripe product"),
+        ("SENDOWL_DELIVERY_TESTED", "Full payment-to-email-to-download delivery was verified"),
+        ("STRIPE_PAYOUTS_CONFIRMED", "Stripe payouts are enabled (account reviewed)"),
+        ("MERCHANT_POLICIES_APPROVED", "Merchant information and buyer policies approved"),
+        ("MERCHANT_TAX_REVIEWED", "Required taxes and registrations reviewed"),
+        ("STRIPE_MODE", "Stripe integration set to live for launch"),
+        ("LIVE_READY", "Final owner launch approval"),
+    )
+    passed = {key for key, label in flags if
+              (env(key) == "live" if key == "STRIPE_MODE" else env(key) == "yes")}
+    checkout_ready = len(passed) == len(flags)
+    from flask import render_template
+    return render_template("admin_delivery.html", flags=flags,
+                           passed=passed, checkout_ready=checkout_ready)
 
 @bp.post("/admin/test-email")
 def test_delivery_email():
