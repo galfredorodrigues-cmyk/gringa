@@ -59,6 +59,19 @@ jobs:
               assert marker in legal, f"{path}: missing title"
               assert b"Pre-launch policy notice" in legal, f"{path}: false legal approval"
               assert b"Merchant" in legal or b"merchant" in legal, f"{path}: merchant info missing"
+          import struct, hashlib
+          art = {}
+          for slug in ["first-message-formula", "reply-decoder", "profile-makeover",
+                       "from-chat-to-first-date", "complete-library"]:
+              path="/product-art/"+slug+".png"
+              image=req(path)
+              assert image[:8]==bytes.fromhex("89504e470d0a1a0a"), f"{slug}: not a valid PNG"
+              assert len(image)>20000, f"{slug}: unexpectedly small image"
+              width,height=struct.unpack(">II",image[16:24])
+              assert (width,height)==(1000,1000), f"{slug}: unexpected dimensions"
+              art[slug]=hashlib.sha256(image).hexdigest()
+          assert len(set(art.values()))==5, "Two Stripe product covers are identical"
+          print("PASS: all five public Stripe product PNG images deliver unique 1000x1000 files")
           req("/admin/assets",expected=401)
           req("/admin/setup",expected=401)
           req("/admin/test-email",method="POST",body=b"{}",expected=401)
