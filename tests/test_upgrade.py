@@ -21,8 +21,9 @@ class UpgradePreviewTests(unittest.TestCase):
             b"The Reply Decoder",
             b"The Profile Makeover",
             b"From Chat to First Date",
-            b"20",
-            b"9.90 first purchase",
+            b"21.90",
+            b"12",
+            b"9.90 starter purchase", 
             b"noindex,nofollow,noarchive",
         ):
             self.assertIn(item, response.data)
