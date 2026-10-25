@@ -74,7 +74,8 @@ def verify_session(sid):
     session = stripe_client().v1.checkout.sessions.retrieve(sid)
     if session.get("status") != "complete" or session.get("payment_status") != "paid":
         return None
-    if session.get("payment_link") != LINK_ID:
+    expected_link = env("TEST_PAYMENT_LINK_ID") if env("STRIPE_MODE") == "test" else LINK_ID
+    if not expected_link or session.get("payment_link") != expected_link:
         return None
     if session.get("currency") != CURRENCY or session.get("amount_total") != AMOUNT:
         return None
