@@ -88,11 +88,8 @@
             <li>First Message Cheat Sheet bonus PDF</li>
           </ul>
           <div class="choice__actions">
-            {% if checkout_ready %}
-            <a href="{{ checkout_url }}" rel="noopener noreferrer" class="choice__button choice__button--dark">GET 1 GUIDE — $9.90 <span aria-hidden="true">↗</span></a>
-            {% else %}
-            <button type="button" disabled class="choice__button choice__button--disabled">STARTER CHECKOUT OPENING SOON</button>
-            {% endif %}
+            <a href="{{ url_for('last_offer') }}" class="choice__button choice__button--dark">START WITH 1 GUIDE — $9.90 <span aria-hidden="true">↗</span></a>
+            <p class="choice__step-note">Review your optional final offer before checkout. Nothing is charged on the next page.{% if not checkout_ready %} <strong>STARTER CHECKOUT OPENING SOON.</strong>{% endif %}</p>
             <a class="choice__learn" href="#offer">See what's inside <span aria-hidden="true">↓</span></a>
           </div>
         </article>
@@ -308,13 +305,8 @@
         <div class="checkout-card__body">
           <div class="checkout-card__description"><div><strong>Complete digital edition</strong><small>PDF + bonus cheat sheet</small></div><span class="badge-one-time">ONE TIME</span></div>
           <div class="checkout-card__price"><span>$9.90</span><small>USD</small></div>
-          {% if checkout_ready %}
-          <a class="btn btn--gold" style="width:100%" href="{{ checkout_url }}" rel="noopener noreferrer">GET INSTANT ACCESS — $9.90 <span aria-hidden="true">↗</span></a>
-          <p class="checkout-card__secure">Secure {{ "Hotmart" if checkout_provider == "hotmart" else "Stripe" }} checkout · Digital access after payment confirmation</p>
-          {% else %}
-          <button type="button" disabled class="btn btn--disabled">CHECKOUT OPENING SOON <span aria-hidden="true">↗</span></button>
-          <p class="checkout-card__secure">We are completing secure delivery testing before opening orders.</p>
-          {% endif %}
+          <a class="btn btn--gold" style="width:100%" href="{{ url_for('last_offer') }}">START WITH THIS GUIDE — $9.90 <span aria-hidden="true">↗</span></a>
+          <p class="checkout-card__secure">Next: a final optional offer, then choose your secure checkout. No payment is collected on the next page.{% if not checkout_ready %} CHECKOUT OPENING SOON — secure delivery testing is still in progress.{% endif %}</p>
           <div class="checkout-card__details"><div><span>✓</span> No subscription</div><div><span>✓</span> Digital PDF format</div><div><span>✓</span> Bonus included</div></div>
         </div>
       </aside>
