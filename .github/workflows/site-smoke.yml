@@ -80,6 +80,14 @@ jobs:
               art[slug]=hashlib.sha256(image).hexdigest()
           assert len(set(art.values()))==5, "Two Stripe product covers are identical"
           print("PASS: all five public Stripe product PNG images deliver unique 1000x1000 files")
+          # Public source-page previews must be genuine XML from four single pages.
+          for slug in ["first-message-formula","reply-decoder",
+                       "profile-makeover","from-chat-to-first-date"]:
+              svg=req("/sample-page/"+slug+".svg")
+              assert svg.startswith(b'<svg xmlns="http://www.w3.org/2000/svg"'), f"{slug}: SVG not served"
+              assert b"HER POV" in svg and b"<text" in svg, f"{slug}: missing source text"
+              assert b"%PDF-" not in svg, f"{slug}: private PDF data exposed"
+          req("/sample-page/unknown.svg",expected=404)
           req("/admin/assets",expected=401)
           req("/admin/setup",expected=401)
           req("/admin/test-email",method="POST",body=b"{}",expected=401)
