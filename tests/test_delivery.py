@@ -36,6 +36,11 @@ class StorefrontTests(unittest.TestCase):
             "SENDOWL_BUNDLE_TESTED": "yes",
             "SENDOWL_DELIVERY_TESTED": "yes",
             "STRIPE_PAYOUTS_CONFIRMED": "yes",
+            "STRIPE_LINKS_ACTIVE_CONFIRMED": "yes",
+            "MERCHANT_LEGAL_NAME": "Example Seller LLC",
+            "MERCHANT_COUNTRY": "United States",
+            "MERCHANT_CONTACT_ADDRESS": "123 Example Street",
+            "SUPPORT_EMAIL": "help@example.test",
             "MERCHANT_POLICIES_APPROVED": "yes",
             "MERCHANT_TAX_REVIEWED": "yes",
             "LIVE_READY": "yes",
@@ -48,7 +53,7 @@ class StorefrontTests(unittest.TestCase):
             assert self.client.get("/health").get_json()["checkout_enabled"] is True
         for missing in ready:
             unsafe = dict(ready)
-            unsafe[missing] = "no"
+            unsafe[missing] = "" if missing.startswith("MERCHANT_") or missing == "SUPPORT_EMAIL" else "no"
             with patch.dict(os.environ, unsafe):
                 self.assertFalse(app.checkout_open(), missing)
                 self.assertIn(b"CHECKOUT OPENING SOON", self.client.get("/").data)
@@ -62,6 +67,11 @@ class StorefrontTests(unittest.TestCase):
             "SENDOWL_BUNDLE_TESTED":"yes",
             "SENDOWL_DELIVERY_TESTED":"yes",
             "STRIPE_PAYOUTS_CONFIRMED":"yes",
+            "STRIPE_LINKS_ACTIVE_CONFIRMED":"yes",
+            "MERCHANT_LEGAL_NAME":"Example Seller LLC",
+            "MERCHANT_COUNTRY":"United States",
+            "MERCHANT_CONTACT_ADDRESS":"123 Example Street",
+            "SUPPORT_EMAIL":"help@example.test",
             "MERCHANT_POLICIES_APPROVED":"yes",
             "MERCHANT_TAX_REVIEWED":"yes",
             "LIVE_READY":"yes",
