@@ -221,7 +221,7 @@ def admin_assets():
     if not admin_auth():
         return ("Owner credentials required",401,{"WWW-Authenticate":'Basic realm="HER POV private files"'})
     if request.method=="POST":
-        # Browser cross-origin upload requests are blocked by a required custom header.
+        # Cross-origin uploads cannot provide this custom header without CORS.
         if request.headers.get("X-HERPOV-Upload") != "authorized":
             abort(403)
         kind=request.form.get("kind")
@@ -231,10 +231,42 @@ def admin_assets():
         data=f.read(15*1024*1024+1)
         try:
             storage.upload(kind,data)
-        except (RuntimeError,ValueError):
+        except ValueError:
+            abort(400)
+        except Exception:
             abort(503)
-    return jsonify({"ebook":storage.exists("ebook"),"bonus":storage.exists("bonus"),
-                    "storage_configured":storage.configured()})
+        return jsonify(uploaded=kind, verified=storage.exists(kind))
+    checks={name:storage.exists(name) for name in FILENAMES}
+    return render_template_string("""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HER POV · Owner Files</title>
+<style>body{background:#11151c;color:#f3ebdf;font:16px Arial;margin:0}
+main{max-width:680px;margin:7vh auto;padding:26px}h1{font:40px Georgia;color:#d8b987}
+small{color:#c3b5a1}label{display:block;margin:20px 0 8px}
+select,input,button{padding:14px;background:#232932;color:white;border:1px solid #7d6e59;border-radius:6px;max-width:100%;width:100%}
+button{background:#d8b987;color:#11151c;cursor:pointer;font-weight:bold}
+fieldset{border:1px solid #5d5344;border-radius:9px;margin:20px 0;padding:18px}li{margin:12px 0}
+em{color:#d8b987;font-style:normal}</style></head>
+<body><main><h1>HER POV · Private delivery</h1><p>Owner-only protected PDF upload. Files are stored in your private S3/R2 bucket, never in the public site.</p>
+<fieldset><legend>Storage status</legend><p>Bucket: <em>{{ "Connected" if connected else "Not configured" }}</em></p>
+<ul><li>E-book: <em>{{ "Available" if checks.ebook else "Missing" }}</em></li>
+<li>Bonus: <em>{{ "Available" if checks.bonus else "Missing" }}</em></li></ul></fieldset>
+<form id="upload"><label for="kind">Document</label>
+<select id="kind" name="kind"><option value="ebook">56-page e-book</option>
+<option value="bonus">Bonus cheat sheet</option></select>
+<label for="file">PDF file (15 MB maximum)</label><input id="file" name="file" type="file" accept=".pdf,application/pdf" required>
+<p><button type="submit" {{ "disabled" if not connected }}>Securely upload PDF</button></p>
+<p id="feedback" role="status" aria-live="polite"></p></form>
+<small>Upload each PDF once. Never publish these documents in GitHub or public storage.</small>
+<script>document.getElementById('upload').addEventListener('submit', async function(ev){
+ev.preventDefault(); const feedback=document.getElementById('feedback');feedback.textContent='Uploading…';
+try{const result=await fetch('/admin/assets',{method:'POST',body:new FormData(ev.target),
+headers:{'X-HERPOV-Upload':'authorized'},cache:'no-store',credentials:'same-origin'});
+if(!result.ok)throw Error('Upload rejected ('+result.status+')');
+const info=await result.json();feedback.textContent=info.verified?'Document uploaded and verified.':'Upload incomplete.';}
+catch(e){feedback.textContent=e.message;}
+});</script>
+</main></body></html>""",connected=storage.configured(),checks=checks)
 
 @bp.get("/_status")
 def owner_status():
