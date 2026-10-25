@@ -43,6 +43,11 @@ Use Stripe Product catalog / SendOwl / Unlinked products / Select product / add 
    SENDOWL_DELIVERY_TESTED=yes
    SENDOWL_BUNDLE_TESTED=yes
    STRIPE_PAYOUTS_CONFIRMED=yes
+   STRIPE_LINKS_ACTIVE_CONFIRMED=yes
+   MERCHANT_LEGAL_NAME=<verified actual seller name>
+   MERCHANT_COUNTRY=<actual country>
+   MERCHANT_CONTACT_ADDRESS=<actual mailing address>
+   SUPPORT_EMAIL=<working customer support email>
    MERCHANT_POLICIES_APPROVED=yes
    MERCHANT_TAX_REVIEWED=yes
    LIVE_READY=yes
@@ -58,3 +63,18 @@ Use Stripe Product catalog / SendOwl / Unlinked products / Select product / add 
 - Cloudflare R2/Resend: NOT needed on chosen launch route. Legacy code remains dormant, and its webhook remains disabled.
 
 Security: all buyer files in SendOwl; do not put them in the public GitHub repo or a public URL. Never post credentials in chat.
+
+## Legal policy pages prepared in English (not yet owner-approved)
+- https://her-pov-preview.onrender.com/terms
+- https://her-pov-preview.onrender.com/privacy
+- https://her-pov-preview.onrender.com/refunds
+- https://her-pov-preview.onrender.com/contact
+
+Before taking orders, the seller must verify their actual legal operator identity, customer service email, mailing address, refund terms, tax position and country. The current documents visibly mark themselves as prelaunch and the checkout gate requires valid merchant contact environment fields. Do not invent these fields or assume a legal review took place.
+
+## Stripe payout restriction (observed 2026-10-25)
+- Account Magic Universal: charges_enabled=true, payouts_enabled=false; requirements.disabled_reason='other', currently_due=[].
+- Existing account business profile URL does not describe the HER POV storefront; the owner must decide whether to use this account commercially or separate a different brand.
+- Stripe support: https://support.stripe.com/contact
+- Brazil verification reference: https://support.stripe.com/questions/brazil-specific-account-verification-troubleshooting?locale=en-GB
+- Do not activate any checkout until official Stripe confirms payouts_enabled=true.
