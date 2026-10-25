@@ -1,6 +1,6 @@
 import os
 from urllib.parse import urlsplit
-from flask import Flask, render_template_string, render_template, jsonify, make_response, abort
+from flask import Flask, render_template_string, render_template, jsonify, make_response, abort, redirect, url_for
 app=Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"]=False
 CSS="""
@@ -40,6 +40,29 @@ def _hotmart_checkout_link(value):
 def _hotmart_checkout_links():
     return {key: _hotmart_checkout_link(os.environ.get(key, ""))
             for key in HOTMART_LINK_KEYS}
+
+# Separate PRE-checkout choice: nobody has paid before this page.
+# The $21.90 offer requires its own verified four-guide Hotmart checkout.
+LAST_OFFER_FLAGS = (
+    "LAST_OFFER_USD_PRICE_VERIFIED",
+    "LAST_OFFER_FIVE_FILES_VERIFIED",
+    "LAST_OFFER_DELIVERY_TESTED",
+    "LAST_OFFER_POLICIES_APPROVED",
+    "LAST_OFFER_LAUNCH_APPROVED",
+)
+
+def last_offer_checkout_url():
+    """Fail closed until original checkout AND special offer are independently ready."""
+    if os.environ.get("CHECKOUT_PROVIDER") != "hotmart" or not hotmart_checkout_open():
+        return ""
+    if any(os.environ.get(flag) != "yes" for flag in LAST_OFFER_FLAGS):
+        return ""
+    link = _hotmart_checkout_link(os.environ.get("HOTMART_LINK_LAST_OFFER", ""))
+    if not link:
+        return ""
+    if link in _hotmart_checkout_links().values():
+        return ""
+    return link
 
 def _merchant_data_confirmed():
     required = ("MERCHANT_LEGAL_NAME", "MERCHANT_COUNTRY",
@@ -223,15 +246,36 @@ def marketing_product_art(slug):
     response.headers["X-Content-Type-Options"] = "nosniff"
     return response
 
-@app.get("/upgrade")
-def upgrade_preview():
-    """Unlinked, non-indexed upsell mockup. No checkout or buyer access here.
+@app.get("/last-offer")
+def last_offer():
+    """Pre-checkout choice: $21.90 all four or $9.90 starter. No purchase yet.
 
-    Production activation requires a verified post-purchase Hotmart funnel,
-    purchase eligibility checks, a distinct $12 upgrade product ($21.90 total), tested delivery,
-    buyer-facing policies and an explicitly approved release.
+    Only render chargeable buttons for independently verified offers.
+    The main page offers the unchanged $29.90 direct bundle as another route.
     """
-    response = make_response(render_template("upgrade.html"))
+    base_ready = checkout_open()
+    provider = os.environ.get("CHECKOUT_PROVIDER", "stripe").lower()
+    if base_ready and provider == "hotmart":
+        starter_url = _hotmart_checkout_links().get("HOTMART_LINK_01", "")
+    elif base_ready and provider == "stripe":
+        starter_url = "https://buy.stripe.com/14A9ANbXgfdicJXb1N3cc00"
+    else:
+        starter_url = ""
+    offer_url = last_offer_checkout_url()
+    response = make_response(render_template(
+        "upgrade.html", starter_checkout_url=starter_url,
+        offer_checkout_url=offer_url, starter_checkout_ready=bool(starter_url),
+        offer_checkout_ready=bool(offer_url),
+    ))
+    response.headers["Cache-Control"] = "no-store, private"
+    response.headers["X-Robots-Tag"] = "noindex, nofollow, noarchive"
+    return response
+
+
+@app.get("/upgrade")
+def legacy_upgrade_redirect():
+    """Keep old bookmarks working, but use the new last-offer URL."""
+    response = make_response(redirect(url_for("last_offer"), code=302))
     response.headers["Cache-Control"] = "no-store, private"
     response.headers["X-Robots-Tag"] = "noindex, nofollow, noarchive"
     return response
