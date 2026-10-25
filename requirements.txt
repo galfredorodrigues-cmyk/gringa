@@ -1,2 +1,5 @@
 Flask>=3.0,<4
 gunicorn>=22,<25
+stripe>=15,<16
+requests>=2.31,<3
+boto3>=1.35,<2
