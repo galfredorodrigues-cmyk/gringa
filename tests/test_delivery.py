@@ -161,6 +161,31 @@ class StorefrontTests(unittest.TestCase):
         self.assertEqual(self.client.get("/product-art/../private.pdf").status_code,404)
         self.assertEqual(self.client.get("/product-art/unknown.png").status_code,404)
 
+    def test_authentic_pdf_page_layout_previews_are_safe_and_independent(self):
+        expected = {
+            "first-message-formula":(432,648),
+            "reply-decoder":(612,792),
+            "profile-makeover":(612,792),
+            "from-chat-to-first-date":(612,792),
+        }
+        for slug, (w,h) in expected.items():
+            response = self.client.get("/sample-page/"+slug+".svg")
+            self.assertEqual(response.status_code,200,slug)
+            self.assertIn("image/svg+xml",response.content_type)
+            body=response.data
+            self.assertIn(b"<svg",body,slug)
+            self.assertIn((f'viewBox="0 0 {w} {h}"').encode(),body,slug)
+            self.assertIn(b"HER POV",body,slug)
+            self.assertIn(b"original PDF page",body,slug)
+            self.assertNotIn(b"%PDF-",body)
+            self.assertIn("sandbox",response.headers.get("Content-Security-Policy",""))
+            self.assertIn("public",response.headers.get("Cache-Control",""))
+        self.assertEqual(self.client.get("/sample-page/unknown.svg").status_code,404)
+        homepage=self.client.get("/").data
+        for slug in expected:
+            self.assertIn(("/sample-page/"+slug+".svg").encode(),homepage)
+        self.assertFalse(self.client.get("/health").get_json()["checkout_enabled"])
+
     def test_health_and_no_live_claim(self):
         response=self.client.get("/health")
         self.assertEqual(response.status_code,200)
