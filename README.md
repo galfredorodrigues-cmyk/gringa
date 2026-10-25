@@ -27,9 +27,9 @@ The HER POV AI Coach is a future idea, not sold in this launch.
 
 ## Post-purchase upgrade (separate preview)
 
-- Public storefront: `https://vitrinyx.com/` — original homepage is **unchanged**.
+- Public storefront: `https://vitrinyx.com/` — retains all original editorial sections and copy, now with an early two-option selector (one guide at $9.90, four guides + bonus at $29.90). Both still use the original secure checkout gates.
 - Upgrade layout: `https://vitrinyx.com/upgrade` — premium English-language preview, deliberately unlinked from the homepage and `noindex, nofollow, noarchive`.
-- Offer: Only for existing purchasers of *The First Message Formula* at $9.90. A separate $20.00 one-time Hotmart product would provide only Volumes 02–04. Combined cost is $29.90; do not resend or re-bill Volume 01 or the 1-page bonus.
+- Offer: Only for verified existing purchasers of *The First Message Formula* at $9.90. A separate **$12.00** one-time Hotmart upgrade purchase would deliver only Volumes 02–04, giving a **$21.90 total for all four** ($9.90 already paid + $12.00 upgrade, excluding applicable taxes/fees). This is a **special post-purchase discount** vs the direct $29.90 bundle; do not resend or re-bill Volume 01 or its bonus.
 - Preview route has **no active purchase controls, payment links, checkout widget, form, or customer data collection**. An accessible person can preview the URL, but visiting it does **not** prove buyer eligibility.
 - Before release: create and validate the dedicated Hotmart upgrade product; confirm USD checkout and fees, buyer identification/purchase eligibility, customer-safe approved return/decline flow, exact three PDF deliveries, refunds/policies, and Hotmart's actual supported upsell integration. Only then add a functioning checkout in a separate, explicitly approved change. Do not assume a generic external page alone supports one-click additional charges.
 - Test accept, decline, interrupted checkout, double-submit, duplicate purchase, refund, and email delivery. A direct visitor must not be able to claim an unverified prior purchase for a discount. No fake time limit or results guarantees.
