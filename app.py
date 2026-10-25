@@ -128,6 +128,21 @@ LEGAL = {
              "paragraphs":["The HER POV storefront is currently in preview mode. Purchases are not yet available. An official seller name and support contact will be published before any real checkout is opened."],"points":[]},
         ]},
 }
+@app.get("/sample-page/<slug>.svg")
+def sample_page_visual(slug):
+    """A single already-approved PDF page preview; never serves source PDFs."""
+    from sample_pages import render_sample_svg
+    try:
+        body = render_sample_svg(slug)
+    except KeyError:
+        abort(404)
+    response = make_response(body)
+    response.headers["Content-Type"] = "image/svg+xml; charset=utf-8"
+    response.headers["Cache-Control"] = "public, max-age=86400, s-maxage=86400"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["Content-Security-Policy"] = "default-src 'none'; style-src 'unsafe-inline'; sandbox"
+    return response
+
 @app.get("/product-art/<slug>.png")
 def marketing_product_art(slug):
     """Public cover PNG only; buyer PDFs are never exposed here."""
