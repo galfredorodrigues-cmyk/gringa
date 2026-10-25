@@ -343,6 +343,7 @@ def admin_setup():
         ("SENDOWL_BUNDLE_TESTED", "The $29.90 complete bundle delivers all five PDF files"),
         ("SENDOWL_DELIVERY_TESTED", "Full payment-to-email-to-download delivery was verified"),
         ("STRIPE_PAYOUTS_CONFIRMED", "Stripe payouts are enabled (account reviewed)"),
+        ("STRIPE_LINKS_ACTIVE_CONFIRMED", "Live Stripe Payment Links are active and point to correct verified products"),
         ("MERCHANT_POLICIES_APPROVED", "Merchant information and buyer policies approved"),
         ("MERCHANT_TAX_REVIEWED", "Required taxes and registrations reviewed"),
         ("STRIPE_MODE", "Stripe integration set to live for launch"),
@@ -350,10 +351,15 @@ def admin_setup():
     )
     passed = {key for key, label in flags if
               (env(key) == "live" if key == "STRIPE_MODE" else env(key) == "yes")}
-    checkout_ready = len(passed) == len(flags)
+    from app import checkout_open
+    checkout_ready = checkout_open()
+    merchant_fields = ("MERCHANT_LEGAL_NAME", "MERCHANT_COUNTRY",
+                       "MERCHANT_CONTACT_ADDRESS", "SUPPORT_EMAIL")
+    missing_merchant = [key for key in merchant_fields if not env(key).strip()]
     from flask import render_template
     return render_template("admin_delivery.html", flags=flags,
-                           passed=passed, checkout_ready=checkout_ready)
+                           passed=passed, checkout_ready=checkout_ready,
+                           missing_merchant=missing_merchant)
 
 @bp.post("/admin/test-email")
 def test_delivery_email():
