@@ -12,11 +12,16 @@ def render(body):
 def checkout_open():
     flags = ("SENDOWL_PRODUCT_LINKED", "SENDOWL_ALL_PRODUCTS_LINKED",
              "SENDOWL_DELIVERY_TESTED", "SENDOWL_BUNDLE_TESTED",
-             "STRIPE_PAYOUTS_CONFIRMED", "MERCHANT_POLICIES_APPROVED",
-             "MERCHANT_TAX_REVIEWED", "LIVE_READY")
-    return os.environ.get("STRIPE_MODE") == "live" and all(
-        os.environ.get(flag) == "yes" for flag in flags
-    )
+             "STRIPE_PAYOUTS_CONFIRMED", "STRIPE_LINKS_ACTIVE_CONFIRMED",
+             "MERCHANT_POLICIES_APPROVED", "MERCHANT_TAX_REVIEWED", "LIVE_READY")
+    required_merchant_fields = ("MERCHANT_LEGAL_NAME", "MERCHANT_COUNTRY",
+                                "MERCHANT_CONTACT_ADDRESS", "SUPPORT_EMAIL")
+    fields_complete = all(os.environ.get(name, "").strip() for name in required_merchant_fields)
+    contact_email = os.environ.get("SUPPORT_EMAIL", "").strip()
+    return (os.environ.get("STRIPE_MODE") == "live"
+            and all(os.environ.get(flag) == "yes" for flag in flags)
+            and fields_complete and "@" in contact_email
+            and len(contact_email) < 256)
 
 @app.get("/")
 def home():
