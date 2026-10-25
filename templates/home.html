@@ -116,7 +116,7 @@
           </div>
         </article>
       </div>
-      <p class="choice__footnote">Each option is a separate purchase. Neither is a subscription. Checkout is unavailable until verified secure delivery is ready.</p>
+      <p class="choice__footnote">Each option is a separate one-time purchase. Neither is a subscription. {% if not checkout_ready %}Checkout remains closed until secure delivery has been verified.{% else %}Payment and delivery details are shown at the secure checkout.{% endif %}</p>
     </div>
   </section>
 
