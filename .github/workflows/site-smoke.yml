@@ -42,9 +42,17 @@ jobs:
                           b"From Chat to", b"AI Coach", b"C.A.R.E.",
                           b"$9.90", b"First Message Cheat Sheet", b"GUIDE COMPLETE", b"$29.90", b"SAVE $12.70", b"BUNDLE CHECKOUT OPENING SOON"]:
               assert keyword.lower() in text_body.lower(), f"Missing content: {keyword!r}"
+          for excerpt in [b"READ BEFORE YOU BUY",b"PDF PAGE 13 OF 56",
+                          b"PDF PAGE 6 OF 19",b"PDF PAGE 7 OF 19",
+                          b"PDF PAGE 5 OF 19",b"The S.I.G.N.A.L. Check",
+                          b"The C.L.E.A.R. Invitation",b"$24.90",
+                          b"PROPOSED PRICE",b"NOT AVAILABLE FOR PURCHASE"]:
+              assert excerpt in body, f"Missing real sample or future app pricing: {excerpt!r}"
+          assert body.count(b'class="sample-card"')==4, "Expected four real excerpt samples"
           assert b"https://buy.stripe.com/" not in body, "Live payment link must remain unlisted"
           css=req("/static/css/landing.css")
           assert len(css)>15000 and b".hero__grid" in css and b"@media" in css, "Responsive style missing"
+          assert b"prefers-reduced-motion" in css and b".sample-paper" in css, "A11y motion or sample styling missing"
           status=json.loads(req("/health"))
           assert status["checkout_enabled"] is False, "Do not enable production checkout"
           req("/success?session_id=cs_test_invalid",expected=403)
