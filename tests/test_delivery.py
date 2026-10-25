@@ -117,7 +117,7 @@ class StorefrontTests(unittest.TestCase):
                     "https://user:password@pay.hotmart.com/A123",
                     "https://pay.hotmart.com:443/A123",
                     "https://pay.hotmart.com/A123#fragment",
-                    "https://pay.hotmart.com/A123\\n",
+                    ("https://pay.hotmart.com/A123" + chr(10)),
                     ""):
             self.assertEqual(app._hotmart_checkout_link(url),"",url)
         self.assertEqual(app._hotmart_checkout_link("https://pay.hotmart.com/A123?off=123"),"https://pay.hotmart.com/A123?off=123")
