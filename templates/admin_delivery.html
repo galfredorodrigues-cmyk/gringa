@@ -39,6 +39,14 @@ footer{margin-top:30px;color:#aaa;font-size:12px}
 {% endfor %}
 </ul>
 <p><small>These are owner-approved settings, not independently verified API readings. A completed buyer delivery test and confirmation of payouts must happen first.</small></p>
+{% if missing_merchant %}
+<div class="box" style="background:#33251e;border-color:#996842">
+<strong>Merchant disclosure incomplete</strong>
+<p>Set these merchant details privately in Render → Environment before accepting any buyers: <code>{{ missing_merchant | join(', ') }}</code>.</p>
+<p>Enter the actual legal name, seller country, business mailing address and live support inbox. Do not use invented business details or a fake address.</p>
+</div>
+{% endif %}
+<p><a href="/terms">Terms of Purchase</a> · <a href="/privacy">Privacy Notice</a> · <a href="/refunds">Refunds &amp; Delivery</a> · <a href="/contact">Contact</a></p>
 </section>
 <section class="box"><div class="eyebrow">04 / STRIPE PRODUCT INVENTORY</div>
 <p>Stripe account: <strong>Magic Universal</strong><br>
