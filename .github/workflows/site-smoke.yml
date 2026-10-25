@@ -52,8 +52,16 @@ jobs:
           # US-English sales copy: concrete promise, scannable benefits, accurate FAQs
           for phrase in [b"Four real-world skills.",b"One complete library.",
                          b"24 common texting scenarios",b"Know what you get.",
-                         b"Can I buy the guides separately?"]:
+                         b"Can I start with just one guide?"]:
               assert phrase in body, f"US copy proofing phrase missing: {phrase!r}"
+          first_fold=body.split(b'<section class="hero section-dark"')[1].split(b'</section>')[0]
+          assert b"$29.90" not in first_fold and b"$9.90" not in first_fold, "First fold should be benefit-led"
+          assert b"START WITH A BETTER MESSAGE" in first_fold
+          assert b"SEE A REAL EXAMPLE" in first_fold
+          assert body.index(b'id="starter-choice"') < body.index(b'id="complete-choice"'), "Starter must be first"
+          assert body.index(b'id="offer"') < body.index(b'id="bundle"'), "Bundle longform must follow starter"
+          assert b"A PRACTICAL TIP YOU CAN USE RIGHT NOW" in body
+          assert b"Do I need to memorize pickup lines?" in body
           assert b"not a stock mockup or an invented testimonial" not in body
           assert b"https://buy.stripe.com/" not in body, "Live payment link must remain unlisted"
           css=req("/static/css/landing.css")
