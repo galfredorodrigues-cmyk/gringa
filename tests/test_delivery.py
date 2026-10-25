@@ -112,6 +112,22 @@ class StorefrontTests(unittest.TestCase):
             self.assertIn(b"help@example.test",html)
             self.assertIn(b"Pre-launch policy notice",html)
 
+    def test_five_stripe_cover_images_public_and_no_pdf_leak(self):
+        slugs = [
+            "first-message-formula", "reply-decoder", "profile-makeover",
+            "from-chat-to-first-date", "complete-library",
+        ]
+        for slug in slugs:
+            result=self.client.get("/product-art/"+slug+".png")
+            self.assertEqual(result.status_code, 200, slug)
+            self.assertEqual(result.mimetype, "image/png")
+            self.assertTrue(result.data.startswith(b"\\x89PNG\\r\\n\\x1a\\n".decode("unicode_escape").encode("latin1")), slug)
+            self.assertGreater(len(result.data), 20000, slug)
+            self.assertNotIn(b"%PDF-", result.data, slug)
+            self.assertIn("public",result.headers["Cache-Control"])
+        self.assertEqual(self.client.get("/product-art/../private.pdf").status_code,404)
+        self.assertEqual(self.client.get("/product-art/unknown.png").status_code,404)
+
     def test_health_and_no_live_claim(self):
         response=self.client.get("/health")
         self.assertEqual(response.status_code,200)
