@@ -25,15 +25,17 @@ The HER POV AI Coach is a future idea, not sold in this launch.
 - **Stripe + SendOwl** are the legacy fallback, with payment links still gated/inactive; there is no public buyer checkout today.
 - Never put buyer PDF files, merchant credentials or API tokens in GitHub.
 
-## Post-purchase upgrade (separate preview)
+## Pre-checkout Last Chance Offer (no payments active)
 
-- Public storefront: `https://vitrinyx.com/` — retains all original editorial sections and copy, now with an early two-option selector (one guide at $9.90, four guides + bonus at $29.90). Both still use the original secure checkout gates.
-- Upgrade layout: `https://vitrinyx.com/upgrade` — premium English-language preview, deliberately unlinked from the homepage and `noindex, nofollow, noarchive`.
-- Offer: Only for verified existing purchasers of *The First Message Formula* at $9.90. A separate **$12.00** one-time Hotmart upgrade purchase would deliver only Volumes 02–04, giving a **$21.90 total for all four** ($9.90 already paid + $12.00 upgrade, excluding applicable taxes/fees). This is a **special post-purchase discount** vs the direct $29.90 bundle; do not resend or re-bill Volume 01 or its bonus.
-- Preview route has **no active purchase controls, payment links, checkout widget, form, or customer data collection**. An accessible person can preview the URL, but visiting it does **not** prove buyer eligibility.
-- Before release: create and validate the dedicated Hotmart upgrade product; confirm USD checkout and fees, buyer identification/purchase eligibility, customer-safe approved return/decline flow, exact three PDF deliveries, refunds/policies, and Hotmart's actual supported upsell integration. Only then add a functioning checkout in a separate, explicitly approved change. Do not assume a generic external page alone supports one-click additional charges.
-- Test accept, decline, interrupted checkout, double-submit, duplicate purchase, refund, and email delivery. A direct visitor must not be able to claim an unverified prior purchase for a discount. No fake time limit or results guarantees.
-- No hidden pre-approval conditions are bypassed in this preview. The existing checkout launch flags remain unchanged and OFF.
+- Main storefront: `https://vitrinyx.com/` retains all original editorial copy and sections, with two options: **Volume 01 + bonus for USD $9.90**, or **four volumes + bonus for USD $29.90**.
+- Clicking either "start with one" button opens `https://vitrinyx.com/last-offer` **before any payment**. The old `/upgrade` path redirects to `/last-offer`.
+- The optional offer is **USD $21.90 for all four e-books + bonus in a single checkout**, saving USD $8.00 vs the direct USD $29.90 full library (before any applicable taxes/fees). The buyer has paid **$0** at this stage: do not call the $21.90 checkout a $12 upgrade or charge $9.90 first.
+- The intended two actions are (a) **accept** → separately verified Hotmart offer containing all five PDFs for USD $21.90; (b) **pass / lose the offer** → existing starter Hotmart offer containing Volume 01 and bonus for USD $9.90. Direct bundle choice on homepage keeps its own USD $29.90 checkout.
+- This is a **pre-checkout special offer**, not a Hotmart post-purchase one-click upsell. Do not claim that a transaction occurred until the external payment provider verifies it. No invented timers or statements of false scarcity.
+- In preview, the Last Chance Offer shows strong but disabled payment choices, with `noindex, nofollow, noarchive`. The homepage's "start with one" links work for previewing the offer. No payment can be made until corresponding separate release gates are verified.
+- The private offer requires `HOTMART_LINK_LAST_OFFER` on an approved `pay.hotmart.com` or `go.hotmart.com` domain, **distinct from all five original links**, plus `LAST_OFFER_USD_PRICE_VERIFIED=yes`, `LAST_OFFER_FIVE_FILES_VERIFIED=yes`, `LAST_OFFER_DELIVERY_TESTED=yes`, `LAST_OFFER_POLICIES_APPROVED=yes`, `LAST_OFFER_LAUNCH_APPROVED=yes` and all standard Hotmart checkout gates.
+- Confirm the precise USD charge and eligible market, seller rules, product contents, order confirmation, test delivery, refund handling, and customer support before setting any new release flags. Tests must verify accept, pass, direct $29.90 purchase, failure/no-charge states, wrong links, and duplicate payment attempts.
+- Hotmart is not yet enabled, payment and release keys are not to be set to arbitrary demo values. Do not place private PDF files or credentials in GitHub.
 
 ## Security and release rules
 
