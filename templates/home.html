@@ -40,7 +40,7 @@
         <p class="hero__secondary">Four practical guides to help you start better conversations, understand replies without overthinking, improve your dating profile, and make first-date plans with confidence. <strong>Get all four plus a bonus cheat sheet for $29.90 — one payment, no subscription.</strong></p>
         <div class="hero__actions">
           <a class="btn btn--gold" href="#bundle">SEE ALL 4 GUIDES — $29.90 <span aria-hidden="true">↗</span></a>
-          <a class="inline-link" href="#offer">Or start with Volume 01 <span aria-hidden="true">↓</span></a>
+          <a class="inline-link" href="#starter-choice">Or start with 1 guide — $9.90 <span aria-hidden="true">↓</span></a>
         </div>
         <div class="hero__checks"><span>4 complete guides + bonus</span><span>Practical examples and exercises</span><span>One-time purchase</span></div>
         <p class="hero__disclosure">{% if checkout_ready %}Secure checkout with {{ "Hotmart" if checkout_provider == "hotmart" else "Stripe" }}. Digital access after payment confirmation.{% else %}Preview edition. Checkout opens after secure delivery testing.{% endif %}</p>
@@ -66,6 +66,57 @@
         </div>
         <div class="hero__footnote">THE FIRST MESSAGE FORMULA <span>—</span> DIGITAL EDITION</div>
       </div>
+    </div>
+  </section>
+
+  <section class="choice section-cream" id="choose" aria-labelledby="choice-heading">
+    <div class="container">
+      <div class="choice__head">
+        <div class="section-kicker">YOUR JOURNEY / YOUR CHOICE</div>
+        <h2 id="choice-heading">Start with one.<br><em>Or get the whole story.</em></h2>
+        <p>Two ways to begin with HER POV. Pick the one that fits where you are today.</p>
+      </div>
+      <div class="choice__grid">
+        <article class="choice__card" id="starter-choice" aria-labelledby="choice-starter-title">
+          <div class="choice__eyebrow">OPTION 01 / THE FOUNDATION</div>
+          <h3 id="choice-starter-title">The First Message <em>Formula</em></h3>
+          <p class="choice__description">One practical guide to help you stop overthinking and write a more natural first message.</p>
+          <div class="choice__price">$9.90 <span>USD · ONE TIME</span></div>
+          <ul class="choice__list">
+            <li>56-page digital guide with 50 adaptable openers</li>
+            <li>Practical exercises and 7-day challenge</li>
+            <li>First Message Cheat Sheet bonus PDF</li>
+          </ul>
+          <div class="choice__actions">
+            {% if checkout_ready %}
+            <a href="{{ checkout_url }}" rel="noopener noreferrer" class="choice__button choice__button--dark">GET 1 GUIDE — $9.90 <span aria-hidden="true">↗</span></a>
+            {% else %}
+            <button type="button" disabled class="choice__button choice__button--disabled">STARTER CHECKOUT OPENING SOON</button>
+            {% endif %}
+            <a class="choice__learn" href="#offer">See what's inside <span aria-hidden="true">↓</span></a>
+          </div>
+        </article>
+        <article class="choice__card choice__card--complete" id="complete-choice" aria-labelledby="choice-complete-title">
+          <div class="choice__eyebrow">OPTION 02 / THE COMPLETE LIBRARY</div>
+          <h3 id="choice-complete-title">All four <em>HER POV</em> guides</h3>
+          <p class="choice__description">The complete collection for everything from the first message to your first date.</p>
+          <div class="choice__price">$29.90 <span>USD · ONE TIME</span></div>
+          <ul class="choice__list">
+            <li>All 4 complete English-language PDF guides</li>
+            <li>First Message Cheat Sheet bonus PDF</li>
+            <li>Save $12.70 versus buying separately</li>
+          </ul>
+          <div class="choice__actions">
+            {% if bundle_checkout_ready %}
+            <a href="{{ bundle_checkout_url }}" rel="noopener noreferrer" class="choice__button choice__button--gold">GET ALL 4 GUIDES — $29.90 <span aria-hidden="true">↗</span></a>
+            {% else %}
+            <button type="button" disabled class="choice__button choice__button--disabled">BUNDLE CHECKOUT OPENING SOON</button>
+            {% endif %}
+            <a class="choice__learn" href="#bundle">Explore the complete library <span aria-hidden="true">↓</span></a>
+          </div>
+        </article>
+      </div>
+      <p class="choice__footnote">Each option is a separate purchase. Neither is a subscription. Checkout is unavailable until verified secure delivery is ready.</p>
     </div>
   </section>
 
