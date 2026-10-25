@@ -1,0 +1,51 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>HER POV / Delivery Launch</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#10151d;color:#f5eee2;font:15px/1.65 Arial,sans-serif}
+main{max-width:920px;margin:0 auto;padding:48px 25px 85px}
+a{color:#ddbd85}.eyebrow{font-size:11px;letter-spacing:.22em;color:#d8b987;font-weight:bold}
+h1{font:50px/1.08 Georgia,serif;margin:12px 0 18px}h2{font:25px Georgia,serif;margin:0 0 12px}
+p{color:#c5beb4}small{font-size:12px;color:#aaa59d}
+.box{background:#1d242e;border:1px solid #554a3a;border-radius:10px;padding:24px;margin:19px 0}
+.head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.status{background:#5a4930;color:#e8c990;border-radius:100px;padding:6px 12px;font-size:10px;font-weight:bold;letter-spacing:.08em}
+.status.ok{background:#264235;color:#b2efce}.steps{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+a.btn{background:#d8b987;color:#151922;text-decoration:none;display:inline-block;padding:15px 24px;border-radius:5px;font-weight:bold;margin-top:15px}
+.flag-list{padding:0;list-style:none}.flag-list li{border-bottom:1px solid #424448;padding:9px 0;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.flag-list em{font-style:normal;font-weight:bold;color:#f0b18a}.flag-list .ok{color:#99e0b6}
+footer{margin-top:30px;color:#aaa;font-size:12px}
+@media(max-width:680px){.steps{grid-template-columns:1fr}h1{font-size:40px}}
+</style></head><body><main>
+<div class="eyebrow">HER POV · AUTHORIZED OWNER ONLY</div>
+<h1>One checkout. <em style="color:#d8b987">One delivery app.</em></h1>
+<p>This store will use Stripe for payments and SendOwl for private files and buyer emails. No Cloudflare R2 or Resend configuration is required for this path.</p>
+<div class="box head"><div><strong>Real payments are currently {{ "ENABLED" if checkout_ready else "DISABLED" }}</strong><br>
+<small>Stripe checkout stays closed until all delivery, payouts, and compliance checks pass.</small></div>
+<span class="status {{ 'ok' if checkout_ready else '' }}">{{ "LIVE" if checkout_ready else "PRE-LAUNCH" }}</span></div>
+<div class="steps">
+<section class="box"><div class="eyebrow">01 / THIRD-PARTY INSTALLATION</div><h2>Install SendOwl in Stripe</h2>
+<p>Sign in to your existing <strong>Magic Universal</strong> Stripe account; select Install App, review the requested access, and choose a plan only after checking its displayed cost.</p>
+<a href="https://marketplace.stripe.com/apps/sendowl" class="btn" target="_blank" rel="noopener noreferrer">OPEN STRIPE APP MARKETPLACE ↗</a></section>
+<section class="box"><div class="eyebrow">02 / DIGITAL DELIVERY</div><h2>Link the exact product</h2>
+<p>Upload <strong>both PDFs</strong> to one SendOwl product. Link that product to existing Stripe product <code>prod_VVIj3wtkTG7eNW</code>; don't create a duplicate live product.</p>
+<small>Price: $9.90 USD once. Existing payment link remains closed.</small></section>
+</div>
+<section class="box"><div class="eyebrow">03 / LAUNCH CHECKLIST</div><h2>Checks before opening checkout</h2>
+<ul class="flag-list">
+{% for key,label in flags %}
+<li><span>{{ label }}</span><em class="{{ 'ok' if key in passed else '' }}">{{ "Confirmed" if key in passed else "Not confirmed" }}</em></li>
+{% endfor %}
+</ul>
+<p><small>These are owner-approved settings, not independently verified API readings. A completed buyer delivery test and confirmation of payouts must happen first.</small></p>
+</section>
+<section class="box"><div class="eyebrow">04 / EXACT PAYMENT PRODUCT</div>
+<p>Stripe account: <strong>Magic Universal</strong><br>
+Product: <code>prod_VVIj3wtkTG7eNW</code><br>
+Price: <code>price_1UUI8S8n16yukLPqFcJ9YTIk</code><br>
+Payment link: <code>plink_1UUIU78n16yukLPqLqyBhpjt</code></p>
+<p>After Stripe confirms payment, SendOwl is responsible for delivering both PDF links by email. The legacy in-house file delivery code is not part of the recommended setup.</p></section>
+<footer>Security: Never publish purchased PDFs in GitHub or /static. Do not paste your passwords or API keys into chat messages.<br>
+<a href="/" style="color:#d8b987">← HER POV storefront</a></footer>
+</main></body></html>
