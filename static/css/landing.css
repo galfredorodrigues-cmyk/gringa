@@ -153,3 +153,7 @@
 .choice__footnote{font-size:11px;color:#74716c;text-align:center;margin:18px 0 0}
 @media(max-width:740px){.choice{padding:58px 0 63px}.choice__grid{grid-template-columns:1fr}.choice__card{padding:27px}.choice__card h3{min-height:0}.choice__description{min-height:0}.choice__price{font-size:51px}}
 @media(prefers-reduced-motion:reduce){.choice *{scroll-behavior:auto!important}}
+
+/* Before checkout, the starter path leads through Last Chance Offer. */
+.choice__step-note{margin:-2px 0 0;text-align:center;font-size:11px;line-height:1.55;color:#66686d}
+.choice__step-note strong{font-size:10px;letter-spacing:.035em;color:#86613c}
