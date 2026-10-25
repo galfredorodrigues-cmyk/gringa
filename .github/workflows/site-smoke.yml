@@ -1,0 +1,46 @@
+name: HER POV public preview smoke
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify storefront health and safety gate
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, time, urllib.request, urllib.error
+          base="https://her-pov-preview.onrender.com"
+          def req(path, method="GET", body=None, headers=None, expected=200):
+              last=None
+              for attempt in range(5):
+                  try:
+                      request=urllib.request.Request(base+path,data=body,method=method,headers=headers or {})
+                      with urllib.request.urlopen(request,timeout=40) as response:
+                          status=response.status
+                          contents=response.read()
+                  except urllib.error.HTTPError as error:
+                      status=error.code
+                      contents=error.read()
+                  except Exception as error:
+                      last=error
+                      if attempt < 4:
+                          time.sleep(12)
+                          continue
+                      raise AssertionError(f"Could not reach {path}: {error!r}")
+                  assert status==expected, f"{path}: wanted {expected}, got {status}; body {contents[:160]!r}"
+                  return contents
+              raise AssertionError(str(last))
+          body=req("/")
+          assert b"CHECKOUT OPENING SOON" in body, "Checkout prelaunch gate missing"
+          status=json.loads(req("/health"))
+          assert status["checkout_enabled"] is False, "Do not enable production checkout"
+          req("/success?session_id=cs_test_invalid",expected=403)
+          req("/download?sid=cs_test_invalid&kind=ebook&exp=0&sig=x",expected=403)
+          req("/admin/assets",expected=401)
+          req("/webhook/stripe",method="POST",body=b"{}",headers={"Stripe-Signature":"t=0,v1=bad","Content-Type":"application/json"},expected=400)
+          print("PASS: preview serving, real checkout closed, unpaid download denied, admin private, forged webhook rejected.")
+          PY
