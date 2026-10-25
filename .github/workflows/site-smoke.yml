@@ -36,11 +36,21 @@ jobs:
               raise AssertionError(str(last))
           body=req("/")
           assert b"CHECKOUT OPENING SOON" in body, "Checkout prelaunch gate missing"
+          for keyword in [b"You had something to say", b"The First Message Formula",
+                          b"The Reply Decoder", b"The Profile Makeover",
+                          b"From Chat to", b"AI Coach", b"C.A.R.E.",
+                          b"$9.90", b"FREE BONUS", b"COMING LATER"]:
+              assert keyword.lower() in body.lower(), f"Missing content: {keyword!r}"
+          assert b"https://buy.stripe.com/" not in body, "Live payment link must remain unlisted"
+          css=req("/static/css/landing.css")
+          assert len(css)>15000 and b".hero__grid" in css and b"@media" in css, "Responsive style missing"
           status=json.loads(req("/health"))
           assert status["checkout_enabled"] is False, "Do not enable production checkout"
           req("/success?session_id=cs_test_invalid",expected=403)
           req("/download?sid=cs_test_invalid&kind=ebook&exp=0&sig=x",expected=403)
           req("/admin/assets",expected=401)
+          req("/admin/setup",expected=401)
+          req("/admin/test-email",method="POST",body=b"{}",expected=401)
           req("/webhook/stripe",method="POST",body=b"{}",headers={"Stripe-Signature":"t=0,v1=bad","Content-Type":"application/json"},expected=400)
-          print("PASS: preview serving, real checkout closed, unpaid download denied, admin private, forged webhook rejected.")
+          print("PASS: new English funnel, five-product roadmap, responsive CSS, checkout closed, private access and invalid webhook rejected.")
           PY
