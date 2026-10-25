@@ -49,6 +49,12 @@ jobs:
                           b"PROPOSED PRICE",b"NOT AVAILABLE FOR PURCHASE"]:
               assert excerpt in body, f"Missing real sample or future app pricing: {excerpt!r}"
           assert body.count(b'class="sample-card"')==4, "Expected four real excerpt samples"
+          # US-English sales copy: concrete promise, scannable benefits, accurate FAQs
+          for phrase in [b"Four real-world skills.",b"One complete library.",
+                         b"24 common texting scenarios",b"Know what you get.",
+                         b"Can I buy the guides separately?"]:
+              assert phrase in body, f"US copy proofing phrase missing: {phrase!r}"
+          assert b"not a stock mockup or an invented testimonial" not in body
           assert b"https://buy.stripe.com/" not in body, "Live payment link must remain unlisted"
           css=req("/static/css/landing.css")
           assert len(css)>15000 and b".hero__grid" in css and b"@media" in css, "Responsive style missing"
