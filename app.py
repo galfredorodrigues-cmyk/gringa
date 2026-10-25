@@ -228,7 +228,7 @@ def upgrade_preview():
     """Unlinked, non-indexed upsell mockup. No checkout or buyer access here.
 
     Production activation requires a verified post-purchase Hotmart funnel,
-    purchase eligibility checks, a distinct $20 product, tested delivery,
+    purchase eligibility checks, a distinct $12 upgrade product ($21.90 total), tested delivery,
     buyer-facing policies and an explicitly approved release.
     """
     response = make_response(render_template("upgrade.html"))
