@@ -59,6 +59,81 @@ class StorefrontTests(unittest.TestCase):
                 self.assertIn(b"CHECKOUT OPENING SOON", self.client.get("/").data)
                 self.assertNotIn(b"buy.stripe.com", self.client.get("/").data)
 
+    def test_hotmart_provider_never_opens_without_all_independent_checks(self):
+        ready={
+            "CHECKOUT_PROVIDER":"hotmart",
+            "HOTMART_LINK_01":"https://pay.hotmart.com/A101?off=01",
+            "HOTMART_LINK_02":"https://pay.hotmart.com/A102?off=02",
+            "HOTMART_LINK_03":"https://pay.hotmart.com/A103?off=03",
+            "HOTMART_LINK_04":"https://pay.hotmart.com/A104?off=04",
+            "HOTMART_LINK_BUNDLE":"https://pay.hotmart.com/A105?off=bundle",
+            "HOTMART_ALL_OFFERS_VERIFIED":"yes",
+            "HOTMART_USD_PRICES_VERIFIED":"yes",
+            "HOTMART_DELIVERY_TESTED":"yes",
+            "HOTMART_BUNDLE_CONTENT_VERIFIED":"yes",
+            "HOTMART_PAYOUTS_CONFIRMED":"yes",
+            "MERCHANT_LEGAL_NAME":"Example Business LLC",
+            "MERCHANT_COUNTRY":"United States",
+            "MERCHANT_CONTACT_ADDRESS":"123 Example Street",
+            "SUPPORT_EMAIL":"help@example.test",
+            "MERCHANT_POLICIES_APPROVED":"yes",
+            "MERCHANT_TAX_REVIEWED":"yes",
+            "LIVE_READY":"yes",
+        }
+        with patch.dict(os.environ,ready):
+            self.assertTrue(app.hotmart_checkout_open())
+            self.assertTrue(app.checkout_open())
+            html=self.client.get("/").data
+            for i in range(101,106):
+                self.assertIn(("https://pay.hotmart.com/A"+str(i)).encode(),html)
+            self.assertEqual(html.count(b"journey__checkout-link"),3)
+            self.assertIn(b"Secure checkout with Hotmart",html)
+            self.assertNotIn(b"https://buy.stripe.com/",html)
+            self.assertIn(b'content="index,follow"',html)
+            self.assertTrue(self.client.get("/health").get_json()["checkout_enabled"])
+        for missing in app.HOTMART_VERIFICATION_FLAGS + app.HOTMART_LINK_KEYS + (
+            "MERCHANT_LEGAL_NAME","MERCHANT_COUNTRY",
+            "MERCHANT_CONTACT_ADDRESS","SUPPORT_EMAIL",
+        ):
+            unsafe=ready.copy()
+            unsafe[missing]="" if missing.startswith("HOTMART_LINK") or missing.startswith("MERCHANT_") or missing=="SUPPORT_EMAIL" else "no"
+            with patch.dict(os.environ,unsafe):
+                self.assertFalse(app.hotmart_checkout_open(),missing)
+                html=self.client.get("/").data
+                self.assertIn(b"BUNDLE CHECKOUT OPENING SOON",html)
+                self.assertNotIn(b"https://pay.hotmart.com/",html)
+                self.assertNotIn(b"https://buy.stripe.com/",html)
+                self.assertIn(b'content="noindex,follow"',html)
+        with patch.dict(os.environ,{"CHECKOUT_PROVIDER":"hotmart","LIVE_READY":"no"}):
+            self.assertFalse(app.checkout_open())
+            self.assertNotIn(b"https://pay.hotmart.com/",self.client.get("/").data)
+
+    def test_hotmart_checkout_domain_and_offer_validation(self):
+        for url in ("http://pay.hotmart.com/A123",
+                    "https://pay.hotmart.com.evil.test/A123",
+                    "https://evil.test/A123",
+                    "javascript:alert(1)",
+                    "https://pay.hotmart.com",
+                    "https://user:password@pay.hotmart.com/A123",
+                    "https://pay.hotmart.com:443/A123",
+                    "https://pay.hotmart.com/A123#fragment",
+                    "https://pay.hotmart.com/A123\\n",
+                    ""):
+            self.assertEqual(app._hotmart_checkout_link(url),"",url)
+        self.assertEqual(app._hotmart_checkout_link("https://pay.hotmart.com/A123?off=123"),"https://pay.hotmart.com/A123?off=123")
+        self.assertEqual(app._hotmart_checkout_link("https://go.hotmart.com/A123"),"https://go.hotmart.com/A123")
+        full={key:"https://pay.hotmart.com/A"+str(i) for i,key in enumerate(app.HOTMART_LINK_KEYS)}
+        full["HOTMART_LINK_BUNDLE"]=full["HOTMART_LINK_01"]
+        flags={key:"yes" for key in app.HOTMART_VERIFICATION_FLAGS}
+        with patch.dict(os.environ, {
+            **full,**flags,"CHECKOUT_PROVIDER":"hotmart",
+            "MERCHANT_LEGAL_NAME":"Example Business LLC",
+            "MERCHANT_COUNTRY":"United States",
+            "MERCHANT_CONTACT_ADDRESS":"123 Example Street",
+            "SUPPORT_EMAIL":"help@example.test",
+        }):
+            self.assertFalse(app.hotmart_checkout_open())
+
     def test_american_bundle_offer_appears_before_long_copy(self):
         page = self.client.get("/").data
         self.assertIn(b"SEE ALL 4 GUIDES",page)
