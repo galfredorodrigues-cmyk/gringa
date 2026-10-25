@@ -1,0 +1,7 @@
+.env
+.env.*
+!.env.example
+private/
+*.pdf
+__pycache__/
+*.pyc
