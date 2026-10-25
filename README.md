@@ -4,7 +4,7 @@ A responsive English-language sales funnel hosted on Render.
 
 ## Storefront
 
-https://her-pov-preview.onrender.com
+https://vitrinyx.com/ (Render fallback: https://her-pov-preview.onrender.com)
 
 ## Products
 
@@ -24,6 +24,16 @@ The HER POV AI Coach is a future idea, not sold in this launch.
 - **GitHub + Render** host the public English-language HER POV marketing site, real PDF excerpt previews and the product artwork. The website can display all five direct Hotmart checkout links *only after every release gate is confirmed*.
 - **Stripe + SendOwl** are the legacy fallback, with payment links still gated/inactive; there is no public buyer checkout today.
 - Never put buyer PDF files, merchant credentials or API tokens in GitHub.
+
+## Post-purchase upgrade (separate preview)
+
+- Public storefront: `https://vitrinyx.com/` — original homepage is **unchanged**.
+- Upgrade layout: `https://vitrinyx.com/upgrade` — premium English-language preview, deliberately unlinked from the homepage and `noindex, nofollow, noarchive`.
+- Offer: Only for existing purchasers of *The First Message Formula* at $9.90. A separate $20.00 one-time Hotmart product would provide only Volumes 02–04. Combined cost is $29.90; do not resend or re-bill Volume 01 or the 1-page bonus.
+- Preview route has **no active purchase controls, payment links, checkout widget, form, or customer data collection**. An accessible person can preview the URL, but visiting it does **not** prove buyer eligibility.
+- Before release: create and validate the dedicated Hotmart upgrade product; confirm USD checkout and fees, buyer identification/purchase eligibility, customer-safe approved return/decline flow, exact three PDF deliveries, refunds/policies, and Hotmart's actual supported upsell integration. Only then add a functioning checkout in a separate, explicitly approved change. Do not assume a generic external page alone supports one-click additional charges.
+- Test accept, decline, interrupted checkout, double-submit, duplicate purchase, refund, and email delivery. A direct visitor must not be able to claim an unverified prior purchase for a discount. No fake time limit or results guarantees.
+- No hidden pre-approval conditions are bypassed in this preview. The existing checkout launch flags remain unchanged and OFF.
 
 ## Security and release rules
 
