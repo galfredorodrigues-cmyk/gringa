@@ -38,7 +38,7 @@ class UpgradePreviewTests(unittest.TestCase):
         self.assertNotIn(b"https://pay.hotmart.com/", page)
         self.assertNotIn(b"https://buy.stripe.com/", page)
         self.assertNotIn(b'form action=', page)
-        # Main storefront stays linked only to the normal product checkout.
+        # The public homepage must not expose the exclusive post-purchase upsell.
         self.assertNotIn(b'/upgrade', self.client.get("/").data)
 
 
