@@ -161,8 +161,8 @@ def success():
         return "Payment not verified. If you paid, please check your email receipt.", 403
     if int(session["created"]) + MAX_DAYS <= time.time():
         return "Download period expired. Please contact support.", 410
-    main = html.escape(download_link(session, "ebook"), quote=True)
-    bonus = html.escape(download_link(session, "bonus"), quote=True)
+    main = download_link(session, "ebook")
+    bonus = download_link(session, "bonus")
     return render_template_string("""<!doctype html><title>HER POV | Your Downloads</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <body style="font:16px Arial;background:#11151c;color:#eee;padding:6vw">
@@ -183,6 +183,8 @@ def download():
         abort(403)
     if kind not in FILENAMES or expiry <= time.time() or expiry > time.time()+MAX_DAYS+120:
         abort(403)
+    if len(env("DOWNLOAD_SIGNING_SECRET")) < 32:
+        abort(503)
     if not hmac.compare_digest(request.args.get("sig",""), signature(sid,kind,expiry)):
         abort(403)
     try:
