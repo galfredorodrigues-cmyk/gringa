@@ -121,7 +121,7 @@ class StorefrontTests(unittest.TestCase):
             result=self.client.get("/product-art/"+slug+".png")
             self.assertEqual(result.status_code, 200, slug)
             self.assertEqual(result.mimetype, "image/png")
-            self.assertTrue(result.data.startswith(b"\\x89PNG\\r\\n\\x1a\\n".decode("unicode_escape").encode("latin1")), slug)
+            self.assertTrue(result.data.startswith(bytes.fromhex("89504e470d0a1a0a")), slug)
             self.assertGreater(len(result.data), 20000, slug)
             self.assertNotIn(b"%PDF-", result.data, slug)
             self.assertIn("public",result.headers["Cache-Control"])
