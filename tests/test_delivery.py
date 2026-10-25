@@ -94,7 +94,7 @@ class StorefrontTests(unittest.TestCase):
             last_offer = self.client.get("/last-offer").data
             self.assertIn(b"https://pay.hotmart.com/A101", last_offer)
             self.assertNotIn(b"https://pay.hotmart.com/A105", last_offer)
-            self.assertEqual(html.count(b"journey__checkout-link"),3)
+            self.assertEqual(html.count(b"journey__checkout-link"),0)
             self.assertIn(b"Secure checkout with Hotmart",html)
             self.assertNotIn(b"https://buy.stripe.com/",html)
             self.assertIn(b'content="index,follow"',html)
@@ -144,16 +144,25 @@ class StorefrontTests(unittest.TestCase):
 
     def test_american_bundle_offer_appears_before_long_copy(self):
         page = self.client.get("/").data
-        self.assertIn(b"SEE ALL 4 GUIDES",page)
+        self.assertIn(b"START WITH A BETTER MESSAGE",page)
         self.assertIn(b"Four real-world skills.",page)
         self.assertIn(b"One complete library.",page)
         self.assertIn(b"24 common texting scenarios",page)
         self.assertIn(b"Know what you get.",page)
         self.assertNotIn(b"not a stock mockup or an invented testimonial",page)
-        self.assertIn(b"Can I buy the guides separately?",page)
+        self.assertIn(b"Can I start with just one guide?",page)
         self.assertIn(b"$29.90",page)
         self.assertIn(b"114",page)
-        self.assertLess(page.index(b'id="bundle"'),page.index(b'id="problem"'))
+        self.assertLess(page.index(b'id="problem"'),page.index(b'id="offer"'))
+        self.assertLess(page.index(b'id="offer"'),page.index(b'id="bundle"'))
+        self.assertLess(page.index(b'id="starter-choice"'),page.index(b'id="complete-choice"'))
+        first_fold=page.split(b'<section class="hero section-dark"')[1].split(b'</section>')[0]
+        self.assertNotIn(b"$29.90",first_fold)
+        self.assertNotIn(b"$9.90",first_fold)
+        self.assertIn(b"50 adaptable openers",first_fold)
+        self.assertIn(b"SEE A REAL EXAMPLE",first_fold)
+        self.assertIn(b"A PRACTICAL TIP YOU CAN USE RIGHT NOW",page)
+        self.assertIn(b"Do I need to memorize pickup lines?",page)
         self.assertEqual(page.count(b'id="bundle"'),1)
         self.assertIn(b'property="og:image"',page)
         for slug in ["first-message-formula","reply-decoder",
