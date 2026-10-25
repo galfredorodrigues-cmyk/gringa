@@ -28,6 +28,30 @@ class StorefrontTests(unittest.TestCase):
         self.assertIn(b"CHECKOUT OPENING SOON",page.data)
         self.assertNotIn(b"https://buy.stripe.com/14A9AN",page.data)
 
+    def test_sendowl_launch_requires_every_independent_approval(self):
+        ready = {
+            "STRIPE_MODE": "live",
+            "SENDOWL_PRODUCT_LINKED": "yes",
+            "SENDOWL_DELIVERY_TESTED": "yes",
+            "STRIPE_PAYOUTS_CONFIRMED": "yes",
+            "MERCHANT_POLICIES_APPROVED": "yes",
+            "MERCHANT_TAX_REVIEWED": "yes",
+            "LIVE_READY": "yes",
+        }
+        with patch.dict(os.environ, ready):
+            self.assertTrue(app.checkout_open())
+            html = self.client.get("/").data
+            self.assertIn(b"GET INSTANT ACCESS", html)
+            self.assertIn(b"buy.stripe.com", html)
+            assert self.client.get("/health").get_json()["checkout_enabled"] is True
+        for missing in ready:
+            unsafe = dict(ready)
+            unsafe[missing] = "no"
+            with patch.dict(os.environ, unsafe):
+                self.assertFalse(app.checkout_open(), missing)
+                self.assertIn(b"CHECKOUT OPENING SOON", self.client.get("/").data)
+                self.assertNotIn(b"buy.stripe.com", self.client.get("/").data)
+
     def test_health_and_no_live_claim(self):
         response=self.client.get("/health")
         self.assertEqual(response.status_code,200)
