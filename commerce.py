@@ -408,7 +408,7 @@ def register(app):
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["Referrer-Policy"] = "no-referrer"
         response.headers["Cache-Control"] = ("public, max-age=86400, s-maxage=86400"
-                                              if request.path.startswith("/product-art/")
+                                              if request.path.startswith(("/product-art/", "/sample-page/"))
                                               else "no-store")
         response.headers["X-Frame-Options"] = "DENY"
         return response
