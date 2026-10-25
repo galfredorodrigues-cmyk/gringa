@@ -338,7 +338,9 @@ def admin_setup():
         return ("Owner credentials required", 401,
                 {"WWW-Authenticate": 'Basic realm="HER POV private setup"'})
     flags = (
-        ("SENDOWL_PRODUCT_LINKED", "Both PDFs are linked to the existing Stripe product"),
+        ("SENDOWL_PRODUCT_LINKED", "Volume 01 main PDF + bonus linked to the original Stripe product"),
+        ("SENDOWL_ALL_PRODUCTS_LINKED", "Four completed guides and their files linked to Stripe + SendOwl"),
+        ("SENDOWL_BUNDLE_TESTED", "The $29.90 complete bundle delivers all five PDF files"),
         ("SENDOWL_DELIVERY_TESTED", "Full payment-to-email-to-download delivery was verified"),
         ("STRIPE_PAYOUTS_CONFIRMED", "Stripe payouts are enabled (account reviewed)"),
         ("MERCHANT_POLICIES_APPROVED", "Merchant information and buyer policies approved"),
