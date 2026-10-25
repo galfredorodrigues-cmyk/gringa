@@ -48,8 +48,12 @@ class StorefrontTests(unittest.TestCase):
         with patch.dict(os.environ, ready):
             self.assertTrue(app.checkout_open())
             html = self.client.get("/").data
-            self.assertIn(b"GET INSTANT ACCESS", html)
-            self.assertIn(b"buy.stripe.com", html)
+            self.assertIn(b"START WITH THIS GUIDE", html)
+            self.assertIn(b'href="/last-offer"', html)
+            self.assertNotIn(b"buy.stripe.com", html)
+            last_offer = self.client.get("/last-offer").data
+            self.assertIn(b"https://buy.stripe.com/14A9AN", last_offer)
+            self.assertIn(b"NO", last_offer)
             assert self.client.get("/health").get_json()["checkout_enabled"] is True
         for missing in ready:
             unsafe = dict(ready)
@@ -84,8 +88,12 @@ class StorefrontTests(unittest.TestCase):
             self.assertTrue(app.hotmart_checkout_open())
             self.assertTrue(app.checkout_open())
             html=self.client.get("/").data
-            for i in range(101,106):
+            for i in range(102,106):
                 self.assertIn(("https://pay.hotmart.com/A"+str(i)).encode(),html)
+            self.assertNotIn(b"https://pay.hotmart.com/A101", html)
+            last_offer = self.client.get("/last-offer").data
+            self.assertIn(b"https://pay.hotmart.com/A101", last_offer)
+            self.assertNotIn(b"https://pay.hotmart.com/A105", last_offer)
             self.assertEqual(html.count(b"journey__checkout-link"),3)
             self.assertIn(b"Secure checkout with Hotmart",html)
             self.assertNotIn(b"https://buy.stripe.com/",html)
