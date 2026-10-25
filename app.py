@@ -7,9 +7,20 @@ CSS="""
 SHELL="""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="The First Message Formula by HER POV: 50 adaptable openers, a practical C.A.R.E. framework and a free bonus cheat sheet."><title>HER POV | The First Message Formula</title><style>{{css}}</style></head><body><header><div class="brand">HER POV.</div><nav><a href="/">THE GUIDE</a><a href="/terms">TERMS</a><a href="/privacy">PRIVACY</a><a href="/refunds">REFUNDS</a></nav></header>{{body|safe}}<footer><div class="wrap">HER POV · An educational guide for adults. No guaranteed replies or outcomes. · <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a> · <a href="/refunds">Refunds</a></div></footer></body></html>"""
 def render(body):
     return render_template_string(SHELL,css=CSS,body=body)
+# One-switch launch gate for SendOwl. NEVER turn on until external app has
+# delivered both PDFs in an actual end-to-end test and Stripe payouts are enabled.
+def checkout_open():
+    flags = ("SENDOWL_PRODUCT_LINKED", "SENDOWL_DELIVERY_TESTED",
+             "STRIPE_PAYOUTS_CONFIRMED", "MERCHANT_POLICIES_APPROVED",
+             "MERCHANT_TAX_REVIEWED", "LIVE_READY")
+    return os.environ.get("STRIPE_MODE") == "live" and all(
+        os.environ.get(flag) == "yes" for flag in flags
+    )
+
 @app.get("/")
 def home():
-    return render_template("home.html")
+    return render_template("home.html", checkout_ready=checkout_open(),
+        checkout_url="https://buy.stripe.com/14A9ANbXgfdicJXb1N3cc00")
 
 POLICIES={
 "terms":("Terms of Use","Draft for merchant approval. HER POV provides educational digital content for adults. The guide does not guarantee any particular interaction, response or dating outcome. The purchaser receives a personal, non-transferable license to download and read the files; redistribution or resale is prohibited. The merchant's legal identity, country, contact details and applicable law must be confirmed before accepting payments."),
@@ -24,8 +35,11 @@ def policy(policy):
     return render(f'<main class="wrap section"><div class="eyebrow">HER POV · CUSTOMER POLICIES</div><h1>{name}</h1><p class="lead">{desc}</p><p><a href="/">Back to the guide</a></p></main>')
 @app.get("/health")
 def health():
-    from commerce import readiness
-    return jsonify(status="ok",live_ready=False,checkout_enabled=False,fulfillment_configured=not readiness(),mode="preview")
+    enabled = checkout_open()
+    return jsonify(status="ok", live_ready=enabled,
+                   checkout_enabled=enabled,
+                   delivery_provider="sendowl",
+                   mode="live" if enabled else "preview")
 from commerce import register as register_delivery
 register_delivery(app)
 if __name__=="__main__":
