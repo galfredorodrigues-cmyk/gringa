@@ -26,11 +26,11 @@ footer{margin-top:30px;color:#aaa;font-size:12px}
 <span class="status {{ 'ok' if checkout_ready else '' }}">{{ "LIVE" if checkout_ready else "PRE-LAUNCH" }}</span></div>
 <div class="steps">
 <section class="box"><div class="eyebrow">01 / THIRD-PARTY INSTALLATION</div><h2>Open your installed SendOwl app in Stripe</h2>
-<p>In the Magic Universal Stripe Dashboard, open SendOwl at the top right. Choose Continue in Live mode. Then upload the main PDF and the bonus as separate digital files.</p>
+<p>In the Magic Universal Stripe Dashboard, open SendOwl at the top right. Choose Continue in Live mode. Then prepare the four individual guides and the full bundle for delivery. Five PDF files exist in the private owner pack.</p>
 <a href="https://marketplace.stripe.com/apps/sendowl" class="btn" target="_blank" rel="noopener noreferrer">OPEN STRIPE APP MARKETPLACE ↗</a></section>
-<section class="box"><div class="eyebrow">02 / DIGITAL DELIVERY</div><h2>Link the exact product</h2>
-<p>Upload the two PDFs, select existing Stripe product <strong>The First Message Formula — HER POV</strong> (ID <code>prod_VVIj3wtkTG7eNW</code>), select both files using the plus signs, and choose Attach files. Do not create another Stripe product.</p>
-<small>Price: $9.90 USD once. Existing payment link remains closed.</small></section>
+<section class="box"><div class="eyebrow">02 / DIGITAL DELIVERY</div><h2>Link all four digital products</h2>
+<p>Volume 01: attach the 56-page PDF AND the one-page bonus to original product <code>prod_VVIj3wtkTG7eNW</code>. Volume 02: attach the Reply Decoder PDF to <code>prod_VVLhvci2ykMohx</code>. Volume 03: attach the Profile Makeover PDF to <code>prod_VVLhYhr67DJ4ch</code>. Volume 04 and the $29.90 bundle require Stripe product registration before linking. Upload only the correct files for each SKU.</p>
+<small>Price ladder: $9.90 / $4.90 / $7.90 / $19.90. Suggested complete bundle: $29.90. All checkout links remain closed.</small></section>
 </div>
 <section class="box"><div class="eyebrow">03 / LAUNCH CHECKLIST</div><h2>Checks before opening checkout</h2>
 <ul class="flag-list">
@@ -40,12 +40,15 @@ footer{margin-top:30px;color:#aaa;font-size:12px}
 </ul>
 <p><small>These are owner-approved settings, not independently verified API readings. A completed buyer delivery test and confirmation of payouts must happen first.</small></p>
 </section>
-<section class="box"><div class="eyebrow">04 / EXACT PAYMENT PRODUCT</div>
+<section class="box"><div class="eyebrow">04 / STRIPE PRODUCT INVENTORY</div>
 <p>Stripe account: <strong>Magic Universal</strong><br>
-Product: <code>prod_VVIj3wtkTG7eNW</code><br>
-Price: <code>price_1UUI8S8n16yukLPqFcJ9YTIk</code><br>
-Payment link: <code>plink_1UUIU78n16yukLPqLqyBhpjt</code></p>
-<p>After Stripe confirms payment, SendOwl is responsible for delivering both PDF links by email. The legacy in-house file delivery code is not part of the recommended setup.</p></section>
+Volume 01: <code>prod_VVIj3wtkTG7eNW</code> ($9.90)<br>
+Volume 02: <code>prod_VVLhvci2ykMohx</code> ($4.90)<br>
+Volume 03: <code>prod_VVLhYhr67DJ4ch</code> ($7.90)<br>
+Volume 04: Stripe listing PENDING ($19.90)<br>
+Complete bundle: Stripe listing PENDING ($29.90)<br>
+Volume 01 inactive payment link: <code>plink_1UUIU78n16yukLPqLqyBhpjt</code></p>
+<p>After payment, SendOwl must deliver exactly the file(s) purchased. Test each title and verify that the bundle includes all five PDFs (four guides and the Volume 01 bonus). The legacy in-house file delivery code is not part of the recommended setup.</p></section>
 <footer>Security: Never publish purchased PDFs in GitHub or /static. Do not paste your passwords or API keys into chat messages.<br>
 <a href="/" style="color:#d8b987">← HER POV storefront</a></footer>
 </main></body></html>
