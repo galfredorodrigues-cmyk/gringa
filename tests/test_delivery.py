@@ -59,6 +59,20 @@ class StorefrontTests(unittest.TestCase):
                 self.assertIn(b"CHECKOUT OPENING SOON", self.client.get("/").data)
                 self.assertNotIn(b"buy.stripe.com", self.client.get("/").data)
 
+    def test_american_bundle_offer_appears_before_long_copy(self):
+        page = self.client.get("/").data
+        self.assertIn(b"SEE ALL 4 GUIDES",page)
+        self.assertIn(b"$29.90",page)
+        self.assertIn(b"114",page)
+        self.assertLess(page.index(b'id="bundle"'),page.index(b'id="problem"'))
+        self.assertEqual(page.count(b'id="bundle"'),1)
+        self.assertIn(b'property="og:image"',page)
+        for slug in ["first-message-formula","reply-decoder",
+                     "profile-makeover","from-chat-to-first-date"]:
+            self.assertIn(("/product-art/"+slug+".png").encode(),page)
+        self.assertIn(b"BUNDLE CHECKOUT OPENING SOON",page)
+        self.assertNotIn(b"https://buy.stripe.com/",page)
+
     def test_bundle_payment_url_needs_valid_link_and_every_approval(self):
         ready = {
             "STRIPE_MODE":"live",
