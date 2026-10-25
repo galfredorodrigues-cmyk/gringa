@@ -20,15 +20,14 @@ The HER POV AI Coach is a future idea, not sold in this launch.
 
 ## Commerce stack
 
-- **Stripe** processes payments using the existing live account.
-- **SendOwl Stripe App** stores files and sends private downloads after payment. Installation was reported by the owner but product links and fulfillment have not been verified by the available tools.
-- **Render** hosts this public web storefront. No buyer PDFs or account secrets belong in this GitHub repo.
-
-The code retains dormant legacy Stripe-webhook / R2 / Resend routes but these are NOT part of the planned SendOwl commerce stack. Keep their legacy webhook disabled.
+- **Hotmart** is the preferred next checkout and digital-delivery provider. Product registration and owner approval are still underway in Work; it is **not connected or enabled** on the storefront.
+- **GitHub + Render** host the public English-language HER POV marketing site, real PDF excerpt previews and the product artwork. The website can display all five direct Hotmart checkout links *only after every release gate is confirmed*.
+- **Stripe + SendOwl** are the legacy fallback, with payment links still gated/inactive; there is no public buyer checkout today.
+- Never put buyer PDF files, merchant credentials or API tokens in GitHub.
 
 ## Security and release rules
 
-Checkout must stay disabled until all criteria are verified, not merely assumed:
+Checkout must stay disabled until all criteria are verified, not merely assumed. For Hotmart, see the dedicated release flags and five-link mapping in [SETUP_PRODUCTION.md](SETUP_PRODUCTION.md). The legacy Stripe checks below apply only if the owner returns to Stripe:
 - Each of the five Stripe products is linked to exactly the expected files in SendOwl.
 - A controlled paid purchase has been tested for an individual guide and the complete bundle, and emails, PDFs and access restrictions actually work.
 - Stripe `payouts_enabled=true` (currently false, `disabled_reason=other`; only Stripe can remove the restriction).
