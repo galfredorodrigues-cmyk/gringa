@@ -49,6 +49,16 @@ jobs:
           assert status["checkout_enabled"] is False, "Do not enable production checkout"
           req("/success?session_id=cs_test_invalid",expected=403)
           req("/download?sid=cs_test_invalid&kind=ebook&exp=0&sig=x",expected=403)
+          for path, marker in [
+              ("/terms",b"Terms of Purchase"),
+              ("/privacy",b"Privacy Notice"),
+              ("/refunds",b"Refunds &amp; Digital Delivery"),
+              ("/contact",b"Contact &amp; Order Support"),
+          ]:
+              legal=req(path)
+              assert marker in legal, f"{path}: missing title"
+              assert b"Pre-launch policy notice" in legal, f"{path}: false legal approval"
+              assert b"Merchant" in legal or b"merchant" in legal, f"{path}: merchant info missing"
           req("/admin/assets",expected=401)
           req("/admin/setup",expected=401)
           req("/admin/test-email",method="POST",body=b"{}",expected=401)
