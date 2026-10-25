@@ -1,8 +1,66 @@
-# HER POV / Final release checklist (Stripe + SendOwl)
+# HER POV / Final release checklist (Hotmart preferred; Stripe legacy)
 
 The four educational PDF guides and bonus are COMPLETE. The AI Coach is a future concept.
 The production storefront runs on https://her-pov-preview.onrender.com with checkout CLOSED until delivery and payouts are verified.
 Owner dashboard: https://her-pov-preview.onrender.com/admin/setup
+
+## Hotmart launch path (prepared, NOT active)
+
+HER POV will use the **five Hotmart offers** managed by the owner in ChatGPT Work.
+The website now contains a provider-neutral button layout and *strictly gated*
+Hotmart checkout links for all four individual guides and the Complete Library.
+The live Render configuration has not been changed to Hotmart and orders remain closed.
+
+**Information needed when Work finishes:**
+1. Five **direct creator checkout/offer links** for each of the four guides
+   and the Complete Library; they must be from `pay.hotmart.com` or
+   `go.hotmart.com` and must be distinct. Do not share API tokens or passwords.
+2. Confirm the actual buyer-facing checkout **USD prices** of $9.90,
+   $4.90, $7.90, $19.90 and $29.90. Verify the final charged price,
+   currency and any country-specific fees before announcing savings.
+3. Verify the bundle includes the four full PDFs plus the 1-page bonus.
+   Confirm the starter guide includes **both** the main PDF and its bonus.
+4. Verify products are approved and sellable under current Hotmart policies,
+   billing/payout eligibility, refund policy and customer support.
+5. After all setup is approved, run at least one end-to-end controlled test
+   including purchase confirmation, email access and all expected PDFs.
+   If a test requires actual payment, the owner must authorize it explicitly.
+
+**Render environment variables for the eventual Hotmart launch** (do not set
+until each value is real and checked):
+
+```text
+CHECKOUT_PROVIDER=hotmart
+HOTMART_LINK_01=https://pay.hotmart.com/<real-creator-offer>
+HOTMART_LINK_02=https://pay.hotmart.com/<real-creator-offer>
+HOTMART_LINK_03=https://pay.hotmart.com/<real-creator-offer>
+HOTMART_LINK_04=https://pay.hotmart.com/<real-creator-offer>
+HOTMART_LINK_BUNDLE=https://pay.hotmart.com/<real-creator-offer>
+HOTMART_ALL_OFFERS_VERIFIED=yes
+HOTMART_USD_PRICES_VERIFIED=yes
+HOTMART_DELIVERY_TESTED=yes
+HOTMART_BUNDLE_CONTENT_VERIFIED=yes
+HOTMART_PAYOUTS_CONFIRMED=yes
+MERCHANT_LEGAL_NAME=<verified merchant operator>
+MERCHANT_COUNTRY=<verified country>
+MERCHANT_CONTACT_ADDRESS=<verified real mailing address>
+SUPPORT_EMAIL=<verified working support email>
+MERCHANT_POLICIES_APPROVED=yes
+MERCHANT_TAX_REVIEWED=yes
+LIVE_READY=yes
+```
+
+Any missing or malformed value, missing seller data, duplicate links, missing
+verification flag, or `LIVE_READY` not `yes` means that **every payment
+button remains disabled**. No raw checkout URL is exposed in preview HTML.
+The page remains `noindex,follow` while checkout is closed to avoid
+promoting an unfinished store to search engines.
+
+Hotmart's own official checkout integration reference:
+https://developers.hotmart.com/docs/pt-BR/tutorials/checkout-elements/
+
+**Do not turn on Stripe and Hotmart checkouts simultaneously.** The old Stripe
+flow remains documented below only as a fallback and for audit history.
 
 ## Verified Stripe catalog / one-time USD prices
 
