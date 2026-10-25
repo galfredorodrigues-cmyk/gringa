@@ -118,6 +118,7 @@ def send_order_email(session):
         raise RuntimeError("Email sender not configured")
     payload = {"from": env("RESEND_FROM_EMAIL"), "to": [email],
                "subject": "Your HER POV e-book + free bonus",
+               "reply_to": env("SUPPORT_EMAIL") or env("RESEND_FROM_EMAIL"),
                "html": delivery_html(session)}
     r = requests.post("https://api.resend.com/emails", json=payload,
                       headers={"Authorization": "Bearer " + env("RESEND_API_KEY"),
@@ -312,7 +313,20 @@ Add these keys in your Render environment: <code>S3_ENDPOINT_URL</code>, <code>S
 <p>Support address: <strong class="{{'ok' if flags.SUPPORT_EMAIL else 'missing'}}">{{'Configured' if flags.SUPPORT_EMAIL else 'Not configured'}}</strong></p>
 <p>Verify the domain in your Resend account and add your sending-only API key in the Render environment as
 <code>RESEND_API_KEY</code>, <code>RESEND_FROM_EMAIL</code> and <code>SUPPORT_EMAIL</code>.</p>
-<p><a href="https://resend.com/domains">Resend domains</a> · <a href="https://resend.com/api-keys">Resend API keys</a></p></section>
+<p><a href="https://resend.com/domains">Resend domains</a> · <a href="https://resend.com/api-keys">Resend API keys</a></p>
+<button type="button" id="test-email" style="padding:10px;background:#d8b987;color:#11151c;border:0;border-radius:6px;cursor:pointer">
+Send a real test email to the support inbox</button>
+<p id="email-result" role="status" aria-live="polite"></p>
+<script>document.getElementById('test-email').addEventListener('click',async()=>{
+const area=document.getElementById('email-result');area.textContent='Sending test...';
+try{
+const response=await fetch('/admin/test-email',{method:'POST',headers:{'X-HERPOV-Upload':'authorized'},
+cache:'no-store',credentials:'same-origin'});
+const body=await response.json();
+area.textContent=body.accepted_by_provider?'Accepted by email provider. Check the support inbox: '+body.check_inbox:
+(body.error || 'Sender not ready');
+}catch(error){area.textContent='Request failed: '+error.message;}
+});</script></section>
 <section><h2>Payment protection</h2>
 <ul><li>Stripe API key: {{'Present' if flags.STRIPE_SECRET_KEY else 'Not configured'}}</li>
 <li>Stripe webhook signing: {{'Configured' if flags.STRIPE_WEBHOOK_SECRET else 'Missing'}}</li>
@@ -320,6 +334,40 @@ Add these keys in your Render environment: <code>S3_ENDPOINT_URL</code>, <code>S
 <li>Real checkout: <strong class="missing">DISABLED — pre-launch</strong></li></ul></section>
 <small>All credentials belong in Render's secure Environment screen, never GitHub, chat messages or static HTML. Connection checks do not substitute for an actual paid test order.</small>
 </main></body></html>""",flags=flags)
+
+@bp.post("/admin/test-email")
+def test_delivery_email():
+    """Owner-only transactional email readiness test; never sends paid links."""
+    if not admin_auth():
+        return ("Owner credentials required",401,{"WWW-Authenticate":'Basic realm="HER POV owner"'})
+    if request.headers.get("X-HERPOV-Upload") != "authorized":
+        abort(403)
+    api_key=env("RESEND_API_KEY")
+    sender=env("RESEND_FROM_EMAIL")
+    recipient=env("SUPPORT_EMAIL")
+    if not api_key.startswith("re_") or "@" not in sender or "@" not in recipient:
+        return jsonify(sent=False,error="Resend API key, verified sender and support inbox are required"),503
+    from datetime import datetime, timezone
+    date=datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    payload={"from":sender,"to":[recipient],
+             "subject":"HER POV — Transactional Email Test",
+             "reply_to":recipient,
+             "html":("<p><strong>HER POV test successful.</strong></p>"
+                     "<p>Your transactional email integration accepted a delivery request.</p>"
+                     "<p>This is a configuration test only, not an order or a paid download.</p>")}
+    try:
+        response=requests.post("https://api.resend.com/emails",
+            json=payload,timeout=15,
+            headers={"Authorization":"Bearer "+api_key,
+                     "Idempotency-Key":"her-pov-owner-verification-"+date})
+        response.raise_for_status()
+    except requests.RequestException as e:
+        log.error("Resend test failed: %s",type(e).__name__)
+        return jsonify(sent=False,error="Email provider rejected test; verify domain and API key"),502
+    return jsonify(accepted_by_provider=True,
+                   check_inbox=recipient,
+                   message_id=response.json().get("id"),
+                   note="Provider acceptance does not confirm mailbox delivery.")
 
 @bp.get("/_status")
 def owner_status():
