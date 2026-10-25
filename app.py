@@ -28,17 +28,122 @@ def home():
         bundle_checkout_ready=ready and valid_bundle_link,
         bundle_checkout_url=bundle_link if valid_bundle_link else "")
 
-POLICIES={
-"terms":("Terms of Use","Draft for merchant approval. HER POV provides educational digital content for adults. The guide does not guarantee any particular interaction, response or dating outcome. The purchaser receives a personal, non-transferable license to download and read the files; redistribution or resale is prohibited. The merchant's legal identity, country, contact details and applicable law must be confirmed before accepting payments."),
-"privacy":("Privacy Notice","Draft for merchant approval. Once launched, customer emails and order information will be processed solely to deliver purchases, provide support, prevent fraud and meet legal obligations, subject to final processor disclosures and retention periods. The payment provider handles payment details; HER POV does not store card numbers. No marketing messages will be sent without a lawful basis. Contact information must be supplied before launch."),
-"refunds":("Refund Information","Draft for merchant approval. Contact support with the purchase receipt for assistance or refund requests. Applicable statutory consumer rights are preserved. The final refund window, eligibility conditions, merchant contact and jurisdiction must be published before checkout activation.")
+# Pre-launch legal drafts: substantive buyer-facing policies with factual
+# disclosures, not a substitute for legal review or verified merchant details.
+LEGAL = {
+    "terms": {
+        "title": "Terms of Purchase & Use",
+        "lead": "How the HER POV digital guides are sold, licensed, delivered and supported.",
+        "sections": [
+            {"heading":"The HER POV products",
+             "paragraphs":["HER POV offers digital educational material for adults about starting conversations, responding with clarity, building authentic dating profiles, and navigating first-date planning. The product descriptions and prices on the checkout page determine what you buy.",
+                           "The collection includes four standalone PDF guides and a Complete Library bundle. The bundle includes all four PDFs and the First Message Cheat Sheet bonus. The future AI Coach is not included in any current digital-guide purchase."],
+             "points":[]},
+            {"heading":"Who may purchase",
+             "paragraphs":["You must be at least 18 years old and legally permitted to transact in your location. If you buy on behalf of someone else, you must have the right to use the payment method."],"points":[]},
+            {"heading":"Prices, checkout & confirmation",
+             "paragraphs":["Prices shown on the HER POV storefront are in US dollars (USD), generally as one-time purchases, unless a product listing expressly states otherwise. Your payment provider or issuing bank may apply currency conversion or fees. Any applicable taxes, when collected, should be disclosed before you confirm payment.",
+                           "Payments are processed by Stripe. A successful charge is not a subscription enrollment. Do not submit multiple payments if a transaction appears delayed: check the purchase confirmation or contact support."],"points":[]},
+            {"heading":"Digital delivery and access",
+             "paragraphs":["After payment, we intend to provide access through SendOwl, which delivers the purchased digital files using the email provided at checkout. Delivery may depend on correct contact information and third-party processing availability.",
+                           "Download files to your own device and store them safely. If a download is missing, corrupt or inaccessible, contact support with your order reference. We will make reasonable efforts to restore access or provide an appropriate remedy in accordance with applicable law."],"points":[]},
+            {"heading":"Personal license & intellectual property",
+             "paragraphs":["Purchase grants the buyer a limited, nonexclusive, nontransferable license to download and use the purchased materials for personal, noncommercial educational purposes. Copyright and ownership are not transferred."],
+             "points":["Do not resell, republish, share publicly, sublicense or upload the full files to public repositories or file-sharing sites.",
+                       "You may adapt an example message for your own conversations, but you may not distribute the underlying e-book or bonus as your own product."]},
+            {"heading":"Educational scope and respectful use",
+             "paragraphs":["These are educational guides, not professional counseling, psychological treatment, legal advice or a method of controlling other people's decisions. You remain responsible for what you say and how you treat others.",
+                           "No guide can guarantee replies, matches, dates, a relationship, or improved engagement. Respect privacy, consent, boundaries and a person's decision not to respond."],"points":[]},
+            {"heading":"Refunds, disputes and statutory rights",
+             "paragraphs":["Read the separate Refunds & Digital Delivery policy before purchase. Nothing in these terms limits non-waivable consumer protections, payment-dispute rights or mandatory remedies available in your jurisdiction."],"points":[]},
+            {"heading":"Site availability, updates and contact",
+             "paragraphs":["We may correct errors or update product descriptions and these terms prospectively. Material changes affecting an existing order will be handled according to applicable law. The terms applicable to your purchase are those presented at the time of purchase.",
+                           "If you need help, contact the seller using the verified details below. Merchant legal identity and contact details must be approved and published before sales open."],"points":[]},
+        ]},
+    "privacy":{
+        "title":"Privacy Notice",
+        "lead":"How order details, delivery information and support communications may be used for HER POV digital purchases.",
+        "sections":[
+            {"heading":"Scope and data controller",
+             "paragraphs":["This notice concerns the HER POV storefront, checkout referrals, e-book delivery and support. The merchant identified below is responsible for the personal information it controls. Third-party providers may be independently responsible for certain processing under their own policies."],"points":[]},
+            {"heading":"Information involved",
+             "paragraphs":["Depending on how you interact with the store, relevant information can include your email address, the name you choose to provide, product selection, order identifier, purchase amount, payment status, delivery history, customer support messages and technical data needed to operate the site and prevent abuse."],
+             "points":["Stripe processes payment information. The storefront is not designed to receive or store full card numbers.",
+                       "SendOwl may process email, order and download-access details to fulfill digital purchases.",
+                       "Render hosts the storefront and may process technical request data and routine server logs. External font services may receive technical request information when their resources load."]},
+            {"heading":"Why we process information",
+             "paragraphs":["We use necessary information to process and verify transactions, deliver purchased PDFs, respond to requests, protect the store against misuse or fraud, maintain records where legally necessary, and comply with legal requirements."],"points":[]},
+            {"heading":"Legal grounds and communications",
+             "paragraphs":["Where required by applicable law, we rely on grounds such as fulfilling the customer agreement, complying with legal obligations, legitimate operational and security interests, or valid consent. These grounds vary by jurisdiction.",
+                           "Transactional receipts, downloads, access help and fraud notices are distinct from promotional marketing. Marketing communication would require a lawful basis and any consent required by your location."],"points":[]},
+            {"heading":"Payments and service providers",
+             "paragraphs":["The planned sales stack is Stripe for payment processing, SendOwl for secure digital product delivery and Render for website hosting. Service providers process information according to their roles and contractual terms. Visit their own privacy notices for details about processing they independently control.",
+                           "We may also disclose information where legally required, to resolve a payment dispute or to protect customers and the platform from fraud."],"points":[]},
+            {"heading":"International transfers, retention and security",
+             "paragraphs":["Providers may process information in countries other than your home country. Required safeguards depend on the applicable jurisdiction and provider arrangements.",
+                           "Records are retained only as appropriate for delivery, buyer support, accounting, fraud prevention and legal obligations; exact periods differ by data type and applicable law. No website or transmission system can guarantee absolute security."],"points":[]},
+            {"heading":"Your choices and privacy rights",
+             "paragraphs":["Depending on where you live, you may have rights to request access, correction, deletion, restriction, portability, objection or review of certain uses of your personal information. These rights are subject to applicable law and legal retention requirements.",
+                           "To exercise a right, contact the operator using the details below. We may need reasonable verification that you are the relevant buyer, without asking for passwords or complete payment card details."],"points":[]},
+            {"heading":"Cookies and website resources",
+             "paragraphs":["The marketing page uses static styling and may load external font resources. Stripe and SendOwl may use cookies or similar technologies within their own payment and fulfillment interfaces. We do not represent those third-party cookies as being controlled by this site.",
+                           "Any future marketing analytics, advertising tags, or nonessential tracking will require an update to this disclosure and consent controls where legally required."],"points":[]},
+            {"heading":"Changes and questions",
+             "paragraphs":["If practices change, this notice will be revised. Significant changes will be handled in the manner required by applicable law. Contact the verified merchant support address below with any privacy questions."],"points":[]},
+        ]},
+    "refunds":{
+        "title":"Refunds & Digital Delivery",
+        "lead":"What happens if a digital purchase is missing, defective, duplicated, or not what you expected.",
+        "sections":[
+            {"heading":"Digital items and order contents",
+             "paragraphs":["HER POV products are downloadable educational PDFs, not physical goods. The first standalone product includes its stated one-page bonus; other guides are separate unless you buy the Complete Library bundle.",
+                           "Review the product name, included files, one-time price and applicable taxes before confirming payment. The bundle contains all four HER POV guides plus the bonus."],"points":[]},
+            {"heading":"How delivery works",
+             "paragraphs":["After a successful Stripe payment, the SendOwl integration is intended to email a private access link to the buyer's checkout email. Please check the inbox and spam folder. Download and save your purchased files promptly."],"points":[]},
+            {"heading":"A missing, broken or incorrect download",
+             "paragraphs":["If the paid file does not arrive, cannot be opened, or is not the product purchased, contact customer support with the receipt or order identifier. Do not send full card details. We will investigate and offer delivery correction, restored access, replacement or a refund when required by law or appropriate under the circumstances."],"points":[]},
+            {"heading":"Refund requests",
+             "paragraphs":["Send your request to the verified support contact below, with your order reference, date of purchase and a brief explanation of the issue. Refunds are reviewed according to the product description, evidence of the order, payment provider rules and applicable consumer law.",
+                           "We do not claim that downloading a PDF automatically removes all refund or withdrawal rights. Where your jurisdiction gives mandatory rights, those rights continue to apply. Additional discretionary refund terms will be published before the store accepts payment."],"points":[]},
+            {"heading":"Duplicate payments and unauthorized charges",
+             "paragraphs":["If you were charged more than once for the same order or notice a payment you did not authorize, contact support promptly. You may also contact Stripe or your card issuer through the normal dispute process. We will not ask for sensitive payment credentials to resolve an order."],"points":[]},
+            {"heading":"Timing of any approved refund",
+             "paragraphs":["If a refund is approved, it is submitted through the original payment provider where practicable. The time for funds to appear depends on the provider, bank, card network and relevant jurisdiction. We cannot guarantee a particular bank posting date."],"points":[]},
+        ]},
+    "contact":{
+        "title":"Contact & Order Support",
+        "lead":"Where to find help with purchases, downloads, billing and privacy requests.",
+        "sections":[
+            {"heading":"Support for purchases",
+             "paragraphs":["Use the merchant support email listed below for missing files, incorrect delivery, questions about the purchased PDFs, billing issues or a refund request. Please keep your Stripe receipt and order reference for verification."],
+             "points":["For a missing download, describe the product purchased and the message or error you saw.",
+                       "For billing concerns, include the transaction date and order identifier.",
+                       "For data/privacy requests, describe what information you are asking about. Do not include passwords or full card details."]},
+            {"heading":"Pre-launch availability",
+             "paragraphs":["The HER POV storefront is currently in preview mode. Purchases are not yet available. An official seller name and support contact will be published before any real checkout is opened."],"points":[]},
+        ]},
 }
-@app.get("/<policy>")
-def policy(policy):
-    if policy not in POLICIES:
-        return "Not found",404
-    name,desc=POLICIES[policy]
-    return render(f'<main class="wrap section"><div class="eyebrow">HER POV · CUSTOMER POLICIES</div><h1>{name}</h1><p class="lead">{desc}</p><p><a href="/">Back to the guide</a></p></main>')
+@app.get("/terms")
+@app.get("/privacy")
+@app.get("/refunds")
+@app.get("/contact")
+def policy():
+    from flask import request
+    name = request.path.lstrip("/")
+    info = LEGAL.get(name)
+    if info is None:
+        return "Not found", 404
+    contact = os.environ.get("SUPPORT_EMAIL", "").strip()
+    if contact and ("@" not in contact or len(contact)>255):
+        contact = ""
+    merchant = os.environ.get("MERCHANT_LEGAL_NAME", "").strip()[:200]
+    country = os.environ.get("MERCHANT_COUNTRY", "").strip()[:100]
+    address = os.environ.get("MERCHANT_CONTACT_ADDRESS", "").strip()[:350]
+    return render_template("legal.html", title=info["title"], lead=info["lead"],
+                           sections=info["sections"], support_email=contact,
+                           legal_name=merchant, merchant_country=country,
+                           merchant_address=address, ready=checkout_open())
+
 @app.get("/health")
 def health():
     enabled = checkout_open()
