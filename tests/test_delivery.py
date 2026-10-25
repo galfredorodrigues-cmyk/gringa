@@ -54,6 +54,29 @@ class StorefrontTests(unittest.TestCase):
                 self.assertIn(b"CHECKOUT OPENING SOON", self.client.get("/").data)
                 self.assertNotIn(b"buy.stripe.com", self.client.get("/").data)
 
+    def test_bundle_payment_url_needs_valid_link_and_every_approval(self):
+        ready = {
+            "STRIPE_MODE":"live",
+            "SENDOWL_PRODUCT_LINKED":"yes",
+            "SENDOWL_ALL_PRODUCTS_LINKED":"yes",
+            "SENDOWL_BUNDLE_TESTED":"yes",
+            "SENDOWL_DELIVERY_TESTED":"yes",
+            "STRIPE_PAYOUTS_CONFIRMED":"yes",
+            "MERCHANT_POLICIES_APPROVED":"yes",
+            "MERCHANT_TAX_REVIEWED":"yes",
+            "LIVE_READY":"yes",
+        }
+        url = "https://buy.stripe.com/test-bundle-private-ci"
+        with patch.dict(os.environ, {**ready,"BUNDLE_PAYMENT_LINK_URL":url}):
+            self.assertIn(b"GET ALL 4 GUIDES",self.client.get("/").data)
+            self.assertIn(url.encode(),self.client.get("/").data)
+            with patch.dict(os.environ,{"LIVE_READY":"no"}):
+                self.assertIn(b"BUNDLE CHECKOUT OPENING SOON",self.client.get("/").data)
+                self.assertNotIn(url.encode(),self.client.get("/").data)
+            with patch.dict(os.environ,{"BUNDLE_PAYMENT_LINK_URL":"https://example.net/wrong"}):
+                self.assertIn(b"BUNDLE CHECKOUT OPENING SOON",self.client.get("/").data)
+                self.assertNotIn(b"example.net/wrong",self.client.get("/").data)
+
     def test_health_and_no_live_claim(self):
         response=self.client.get("/health")
         self.assertEqual(response.status_code,200)
