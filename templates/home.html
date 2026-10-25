@@ -38,7 +38,7 @@
           <a class="inline-link" href="#method">See how it works <span aria-hidden="true">↓</span></a>
         </div>
         <div class="hero__checks"><span>56-page digital guide</span><span>50 adaptable openers</span><span>Free cheat sheet</span></div>
-        <p class="hero__disclosure">Preview edition. Checkout opens after secure delivery testing.</p>
+        <p class="hero__disclosure">{% if checkout_ready %}Instant digital delivery after secure Stripe payment.{% else %}Preview edition. Checkout opens after secure delivery testing.{% endif %}</p>
       </div>
       <div class="hero__visual" aria-label="The First Message Formula book illustration with example message">
         <div class="circle-type" aria-hidden="true">THE ART OF THE FIRST HELLO · HER POV ·</div>
@@ -165,8 +165,13 @@
         <div class="checkout-card__body">
           <div class="checkout-card__description"><div><strong>Complete digital edition</strong><small>PDF + bonus cheat sheet</small></div><span class="badge-one-time">ONE TIME</span></div>
           <div class="checkout-card__price"><span>$9.90</span><small>USD</small></div>
+          {% if checkout_ready %}
+          <a class="btn btn--gold" style="width:100%" href="{{ checkout_url }}" rel="noopener noreferrer">GET INSTANT ACCESS — $9.90 <span aria-hidden="true">↗</span></a>
+          <p class="checkout-card__secure">Secure checkout by Stripe · Download delivery by SendOwl</p>
+          {% else %}
           <button type="button" disabled class="btn btn--disabled">CHECKOUT OPENING SOON <span aria-hidden="true">↗</span></button>
-          <p class="checkout-card__secure">Secure delivery is being finalized before orders open.</p>
+          <p class="checkout-card__secure">We are completing secure delivery testing before opening orders.</p>
+          {% endif %}
           <div class="checkout-card__details"><div><span>✓</span> No subscription</div><div><span>✓</span> Digital PDF format</div><div><span>✓</span> Bonus included</div></div>
         </div>
       </aside>
@@ -178,7 +183,7 @@
       <div class="section-kicker">07 / THE BIGGER PICTURE</div>
       <div class="series__intro"><div><h2>One conversation is<br><em>just the beginning.</em></h2></div><div><p class="section-lead">We're building HER POV as a collection of practical tools for every step of the journey — from your first message to a more confident first date.</p><p class="series__honest">Future guides are planned and not currently available for purchase.</p></div></div>
       <div class="journey" aria-label="HER POV planned product roadmap">
-        <article class="journey__item journey__item--current"><div class="journey__head"><span>01 / START</span><span class="journey__tag">FIRST RELEASE</span></div><div class="journey__icon">01</div><h3>The First Message<br>Formula</h3><p>Learn to start conversations that feel natural.</p><div class="journey__price">$9.90 <small>ONE-TIME · LAUNCH PENDING</small></div></article>
+        <article class="journey__item journey__item--current"><div class="journey__head"><span>01 / START</span><span class="journey__tag">FIRST RELEASE</span></div><div class="journey__icon">01</div><h3>The First Message<br>Formula</h3><p>Learn to start conversations that feel natural.</p><div class="journey__price">$9.90 <small>ONE-TIME · {% if checkout_ready %}AVAILABLE NOW{% else %}LAUNCH PENDING{% endif %}</small></div></article>
         <article class="journey__item"><div class="journey__head"><span>02 / RESPOND</span><span class="journey__tag">COMING LATER</span></div><div class="journey__icon">02</div><h3>The Reply<br>Decoder</h3><p>Make sense of the conversation without spiraling into guesswork.</p><div class="journey__price">$4.90 <small>PLANNED PRICE</small></div></article>
         <article class="journey__item"><div class="journey__head"><span>03 / PRESENT</span><span class="journey__tag">COMING LATER</span></div><div class="journey__icon">03</div><h3>The Profile<br>Makeover</h3><p>Put your best, most authentic self forward on your profile.</p><div class="journey__price">$7.90 <small>PLANNED PRICE</small></div></article>
         <article class="journey__item"><div class="journey__head"><span>04 / CONNECT</span><span class="journey__tag">COMING LATER</span></div><div class="journey__icon">04</div><h3>From Chat to<br>First Date</h3><p>Navigate the transition from messages to making real plans.</p><div class="journey__price">$19.90 <small>PLANNED PRICE</small></div></article>
@@ -202,8 +207,8 @@
   </section>
 
   <section class="closing section-dark">
-    <div class="container closing__inner"><div class="eyebrow">THE FIRST MESSAGE IS NOT AN AUDITION</div><h2>Make it real.<br><em>Make it yours.</em></h2><p>You don't need fifty lines memorized. You need one better way to begin.</p><a href="#offer" class="btn btn--gold">EXPLORE VOLUME 01 <span aria-hidden="true">↗</span></a><small>HER POV · $9.90 USD · Digital guide · Checkout coming soon</small></div>
+    <div class="container closing__inner"><div class="eyebrow">THE FIRST MESSAGE IS NOT AN AUDITION</div><h2>Make it real.<br><em>Make it yours.</em></h2><p>You don't need fifty lines memorized. You need one better way to begin.</p><a href="#offer" class="btn btn--gold">EXPLORE VOLUME 01 <span aria-hidden="true">↗</span></a><small>HER POV · $9.90 USD · Digital guide · {% if checkout_ready %}Secure digital delivery{% else %}Checkout coming soon{% endif %}</small></div>
   </section>
 </main>
-<footer class="footer"><div class="container footer__grid"><div><a class="logo logo--footer" href="/">HER <i></i> POV<span>.</span></a><p>Digital guides for better conversations.<br>No pressure. No performance. Just a better start.</p></div><div><strong>EXPLORE</strong><a href="#method">The Method</a><a href="#inside">What's Inside</a><a href="#series">The Series</a><a href="#faq">FAQ</a></div><div><strong>INFORMATION</strong><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/refunds">Refunds</a></div></div><div class="container footer__bottom"><span>© 2026 HER POV. ALL RIGHTS RESERVED.</span><span>FOR ADULTS · NO GUARANTEED DATING OUTCOMES · PRE-LAUNCH PREVIEW</span></div></footer>
+<footer class="footer"><div class="container footer__grid"><div><a class="logo logo--footer" href="/">HER <i></i> POV<span>.</span></a><p>Digital guides for better conversations.<br>No pressure. No performance. Just a better start.</p></div><div><strong>EXPLORE</strong><a href="#method">The Method</a><a href="#inside">What's Inside</a><a href="#series">The Series</a><a href="#faq">FAQ</a></div><div><strong>INFORMATION</strong><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/refunds">Refunds</a></div></div><div class="container footer__bottom"><span>© 2026 HER POV. ALL RIGHTS RESERVED.</span><span>FOR ADULTS · NO GUARANTEED DATING OUTCOMES{% if not checkout_ready %} · PRE-LAUNCH PREVIEW{% endif %}</span></div></footer>
 </body></html>
