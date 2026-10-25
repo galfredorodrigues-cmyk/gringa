@@ -98,17 +98,57 @@ def download_link(session, kind):
     return f'{env("PUBLIC_BASE_URL").rstrip("/")}/download?{params}'
 
 def delivery_html(session):
+    """Responsive transaction-only email. Contains private, signed, per-order links."""
     main = html.escape(download_link(session, "ebook"), quote=True)
     bonus = html.escape(download_link(session, "bonus"), quote=True)
-    return f"""<div style="font-family:Arial,sans-serif;max-width:580px;margin:auto">
-<p style="color:#b28d55;letter-spacing:3px">HER POV</p>
-<h2>Your First Message Formula is ready</h2>
-<p>Thank you for your purchase. Both PDFs are ready for secure download.</p>
-<p><a href="{main}">Download your e-book</a></p>
-<p><a href="{bonus}">Download the bonus cheat sheet</a></p>
-<p>These personal links expire 30 days after purchase. Save your copies to your device.</p>
-<p>Need help? Reply to this email. HER POV — Digital download — No subscription.</p>
-</div>"""
+    support = html.escape(env("SUPPORT_EMAIL") or env("RESEND_FROM_EMAIL"), quote=True)
+    return f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>HER POV: Your Digital Edition</title>
+</head><body style="background:#eae4dc;margin:0;padding:35px 10px;font-family:Arial,sans-serif;color:#19202a">
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="max-width:600px;margin:auto;background:#f9f6f0;width:100%;border-collapse:collapse">
+<tr><td style="background:#10151d;color:#e3c18a;padding:28px 35px;border-bottom:2px solid #b28d55">
+<span style="font:30px Georgia,serif;letter-spacing:-1px">HER POV.</span>
+<span style="display:block;margin-top:8px;color:#b7aba0;font:bold 10px Arial,sans-serif;letter-spacing:2px">VOL. 01 / YOUR DIGITAL EDITION</span>
+</td></tr>
+<tr><td style="padding:38px 35px 26px">
+<p style="margin:0;color:#a27c43;font:bold 10px Arial,sans-serif;letter-spacing:2px">PAYMENT CONFIRMED / READY TO DOWNLOAD</p>
+<h1 style="font:39px/1.1 Georgia,serif;letter-spacing:-1px;margin:15px 0;color:#1d232c">Your next conversation starts here.</h1>
+<p style="font:16px/1.7 Arial,sans-serif;color:#595853">
+Thank you for getting <strong>The First Message Formula</strong>.
+Your complete guide and complimentary one-page reference are ready.</p>
+</td></tr>
+<tr><td style="padding:0 35px 24px">
+<table role="presentation" width="100%" style="border:1px solid #e2d7c6;border-collapse:collapse">
+<tr><td style="padding:19px;background:#fff">
+<p style="font:bold 10px Arial,sans-serif;letter-spacing:1.5px;color:#a57f48;margin:0 0 8px">01 / THE MAIN GUIDE</p>
+<strong style="font:23px Georgia,serif;color:#20252d">The First Message Formula</strong>
+<p style="font:13px Arial,sans-serif;color:#696760;margin:7px 0 17px">56-page PDF · 8 chapters · 50 adaptable openers</p>
+<a href="{main}" style="background:#10151d;color:#f2d6a1;padding:13px 19px;display:inline-block;text-decoration:none;font:bold 12px Arial,sans-serif">DOWNLOAD YOUR E-BOOK ↗</a></td></tr></table>
+</td></tr>
+<tr><td style="padding:0 35px 28px">
+<table role="presentation" width="100%" style="border:1px solid #e2d7c6;border-collapse:collapse">
+<tr><td style="padding:19px;background:#fff">
+<p style="font:bold 10px Arial,sans-serif;letter-spacing:1.5px;color:#a57f48;margin:0 0 8px">02 / THE COMPLIMENTARY BONUS</p>
+<strong style="font:23px Georgia,serif;color:#20252d">First Message Cheat Sheet</strong>
+<p style="font:13px Arial,sans-serif;color:#696760;margin:7px 0 17px">One-page quick reference PDF · included at no extra charge</p>
+<a href="{bonus}" style="background:#d8b987;color:#162029;padding:13px 19px;display:inline-block;text-decoration:none;font:bold 12px Arial,sans-serif">DOWNLOAD YOUR BONUS ↗</a></td></tr></table>
+</td></tr>
+<tr><td style="padding:4px 35px 30px">
+<p style="font:13px/1.7 Arial,sans-serif;color:#6a6661">These private links expire <strong>30 days after purchase</strong>.
+Save both PDFs to your device. Do not forward these personal links.</p>
+<div style="background:#eae1d3;padding:17px 19px;margin:25px 0">
+<p style="font:bold 10px Arial,sans-serif;letter-spacing:1px;color:#8b704c;margin:0 0 6px">WHAT COMES NEXT</p>
+<strong style="font:22px Georgia,serif;color:#20252d">The Reply Decoder</strong>
+<p style="font:13px/1.6 Arial,sans-serif;color:#6b675f;margin:9px 0 0">A future HER POV guide for navigating replies with more clarity.
+Coming later — not included in this purchase.</p></div>
+<p style="font:13px Arial,sans-serif;color:#6a6661">Need help with your purchase?
+<a href="mailto:{support}" style="color:#8b704c">Contact HER POV support</a>.</p>
+</td></tr>
+<tr><td style="background:#10151d;color:#aaa9a4;padding:23px 35px;font:11px/1.7 Arial,sans-serif">
+HER POV · Educational content for adults. One-time purchase, no subscription.
+No guarantee of responses, attraction or dating outcomes.
+</td></tr></table>
+</body></html>"""
 
 def send_order_email(session):
     email = (session.get("customer_details") or {}).get("email") or session.get("customer_email")
