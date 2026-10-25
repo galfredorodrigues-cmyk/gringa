@@ -22,3 +22,21 @@
 /* Complete four-guide library featured bundle */
 .bundle-offer{display:grid;grid-template-columns:1.2fr .8fr;gap:26px;align-items:center;margin:24px 0;padding:34px 37px;border:2px solid #ad8953;background:linear-gradient(120deg,#151c25,#25241e);color:#f6f0e8}
 @media(max-width:720px){.bundle-offer{grid-template-columns:1fr;padding:27px 23px;gap:30px}}
+
+
+/* US product page: prioritize complete bundle without promising unverified outcomes */
+.launch-bundle{padding:72px 0 78px;border-bottom:1px solid #32383d}
+.launch-bundle__head{text-align:center;max-width:850px;margin:0 auto 22px}
+.launch-bundle__head .section-kicker{margin-bottom:17px}
+.launch-bundle__head h2{font-size:clamp(34px,4.2vw,58px);margin:0 0 19px}
+.launch-bundle__head p{color:#c5beb4;font-size:16px;line-height:1.75;max-width:720px;margin:0 auto}
+.launch-bundle .bundle-offer{margin-top:28px;margin-bottom:26px}
+.launch-bundle__covers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;max-width:870px;margin:0 auto;padding:7px 0 3px}
+.launch-bundle__covers>div{display:flex;flex-direction:column;align-items:center;text-align:center;gap:11px}
+.launch-bundle__covers img{width:min(100%,166px);height:auto;aspect-ratio:1/1;object-fit:cover;border:1px solid #8d7753;border-radius:4px;box-shadow:0 10px 28px #0005}
+.launch-bundle__covers span{font-size:10px;letter-spacing:.12em;font-weight:800;color:#d2bd97}
+.launch-bundle__fineprint{text-align:center;font-size:11px;color:#b9aea0;line-height:1.75;max-width:720px;margin:23px auto 0}
+.journey__cover{width:113px;height:113px;object-fit:cover;border:1px solid #b59a72;border-radius:3px;margin:24px 0 15px;box-shadow:0 8px 20px #0001}
+.journey__item--current .journey__cover{border-color:#d8b987}
+@media(max-width:700px){.launch-bundle{padding:55px 0 60px}.launch-bundle__covers{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 12px}.launch-bundle__head p{font-size:15px}.journey__cover{margin:18px 0 13px}}
+@media(max-width:430px){.launch-bundle__covers img{width:min(100%,140px)}.launch-bundle .bundle-offer{margin-top:24px}.journey__cover{width:118px;height:118px}}
