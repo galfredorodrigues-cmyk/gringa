@@ -62,6 +62,16 @@ https://developers.hotmart.com/docs/pt-BR/tutorials/checkout-elements/
 **Do not turn on Stripe and Hotmart checkouts simultaneously.** The old Stripe
 flow remains documented below only as a fallback and for audit history.
 
+## Separate post-purchase Hotmart upsell (prepared only, NOT live)
+
+The main HER POV page shows a first-choice selector: Volume 01 at USD $9.90 or all four guides plus bonus at USD $29.90. Keep both purchase paths separate and independently verified.
+
+After an **eligible completed payment** for Volume 01, the intended Hotmart sales funnel can display the unlinked `/upgrade` page. The buyer would pay **USD $12.00 more** for Volumes 02–04, making the total **USD $21.90 for all four guides** ($9.90 + $12.00). This is a private post-purchase promotional discount of USD $8.00 compared with the standard direct USD $29.90 bundle. Do not mislabel the new $12 charge as $21.90 due now.
+
+The upgraded buyer retains Volume 01 and its one-page bonus from the first purchase. The new offer must contain only the three remaining PDFs. A buyer who purchased the $29.90 bundle should never receive this upsell.
+
+**Release gate:** Do not activate this new product or its checkout widget automatically. First verify Hotmart support for post-purchase funnel routing, secure buyer eligibility, exact $12 USD buyer charge and fees, 3-PDF delivery, redirects for accept/decline, duplicates, refunds, and support wording. Only then attach the official Hotmart payment/action component through a separately approved release. No time pressure or fake claim of scarcity.
+
 ## Verified Stripe catalog / one-time USD prices
 
 | Product | Stripe Product ID | Default Price ID | Total |
