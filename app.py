@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template_string, render_template, jsonify
+from flask import Flask, render_template_string, render_template, jsonify, make_response, abort
 app=Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"]=False
 CSS="""
@@ -128,6 +128,18 @@ LEGAL = {
              "paragraphs":["The HER POV storefront is currently in preview mode. Purchases are not yet available. An official seller name and support contact will be published before any real checkout is opened."],"points":[]},
         ]},
 }
+@app.get("/product-art/<slug>.png")
+def marketing_product_art(slug):
+    """Public cover PNG only; buyer PDFs are never exposed here."""
+    from product_art import PRODUCTS, cover_png
+    if slug not in PRODUCTS:
+        abort(404)
+    response = make_response(cover_png(slug))
+    response.headers["Content-Type"] = "image/png"
+    response.headers["Cache-Control"] = "public, max-age=86400, s-maxage=86400"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    return response
+
 @app.get("/terms")
 @app.get("/privacy")
 @app.get("/refunds")
