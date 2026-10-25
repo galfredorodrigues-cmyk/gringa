@@ -199,7 +199,7 @@
           <div style="font-size:12px;text-decoration:line-through;color:#bbb4a7">Regular combined value: $42.60</div>
           <div style="font:56px/1.1 Georgia,serif;color:#e5c791;margin:7px 0">$29.90 <span style="font:13px Arial,sans-serif;color:#c7bdae">USD</span></div>
           <div style="font-size:12px;color:#e5c791;font-weight:700;margin-bottom:13px">SAVE $12.70 · ONE-TIME</div>
-          <button type="button" disabled style="display:block;width:100%;min-height:49px;padding:13px 15px;background:#979084;color:#141a20;border:0;border-radius:4px;cursor:not-allowed;font-size:12px;font-weight:800;letter-spacing:.07em">BUNDLE CHECKOUT OPENING SOON</button>
+          {% if bundle_checkout_ready %}<a href="{{ bundle_checkout_url }}" rel="noopener noreferrer" class="btn btn--gold" style="width:100%">GET ALL 4 GUIDES — $29.90 <span aria-hidden="true">↗</span></a>{% else %}<button type="button" disabled style="display:block;width:100%;min-height:49px;padding:13px 15px;background:#979084;color:#141a20;border:0;border-radius:4px;cursor:not-allowed;font-size:12px;font-weight:800;letter-spacing:.07em">BUNDLE CHECKOUT OPENING SOON</button>{% endif %}
           <small style="color:#aeb0ae;display:block;margin-top:8px">No payment collected until delivery is verified.</small>
         </div>
       </div>
