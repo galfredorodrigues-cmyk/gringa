@@ -10,7 +10,8 @@ def render(body):
 # One-switch launch gate for SendOwl. NEVER turn on until external app has
 # delivered both PDFs in an actual end-to-end test and Stripe payouts are enabled.
 def checkout_open():
-    flags = ("SENDOWL_PRODUCT_LINKED", "SENDOWL_DELIVERY_TESTED",
+    flags = ("SENDOWL_PRODUCT_LINKED", "SENDOWL_ALL_PRODUCTS_LINKED",
+             "SENDOWL_DELIVERY_TESTED", "SENDOWL_BUNDLE_TESTED",
              "STRIPE_PAYOUTS_CONFIRMED", "MERCHANT_POLICIES_APPROVED",
              "MERCHANT_TAX_REVIEWED", "LIVE_READY")
     return os.environ.get("STRIPE_MODE") == "live" and all(
