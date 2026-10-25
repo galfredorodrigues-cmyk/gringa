@@ -39,7 +39,7 @@ jobs:
           for keyword in [b"You had something to say", b"The First Message Formula",
                           b"The Reply Decoder", b"The Profile Makeover",
                           b"From Chat to", b"AI Coach", b"C.A.R.E.",
-                          b"$9.90", b"FREE BONUS", b"COMING LATER"]:
+                          b"$9.90", b"Free cheat sheet", b"COMING LATER"]:
               assert keyword.lower() in body.lower(), f"Missing content: {keyword!r}"
           assert b"https://buy.stripe.com/" not in body, "Live payment link must remain unlisted"
           css=req("/static/css/landing.css")
