@@ -100,13 +100,15 @@ def download_link(session, kind):
 def delivery_html(session):
     main = html.escape(download_link(session, "ebook"), quote=True)
     bonus = html.escape(download_link(session, "bonus"), quote=True)
-    return ("""<div style="font-family:Arial,sans-serif;max-width:580px;margin:auto">
-<p style="color:#b28d55;letter-spacing:3px">HER POV</p><h2>Your First Message Formula is ready</h2>
+    return f"""<div style="font-family:Arial,sans-serif;max-width:580px;margin:auto">
+<p style="color:#b28d55;letter-spacing:3px">HER POV</p>
+<h2>Your First Message Formula is ready</h2>
 <p>Thank you for your purchase. Both PDFs are ready for secure download.</p>
-<p><a href="""" + '"' + main + '"' + """>Download your e-book</a></p>
-<p><a href="""" + '"' + bonus + '"' + """>Download the bonus cheat sheet</a></p>
-<p>These personal links expire 30 days after the purchase. Save your copies to your device.</p>
-<p>Need help? Reply to this email. HER POV · Digital download · No subscription.</p></div>""")
+<p><a href="{main}">Download your e-book</a></p>
+<p><a href="{bonus}">Download the bonus cheat sheet</a></p>
+<p>These personal links expire 30 days after purchase. Save your copies to your device.</p>
+<p>Need help? Reply to this email. HER POV — Digital download — No subscription.</p>
+</div>"""
 
 def send_order_email(session):
     email = (session.get("customer_details") or {}).get("email") or session.get("customer_email")
