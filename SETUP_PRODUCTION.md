@@ -62,15 +62,28 @@ https://developers.hotmart.com/docs/pt-BR/tutorials/checkout-elements/
 **Do not turn on Stripe and Hotmart checkouts simultaneously.** The old Stripe
 flow remains documented below only as a fallback and for audit history.
 
-## Separate post-purchase Hotmart upsell (prepared only, NOT live)
+## Last Chance Offer BEFORE checkout (prepared only, NOT live)
 
-The main HER POV page shows a first-choice selector: Volume 01 at USD $9.90 or all four guides plus bonus at USD $29.90. Keep both purchase paths separate and independently verified.
+The principal HER POV page preserves the original copy and shows two purchase choices: Volume 01 + bonus at USD $9.90 or the standard four-guide bundle + bonus at USD $29.90.
 
-After an **eligible completed payment** for Volume 01, the intended Hotmart sales funnel can display the unlinked `/upgrade` page. The buyer would pay **USD $12.00 more** for Volumes 02–04, making the total **USD $21.90 for all four guides** ($9.90 + $12.00). This is a private post-purchase promotional discount of USD $8.00 compared with the standard direct USD $29.90 bundle. Do not mislabel the new $12 charge as $21.90 due now.
+The **starter** choice routes first to `/last-offer` (old `/upgrade` redirects to the new address). **No payment has happened yet.** The visitor sees a pre-checkout final offer with two clear exits:
+- **Accept**: buy all four guides plus the bonus for **USD $21.90 in one transaction**. This is a separate special-priced full-bundle offer containing five PDFs, saving USD $8.00 versus the publicly displayed USD $29.90 bundle before applicable tax/fees.
+- **Decline / lose the offer**: continue to the existing Volume 01 + bonus checkout at USD $9.90.
+The main page's direct bundle choice still goes to the USD $29.90 checkout and bypasses the final-offer page.
 
-The upgraded buyer retains Volume 01 and its one-page bonus from the first purchase. The new offer must contain only the three remaining PDFs. A buyer who purchased the $29.90 bundle should never receive this upsell.
+This is **not** a post-purchase upsell and must not be configured as an extra USD $12 charge. The old $12 post-purchase concept is superseded; never claim the customer already paid USD $9.90 at the last-offer page.
 
-**Release gate:** Do not activate this new product or its checkout widget automatically. First verify Hotmart support for post-purchase funnel routing, secure buyer eligibility, exact $12 USD buyer charge and fees, 3-PDF delivery, redirects for accept/decline, duplicates, refunds, and support wording. Only then attach the official Hotmart payment/action component through a separately approved release. No time pressure or fake claim of scarcity.
+The last-offer page remains in preview mode with both payment controls disabled until validated. To enable the special option when the primary Hotmart checkout is already verified and open, provide a distinct, verified `HOTMART_LINK_LAST_OFFER` and independently confirm all flags:
+```text
+LAST_OFFER_USD_PRICE_VERIFIED=yes
+LAST_OFFER_FIVE_FILES_VERIFIED=yes
+LAST_OFFER_DELIVERY_TESTED=yes
+LAST_OFFER_POLICIES_APPROVED=yes
+LAST_OFFER_LAUNCH_APPROVED=yes
+```
+The software rejects the private link if it duplicates any of the five standard checkout URLs. It will not show the special button unless the original Hotmart release gate AND every new flag are validated.
+
+Before opening any payment routes, confirm the USD buyer-facing amount, taxes and currency, all five actual private PDF file deliveries, supported direct Hotmart checkout URL, customer support, refund rights, payment eligibility and tests of accept, decline, interruption, duplicate payment prevention, and standard USD $29.90 bundle. Do not invent urgency timers or create a publicly indexed discount page. Seller must approve any change to live charging.
 
 ## Verified Stripe catalog / one-time USD prices
 
