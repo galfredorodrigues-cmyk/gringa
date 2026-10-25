@@ -20,8 +20,13 @@ def checkout_open():
 
 @app.get("/")
 def home():
-    return render_template("home.html", checkout_ready=checkout_open(),
-        checkout_url="https://buy.stripe.com/14A9ANbXgfdicJXb1N3cc00")
+    ready = checkout_open()
+    bundle_link = os.environ.get("BUNDLE_PAYMENT_LINK_URL", "")
+    valid_bundle_link = bundle_link.startswith("https://buy.stripe.com/") and len(bundle_link) < 300
+    return render_template("home.html", checkout_ready=ready,
+        checkout_url="https://buy.stripe.com/14A9ANbXgfdicJXb1N3cc00",
+        bundle_checkout_ready=ready and valid_bundle_link,
+        bundle_checkout_url=bundle_link if valid_bundle_link else "")
 
 POLICIES={
 "terms":("Terms of Use","Draft for merchant approval. HER POV provides educational digital content for adults. The guide does not guarantee any particular interaction, response or dating outcome. The purchaser receives a personal, non-transferable license to download and read the files; redistribution or resale is prohibited. The merchant's legal identity, country, contact details and applicable law must be confirmed before accepting payments."),
