@@ -77,6 +77,31 @@ class StorefrontTests(unittest.TestCase):
                 self.assertIn(b"BUNDLE CHECKOUT OPENING SOON",self.client.get("/").data)
                 self.assertNotIn(b"example.net/wrong",self.client.get("/").data)
 
+    def test_legal_pages_provide_substantive_prelaunch_disclosures(self):
+        for path, phrase in [
+            ("/terms", b"Terms of Purchase"),
+            ("/privacy", b"Privacy Notice"),
+            ("/refunds", b"Refunds &amp; Digital Delivery"),
+            ("/contact", b"Contact &amp; Order Support"),
+        ]:
+            response=self.client.get(path)
+            self.assertEqual(response.status_code, 200, path)
+            self.assertIn(phrase, response.data, path)
+            self.assertIn(b"Pre-launch policy notice", response.data)
+            self.assertIn(b"Operator &amp; contact", response.data)
+            self.assertIn(b"HER POV", response.data)
+        self.assertIn(b"Contact &amp; Support",self.client.get("/").data)
+
+    def test_legal_contact_stays_unverified_until_owner_confirms(self):
+        with patch.dict(os.environ,{"MERCHANT_LEGAL_NAME":"Example Company LLC",
+                                   "MERCHANT_COUNTRY":"United States",
+                                   "MERCHANT_CONTACT_ADDRESS":"123 Placeholder Street",
+                                   "SUPPORT_EMAIL":"help@example.test"}):
+            html=self.client.get("/privacy").data
+            self.assertIn(b"Example Company LLC",html)
+            self.assertIn(b"help@example.test",html)
+            self.assertIn(b"Pre-launch policy notice",html)
+
     def test_health_and_no_live_claim(self):
         response=self.client.get("/health")
         self.assertEqual(response.status_code,200)
