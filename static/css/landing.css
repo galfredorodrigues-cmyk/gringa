@@ -109,3 +109,9 @@
 .bundle-offer__benefits strong{font-weight:700;color:#f3e7d3}
 .bundle-offer__bonus{color:#d8b987;font-size:12px;line-height:1.58;margin:13px 0 0}
 @media(max-width:720px){.bundle-offer__benefits li{font-size:13px}.bundle-offer__intro{font-size:13px}}
+
+
+/* Optional individual Hotmart checkouts, visible only after independent release gates. */
+.journey__checkout-link{display:block;margin-top:13px;padding:10px 9px;border:1px solid #ad8953;background:#181f28;color:#f4dfb4;font-size:10px;font-weight:800;letter-spacing:.045em;line-height:1.4;text-decoration:none;text-align:center;border-radius:4px}
+.journey__checkout-link:hover,.journey__checkout-link:focus-visible{background:#2b3239;border-color:#d8b987;opacity:1}
+.journey__checkout-link span{margin-left:3px}
