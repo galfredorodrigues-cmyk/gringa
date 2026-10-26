@@ -32,3 +32,9 @@
 @media(max-width:700px){.journey__item .editorial-cover{margin:18px 0 13px}}
 @media(max-width:430px){.launch-bundle__covers .editorial-cover{width:min(100%,140px)}}
 @media(prefers-reduced-motion:reduce){.editorial-cover{transition:none!important}}
+
+/* Restore cover-specific typography against the existing site's broad thumbnail span rule. */
+.launch-bundle__covers .editorial-cover span{font-size:inherit;letter-spacing:inherit;font-weight:inherit;color:inherit}
+.launch-bundle__covers .editorial-cover__title span:nth-child(2),
+.launch-bundle__covers .editorial-cover__brand span{color:var(--cover-accent)}
+.launch-bundle__covers .editorial-cover__stat span{font-size:4.3cqw;letter-spacing:.025em}
