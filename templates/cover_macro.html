@@ -1,23 +1,26 @@
-{# Reusable photographic marketing cover. Photos link to distinct licensed Unsplash photographs.
-   Cover text is live HTML (crisp, accessible), not an AI image claiming physical inventory.
-   The existing public product-art PNG serves as visual fallback if an image fails to load. #}
+{# Shared restrained HER POV editorial jacket artwork. These are illustrative
+   marketing visuals of digital guides, not customer portraits or testimonials. #}
 {% macro editorial_cover(slug, extra_class='') -%}
 {% set covers = {
-  'first-message-formula': {'number':'01', 'title':'THE FIRST MESSAGE FORMULA', 'lines':['THE FIRST','MESSAGE','FORMULA'], 'stat':'50', 'claim':'ADAPTABLE OPENERS', 'photo':'/static/cover-photos/vol-01.jpg'},
-  'reply-decoder': {'number':'02', 'title':'THE REPLY DECODER', 'lines':['THE REPLY','DECODER'], 'stat':'24', 'claim':'TEXTING SCENARIOS', 'photo':'/static/cover-photos/vol-02.jpg'},
-  'profile-makeover': {'number':'03', 'title':'THE PROFILE MAKEOVER', 'lines':['THE PROFILE','MAKEOVER'], 'stat':'40', 'claim':'BIO & PROFILE IDEAS', 'photo':'/static/cover-photos/vol-03.jpg'},
-  'from-chat-to-first-date': {'number':'04', 'title':'FROM CHAT TO FIRST DATE', 'lines':['FROM CHAT','TO FIRST','DATE'], 'stat':'36', 'claim':'INVITATION EXAMPLES', 'photo':'/static/cover-photos/vol-04.jpg'}
+  'first-message-formula': {'number':'01', 'title':'THE FIRST MESSAGE FORMULA', 'lines':['The First','Message','Formula'], 'detail':'50 adaptable openers', 'photo':'/static/cover-photos/vol-01.jpg'},
+  'reply-decoder': {'number':'02', 'title':'THE REPLY DECODER', 'lines':['The Reply','Decoder'], 'detail':'24 texting scenarios', 'photo':'/static/cover-photos/vol-02.jpg'},
+  'profile-makeover': {'number':'03', 'title':'THE PROFILE MAKEOVER', 'lines':['The Profile','Makeover'], 'detail':'40 profile ideas', 'photo':'/static/cover-photos/vol-03.jpg'},
+  'from-chat-to-first-date': {'number':'04', 'title':'FROM CHAT TO FIRST DATE', 'lines':['From Chat','to First Date'], 'detail':'36 invitation examples', 'photo':'/static/cover-photos/vol-04.jpg'}
 } %}
 {% set data = covers[slug] %}
-<div class="editorial-cover editorial-cover--{{ slug }} {{ extra_class }}" role="img" aria-label="HER POV Volume {{ data.number }}: {{ data.title }}. {{ data.stat }} {{ data.claim }}." style="background-image:url('/product-art/{{ slug }}.png')">
-  <img class="editorial-cover__photo" src="{{ data.photo }}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="950" height="950">
+<div class="editorial-cover editorial-cover--{{ slug }} {{ extra_class }}" role="img" aria-label="HER POV digital guide Volume {{ data.number }}: {{ data.title }}. {{ data.detail }}." style="background-image:url('/product-art/{{ slug }}.png')">
+  <img class="editorial-cover__photo" src="{{ data.photo }}" alt="" loading="lazy" decoding="async" width="900" height="900">
   <div class="editorial-cover__shade" aria-hidden="true"></div>
   <div class="editorial-cover__inner">
-    <div class="editorial-cover__brand">HER <span>POV</span></div>
-    <div class="editorial-cover__volume">VOLUME {{ data.number }}</div>
-    <div class="editorial-cover__title">{% for line in data.lines %}<span>{{ line }}</span>{% endfor %}</div>
-    <div class="editorial-cover__stat"><b>{{ data.stat }}</b><span>{{ data.claim }}</span></div>
-    <div class="editorial-cover__footer">HER POV <span>—</span> DIGITAL EDITION</div>
+    <div class="editorial-cover__masthead">
+      <span class="editorial-cover__brand">HER POV<span class="editorial-cover__brand-dot">.</span></span>
+      <span class="editorial-cover__volume">{{ data.number }}</span>
+    </div>
+    <div class="editorial-cover__content">
+      <span class="editorial-cover__series">THE CONVERSATION SERIES</span>
+      <div class="editorial-cover__title">{% for line in data.lines %}<span>{{ line }}</span>{% endfor %}</div>
+      <div class="editorial-cover__stat">{{ data.detail }}</div>
+    </div>
   </div>
 </div>
 {%- endmacro %}
