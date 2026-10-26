@@ -74,6 +74,7 @@ Before opening checkout, verify in Hotmart:
 - The seller confirms the bank account is approved; `HOTMART_PAYOUTS_CONFIRMED=yes` is set in hPanel.
 - `HOTMART_DELIVERY_TESTED=no` and `LAST_OFFER_DELIVERY_TESTED=no`: Hotmart producer previews and checkout inspection do not prove the post-payment email/access path. Hotmart's buyer help says access instructions are emailed after an order is approved, but no HER POV buyer order was tested. No purchase was made.
 - `MERCHANT_POLICIES_APPROVED=no` and `LAST_OFFER_POLICIES_APPROVED=no`; `MERCHANT_TAX_REVIEWED=no`; `LIVE_READY=no`; `LAST_OFFER_LAUNCH_APPROVED=no`.
+- Hotmart's tax rules currently classify the Complete Library as ESS (ebook) and as a product with no educational content. The PDFs are educational guides, so have a tax professional review the second classification and the applicable sales regions before changing it. The Hotmart wizard was opened for inspection and closed without saving changes.
 - Public Hotmart checkout still shows author `Magic Wolf`, while the account public profile is set to HER POV. Seller/legal name, mailing address and a verified support inbox have not been supplied for publication.
 - The Hostinger public domain uses valid HTTPS according to hPanel. Mobile speed checks did not return a result. No real purchase or payment test was made.
 
