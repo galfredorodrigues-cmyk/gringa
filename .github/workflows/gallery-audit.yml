@@ -56,26 +56,31 @@ jobs:
                       bbox=group.bounding_box()
                       assert bbox and bbox["width"]>230,(route,"gallery too narrow",bbox)
                       assert bbox["x"]>=-1 and bbox["x"]+bbox["width"]<=width+2,(route,width,"gallery overflow",bbox)
+                      # Load lazy photographs first; collecting metrics while scrolling
+                      # causes incorrect geometry from pending content above the gallery.
+                      for img in group.locator("img.editorial-cover__photo").all():
+                          img.scroll_into_view_if_needed()
+                          img.evaluate("(el) => el.decode()")
+                          assert img.evaluate("(el) => el.naturalWidth")>=350,(route,"image failed to load")
+                      group.scroll_into_view_if_needed()
+                      page.wait_for_timeout(350)
+                      group.screenshot(path=f"gallery-screenshots/{'home' if route=='/' else 'last-offer'}-{width}.png")
+                      def document_box(locator):
+                          return locator.evaluate("""(el) => {
+                              const r=el.getBoundingClientRect();
+                              return {x:r.left+window.scrollX,y:r.top+window.scrollY,
+                                      width:r.width,height:r.height};
+                          }""")
                       positions=[]
                       for tile in tiles.all():
                           assert tile.locator(".editorial-cover").count()==1,(route,"cover missing")
                           assert tile.locator(".her-gallery__name").count()==1,(route,"name missing")
                           cover=tile.locator(".editorial-cover")
-                          def document_box(locator):
-                              return locator.evaluate("""(el) => {
-                                  const r=el.getBoundingClientRect();
-                                  return {x:r.left+window.scrollX,y:r.top+window.scrollY,
-                                          width:r.width,height:r.height};
-                              }""")
                           cb=document_box(cover)
                           tb=document_box(tile)
-                          assert cb and tb and cb["width"]>=80,(route,width,"cover too small",cb)
-                          assert cb["x"]>=tb["x"]-2 and cb["x"]+cb["width"]<=tb["x"]+tb["width"]+2,(route,"cover escapes card")
-                          assert cb["height"]>=cb["width"]*.95,(route,"cover aspect distorted")
-                          img=cover.locator("img.editorial-cover__photo")
-                          img.scroll_into_view_if_needed()
-                          img.evaluate("(el) => el.decode()")
-                          assert img.evaluate("(el) => el.naturalWidth")>=350,(route,"image failed to load")
+                          assert cb and tb and cb["width"]>=80,(route,width,"cover too small",cb,tb)
+                          assert cb["x"]>=tb["x"]-2 and cb["x"]+cb["width"]<=tb["x"]+tb["width"]+2,(route,width,"cover escapes card",cb,tb)
+                          assert cb["height"]>=cb["width"]*.95,(route,"cover aspect distorted",cb)
                           positions.append((tb["x"],tb["y"],tb["width"],tb["height"]))
                       # Equal baseline and no intentionally lowered middle thumbnail.
                       by_row={}
