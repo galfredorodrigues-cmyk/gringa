@@ -5,3 +5,6 @@ private/
 *.pdf
 __pycache__/
 *.pyc
+
+node_modules/
+hotmart_assets/

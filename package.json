@@ -1,0 +1,22 @@
+{
+  "name": "her-pov-storefront",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HER POV storefront and pre-checkout offer, compatible with Hostinger Node.js hosting.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/galfredorodrigues-cmyk/gringa.git"
+  },
+  "dependencies": {
+    "express": "^5.3.0",
+    "nunjucks": "^3.2.4"
+  }
+}
