@@ -42,10 +42,10 @@ class LastOfferTests(unittest.TestCase):
         homepage = self.client.get("/").data
         final_offer = self.client.get("/last-offer").data
         photo_ids = (
-            b"photo-1604445759020-96c93fa61557",
-            b"photo-1726047336347-77803fc5f725",
-            b"photo-1770363759358-d6faebd4c6ea",
-            b"photo-1762342670289-d86a1902f0f3",
+            b"/static/cover-photos/vol-01.jpg",
+            b"/static/cover-photos/vol-02.jpg",
+            b"/static/cover-photos/vol-03.jpg",
+            b"/static/cover-photos/vol-04.jpg",
         )
         for photo in photo_ids:
             self.assertIn(photo, homepage)
