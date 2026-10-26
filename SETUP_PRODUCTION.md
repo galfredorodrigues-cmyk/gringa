@@ -4,6 +4,7 @@
 
 - GitHub repository: `galfredorodrigues-cmyk/gringa` (source of truth).
 - Public production: Hostinger Business, Node 20 / Express. The app renders the existing Jinja templates with Nunjucks and retains the approved HTML/CSS design and the `/`, `/last-offer`, `/upgrade`, legal, preview-art, and `/health` routes. Do not serve buyer PDFs from the public site.
+- Buyer support page: `/thank-you?offer=starter`, `/thank-you?offer=bundle`, or `/thank-you?offer=last-chance`. It shows offer-specific next steps, but does not independently verify payment or grant access.
 - Existing fallback: the Flask app remains on Render, but public DNS now points to Hostinger.
 - Hotmart is intended to process checkout and deliver the digital files. The storefront does not directly handle card data.
 
@@ -18,7 +19,7 @@
 | Complete Library — base offer `ajaj42kr` | Product 8808376 | $29.90 USD | Four guides + Cheat Sheet |
 | Last Chance Offer — `si2c0upa` | Same product 8808376 | $21.90 USD | Same five files as Complete Library |
 
-On 2026-10-26, all five products showed **Vendas ativas** in Hotmart. The three relevant checkout pages were opened without entering buyer data or submitting an order: Starter displayed $9.90, the Complete Library offer displayed $29.90, and the Last Chance offer displayed $21.90 as a total for the same full library. Hotmart's direct checkout pages are live and chargeable. The website continues to keep its buttons gated in preview mode.
+On 2026-10-26, the Hotmart product page showed **Vendas ativas** for the Complete Library, and all five product files were present in their respective producer-side eBook libraries. The three relevant checkout pages were opened without entering buyer data or submitting an order: Starter displayed $9.90, the Complete Library offer displayed $29.90, and the Last Chance offer displayed $21.90 as a total for the same full library. Hotmart's direct checkout pages are live and chargeable. The seller has authorized enabling the website buttons; that release instruction does not verify delivery, tax or policy compliance.
 
 The Starter eBook management page showed exactly `01_The_First_Message_Formula.pdf` and `Bonus_First_Message_Cheat_Sheet.pdf`. Its buyer-facing producer preview listed both with open/download controls. Complete Library's management page showed exactly the five named PDFs; the buyer-facing producer preview listed all five, and each opened in the preview. The opened PDFs displayed the expected page counts (56, 19, 19, 19, and 1 for the bonus) and updated covers. This verifies Hotmart's attached files and producer-side rendering, but not actual post-payment delivery to a buyer. No transaction was made. Hotmart documentation states approved orders trigger automatic access instructions by email; the actual receipt/access flow still requires a no-charge platform test if available, otherwise an authorized test order.
 
@@ -29,9 +30,9 @@ The Starter eBook management page showed exactly `01_The_First_Message_Formula.p
 3. Decline → Starter at $9.90, with Volume 01 and the bonus.
 4. Main page Complete Library button → direct $29.90 offer, bypassing `/last-offer`.
 
-The $21.90 option is a one-time total before checkout, not a post-purchase upsell or an additional $12. Do not advertise live checkout until all relevant Hotmart links, prices, seller requirements and delivery behavior are confirmed.
+The $21.90 option is a one-time total before checkout, not a post-purchase upsell or an additional $12. The release authorization is separate from the unresolved delivery and merchant checks below.
 
-## Fail-closed environment
+## Environment and release controls
 
 Copy `.env.example` into the hosting provider's environment settings. Leave all flags set to `no` and all links blank until there is direct evidence for each value. Do not commit real checkout links, seller contact details, credentials, or buyer files to GitHub.
 
@@ -40,13 +41,14 @@ For Hostinger's Node.js app environment, configure the same keys in hPanel. Requ
 - `HOSTINGER_MANAGED_NODE=yes` in Hostinger only. Hostinger imports the selected entry file, so this opt-in starts the Express listener when that runner loads `server.js`; leave it unset for local test imports.
 
 - `CHECKOUT_PROVIDER=hotmart`
+- `STOREFRONT_LAUNCH_AUTHORIZED=no` by default; this seller-controlled release instruction exposes validated official Hotmart links when set to `yes`.
 - `HOTMART_LINK_01`, `_02`, `_03`, `_04`, `_BUNDLE`, and `_LAST_OFFER`
 - `HOTMART_ALL_OFFERS_VERIFIED`, `HOTMART_USD_PRICES_VERIFIED`, `HOTMART_DELIVERY_TESTED`, `HOTMART_BUNDLE_CONTENT_VERIFIED`, `HOTMART_PAYOUTS_CONFIRMED`
 - `MERCHANT_LEGAL_NAME`, `MERCHANT_COUNTRY`, `MERCHANT_CONTACT_ADDRESS`, `SUPPORT_EMAIL`
 - `MERCHANT_POLICIES_APPROVED`, `MERCHANT_TAX_REVIEWED`, `LIVE_READY`
 - `LAST_OFFER_USD_PRICE_VERIFIED`, `LAST_OFFER_FIVE_FILES_VERIFIED`, `LAST_OFFER_DELIVERY_TESTED`, `LAST_OFFER_POLICIES_APPROVED`, `LAST_OFFER_LAUNCH_APPROVED`
 
-The server validates Hotmart domains, distinct standard offer URLs, all required standard gates, seller details, and independent Last Chance gates. The special $21.90 URL must be different from the five standard offer URLs. Missing or invalid values keep checkout disabled. `/health` reports the selected provider and whether the Hotmart integration checks are operational; `status=ok` only means the web process answered.
+The server validates Hotmart domains and distinct URLs before exposing links. The $21.90 URL must differ from the five standard URLs. `STOREFRONT_LAUNCH_AUTHORIZED=yes` does not set `HOTMART_DELIVERY_TESTED`, `LIVE_READY`, tax or policy flags. `/health` reports checkout exposure separately from delivery verification; `status=ok` only means the web process answered.
 
 ## Hostinger deployment and domain cutover
 
@@ -56,8 +58,8 @@ For this Hostinger app:
 
 1. The production Node app is already deployed and bound to `vitrinyx.com`.
 2. The DNS cutover is complete: apex ALIAS and `www` CNAME point to Hostinger CDN targets; the old Render `www` CNAME was removed. Hostinger hPanel shows SSL and CDN active.
-3. Keep the Hotmart checkout gates closed until delivery, policy, tax, seller identity and support details are confirmed.
-4. Production `/` and `/last-offer` load with the approved design; `/health` reports Hotmart and the fail-closed preview state. Legal, sample-art and health routes had been checked on the temporary app before cutover. Mobile performance testing did not produce a result and remains unverified.
+3. The seller has directed the storefront links to be enabled; the delivery, policy, tax and seller-identity checks remain unverified and are reported separately.
+4. Production `/` and `/last-offer` load with the approved design; `/health` reports Hotmart and independent checkout/delivery state. Legal, sample-art and health routes had been checked on the temporary app before cutover. Mobile performance testing did not produce a result and remains unverified.
 5. Keep Render running as a fallback, but do not expect the public domain to use it while DNS remains on Hostinger.
 6. Future releases: commit to GitHub `main`, update/redeploy the Hostinger app via hPanel, and repeat route, health, HTTPS and device checks. The app is not yet configured for automatic GitHub deploys.
 
@@ -78,4 +80,4 @@ Before opening checkout, verify in Hotmart:
 - Public Hotmart checkout still shows author `Magic Wolf`, while the account public profile is set to HER POV. Seller/legal name, mailing address and a verified support inbox have not been supplied for publication.
 - The Hostinger public domain uses valid HTTPS according to hPanel. Mobile speed checks did not return a result. No real purchase or payment test was made.
 
-At the current checked state, all five product records show active sales, and the configured checkout URLs and USD totals match the plan. Direct Hotmart checkouts are live/chargeable, while the website buttons remain disabled by `LIVE_READY=no`. Do not open the website checkouts, claim delivery was tested, or remove the preview notice until post-payment delivery, seller contact/legal details, policy approval, tax review and the public-name mismatch are resolved.
+At the current checked state, the three funnel checkout URLs and USD totals match the plan, and the producer-side Starter and Complete Library file sets match the expected contents. Direct Hotmart checkouts are live/chargeable. The public checkout still shows author `Magic Wolf`; policy approval, tax review and actual buyer delivery remain unverified. No real purchase was made.
