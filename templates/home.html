@@ -18,6 +18,7 @@
 <link rel="canonical" href="https://vitrinyx.com/">
 <link rel="stylesheet" href="{{ url_for('static',filename='css/landing.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/covers.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -266,11 +267,39 @@
         </div>
       </div>
 
-      <div class="launch-bundle__covers" aria-label="Every digital guide in the bundle">
-        <div>{{ editorial_cover('first-message-formula') }}<span>01 / FIRST MESSAGE</span></div>
-        <div>{{ editorial_cover('reply-decoder') }}<span>02 / REPLIES</span></div>
-        <div>{{ editorial_cover('profile-makeover') }}<span>03 / PROFILE</span></div>
-        <div>{{ editorial_cover('from-chat-to-first-date') }}<span>04 / FIRST DATE</span></div>
+      <div class="launch-bundle__covers her-gallery her-gallery--four" aria-label="Every digital guide in the bundle">
+        <figure class="her-gallery__item">
+          <div class="her-gallery__visual">{{ editorial_cover('first-message-formula') }}</div>
+          <figcaption class="her-gallery__caption">
+            <span class="her-gallery__overline">VOLUME 01</span>
+            <strong class="her-gallery__name">The First Message Formula</strong>
+            <span class="her-gallery__tag">FIRST MESSAGES</span>
+          </figcaption>
+        </figure>
+        <figure class="her-gallery__item">
+          <div class="her-gallery__visual">{{ editorial_cover('reply-decoder') }}</div>
+          <figcaption class="her-gallery__caption">
+            <span class="her-gallery__overline">VOLUME 02</span>
+            <strong class="her-gallery__name">The Reply Decoder</strong>
+            <span class="her-gallery__tag">REPLIES</span>
+          </figcaption>
+        </figure>
+        <figure class="her-gallery__item">
+          <div class="her-gallery__visual">{{ editorial_cover('profile-makeover') }}</div>
+          <figcaption class="her-gallery__caption">
+            <span class="her-gallery__overline">VOLUME 03</span>
+            <strong class="her-gallery__name">The Profile Makeover</strong>
+            <span class="her-gallery__tag">PROFILE</span>
+          </figcaption>
+        </figure>
+        <figure class="her-gallery__item">
+          <div class="her-gallery__visual">{{ editorial_cover('from-chat-to-first-date') }}</div>
+          <figcaption class="her-gallery__caption">
+            <span class="her-gallery__overline">VOLUME 04</span>
+            <strong class="her-gallery__name">From Chat to First Date</strong>
+            <span class="her-gallery__tag">FIRST DATE</span>
+          </figcaption>
+        </figure>
       </div>
 
       <div class="preview-intro" id="samples">
