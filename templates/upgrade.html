@@ -11,6 +11,7 @@
 <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/upgrade.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/covers.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
 </head>
 <body>
 <a class="skip" href="#main">Skip to offer</a>
@@ -34,10 +35,31 @@
       </div>
       <div class="books" aria-label="Three additional HER POV digital guide covers">
         <div class="books-eyebrow">THE THREE ADDITIONAL GUIDES <span>02–04</span></div>
-        <div class="book-row">
-          <figure class="book book-one">{{ editorial_cover('reply-decoder') }}<figcaption>02 / REPLIES</figcaption></figure>
-          <figure class="book book-two">{{ editorial_cover('profile-makeover') }}<figcaption>03 / PROFILE</figcaption></figure>
-          <figure class="book book-three">{{ editorial_cover('from-chat-to-first-date') }}<figcaption>04 / THE DATE</figcaption></figure>
+        <div class="book-row her-gallery her-gallery--three" aria-label="The three guides added by the full collection">
+          <figure class="her-gallery__item">
+            <div class="her-gallery__visual">{{ editorial_cover('reply-decoder') }}</div>
+            <figcaption class="her-gallery__caption">
+              <span class="her-gallery__overline">VOLUME 02</span>
+              <strong class="her-gallery__name">The Reply Decoder</strong>
+              <span class="her-gallery__tag">REPLIES</span>
+            </figcaption>
+          </figure>
+          <figure class="her-gallery__item">
+            <div class="her-gallery__visual">{{ editorial_cover('profile-makeover') }}</div>
+            <figcaption class="her-gallery__caption">
+              <span class="her-gallery__overline">VOLUME 03</span>
+              <strong class="her-gallery__name">The Profile Makeover</strong>
+              <span class="her-gallery__tag">PROFILE</span>
+            </figcaption>
+          </figure>
+          <figure class="her-gallery__item">
+            <div class="her-gallery__visual">{{ editorial_cover('from-chat-to-first-date') }}</div>
+            <figcaption class="her-gallery__caption">
+              <span class="her-gallery__overline">VOLUME 04</span>
+              <strong class="her-gallery__name">From Chat to First Date</strong>
+              <span class="her-gallery__tag">FIRST DATE</span>
+            </figcaption>
+          </figure>
         </div>
         <div class="books-footer">HER POV <span>—</span> PRACTICAL DATING CONVERSATION GUIDES</div>
       </div>
