@@ -60,6 +60,31 @@ class LastOfferTests(unittest.TestCase):
         self.assertNotIn(b"https://pay.hotmart.com/", homepage)
         self.assertNotIn(b"https://pay.hotmart.com/", final_offer)
 
+    def test_product_showcases_have_standardized_cards_and_responsive_styles(self):
+        homepage = self.client.get("/").data
+        last_offer = self.client.get("/last-offer").data
+        self.assertIn(b'class="launch-bundle__covers her-gallery her-gallery--four"', homepage)
+        self.assertIn(b'class="book-row her-gallery her-gallery--three"', last_offer)
+        self.assertIn(b"/static/css/gallery.css", homepage)
+        self.assertIn(b"/static/css/gallery.css", last_offer)
+        main_grid = homepage.split(b'class="launch-bundle__covers her-gallery her-gallery--four"')[1].split(b'</div>\\n\\n      <div class="preview-intro"')[0]
+        offer_grid = last_offer.split(b'class="book-row her-gallery her-gallery--three"')[1].split(b'<div class="books-footer"')[0]
+        self.assertEqual(main_grid.count(b'class="her-gallery__item"'), 4)
+        self.assertEqual(offer_grid.count(b'class="her-gallery__item"'), 3)
+        self.assertEqual(main_grid.count(b'class="her-gallery__caption"'), 4)
+        self.assertEqual(offer_grid.count(b'class="her-gallery__caption"'), 3)
+        self.assertEqual(main_grid.count(b'class="her-gallery__visual"'), 4)
+        self.assertEqual(offer_grid.count(b'class="her-gallery__visual"'), 3)
+        for label in (b"VOLUME 01", b"VOLUME 02", b"VOLUME 03", b"VOLUME 04"):
+            self.assertIn(label, main_grid)
+        for label in (b"VOLUME 02", b"VOLUME 03", b"VOLUME 04"):
+            self.assertIn(label, offer_grid)
+        # The final offer is a pre-checkout choice; visuals must never alter payments.
+        self.assertIn(b"YES", last_offer)
+        self.assertIn(b"LOSE THIS OFFER", last_offer)
+        self.assertIn(b"$21.90", last_offer)
+        self.assertIn(b"$29.90", homepage)
+
     def test_legacy_upgrade_url_redirects_to_last_offer(self):
         resp = self.client.get("/upgrade")
         self.assertEqual(resp.status_code, 302)
