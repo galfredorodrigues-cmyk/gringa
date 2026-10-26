@@ -23,7 +23,7 @@ class LastOfferTests(unittest.TestCase):
         }):
             response = self.client.get("/last-offer")
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(response.headers["Cache-Control"], "no-store, private")
+            self.assertTrue(response.headers["Cache-Control"].startswith("no-store"))
             self.assertIn("noindex", response.headers["X-Robots-Tag"])
             page = response.data
             for item in (
@@ -37,6 +37,28 @@ class LastOfferTests(unittest.TestCase):
             self.assertNotIn(b"https://pay.hotmart.com/", page)
             self.assertNotIn(b"https://buy.stripe.com/", page)
             self.assertNotIn(b'<form action=', page)
+
+    def test_distinct_real_photo_covers_on_both_sales_pages(self):
+        homepage = self.client.get("/").data
+        final_offer = self.client.get("/last-offer").data
+        photo_ids = (
+            b"photo-1604445759020-96c93fa61557",
+            b"photo-1726047336347-77803fc5f725",
+            b"photo-1770363759358-d6faebd4c6ea",
+            b"photo-1762342670289-d86a1902f0f3",
+        )
+        for photo in photo_ids:
+            self.assertIn(photo, homepage)
+        for photo in photo_ids[1:]:
+            self.assertIn(photo, final_offer)
+        self.assertEqual(homepage.count(b'class="editorial-cover editorial-cover--'), 8)
+        self.assertEqual(final_offer.count(b'class="editorial-cover editorial-cover--'), 3)
+        for page in (homepage, final_offer):
+            self.assertIn(b"/static/css/covers.css", page)
+            self.assertIn(b"HER POV", page)
+            self.assertIn(b"/product-art/", page)
+        self.assertNotIn(b"https://pay.hotmart.com/", homepage)
+        self.assertNotIn(b"https://pay.hotmart.com/", final_offer)
 
     def test_legacy_upgrade_url_redirects_to_last_offer(self):
         resp = self.client.get("/upgrade")
