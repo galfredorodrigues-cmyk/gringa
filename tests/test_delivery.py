@@ -48,7 +48,7 @@ class StorefrontTests(unittest.TestCase):
         with patch.dict(os.environ, ready):
             self.assertTrue(app.checkout_open())
             html = self.client.get("/").data
-            self.assertIn(b"START WITH THIS GUIDE", html)
+            self.assertIn(b"START WITH THE FIRST GUIDE", html)
             self.assertIn(b'href="/last-offer"', html)
             self.assertNotIn(b"buy.stripe.com", html)
             last_offer = self.client.get("/last-offer").data
@@ -88,9 +88,9 @@ class StorefrontTests(unittest.TestCase):
             self.assertTrue(app.hotmart_checkout_open())
             self.assertTrue(app.checkout_open())
             html=self.client.get("/").data
-            for i in range(102,106):
-                self.assertIn(("https://pay.hotmart.com/A"+str(i)).encode(),html)
-            self.assertNotIn(b"https://pay.hotmart.com/A101", html)
+            self.assertIn(b"https://pay.hotmart.com/A105", html)
+            for i in range(101,105):
+                self.assertNotIn(("https://pay.hotmart.com/A"+str(i)).encode(), html)
             last_offer = self.client.get("/last-offer").data
             self.assertIn(b"https://pay.hotmart.com/A101", last_offer)
             self.assertNotIn(b"https://pay.hotmart.com/A105", last_offer)
