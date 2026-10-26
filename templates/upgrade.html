@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+{% from 'cover_macro.html' import editorial_cover %}
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -33,9 +34,9 @@
       <div class="books" aria-label="Three additional HER POV digital guide covers">
         <div class="books-eyebrow">THE THREE ADDITIONAL GUIDES <span>02–04</span></div>
         <div class="book-row">
-          <figure class="book book-one"><img src="/product-art/reply-decoder.png" width="180" height="180" alt="The Reply Decoder cover"><figcaption>02 / REPLIES</figcaption></figure>
-          <figure class="book book-two"><img src="/product-art/profile-makeover.png" width="180" height="180" alt="The Profile Makeover cover"><figcaption>03 / PROFILE</figcaption></figure>
-          <figure class="book book-three"><img src="/product-art/from-chat-to-first-date.png" width="180" height="180" alt="From Chat to First Date cover"><figcaption>04 / THE DATE</figcaption></figure>
+          <figure class="book book-one">{{ editorial_cover('reply-decoder') }}<figcaption>02 / REPLIES</figcaption></figure>
+          <figure class="book book-two">{{ editorial_cover('profile-makeover') }}<figcaption>03 / PROFILE</figcaption></figure>
+          <figure class="book book-three">{{ editorial_cover('from-chat-to-first-date') }}<figcaption>04 / THE DATE</figcaption></figure>
         </div>
         <div class="books-footer">HER POV <span>—</span> PRACTICAL DATING CONVERSATION GUIDES</div>
       </div>
