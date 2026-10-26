@@ -123,3 +123,34 @@
   color:#dbc49d;
 }
 @media(prefers-reduced-motion:reduce){.editorial-cover{transition:none!important}}
+
+/*
+  The legacy four-guide section had a generic "span" rule that silently
+  shrank text INSIDE our book covers to 10px. Reset that inheritance.
+*/
+.launch-bundle__covers .editorial-cover__brand{
+  font:700 6.8cqw/1 Georgia,'Times New Roman',serif;
+  letter-spacing:.065em;
+  color:#f6ead3;
+}
+.launch-bundle__covers .editorial-cover__brand-dot{
+  font-size:inherit;
+  font-weight:inherit;
+  letter-spacing:inherit;
+  color:#d8b987;
+}
+.launch-bundle__covers .editorial-cover__volume{
+  font:700 5.4cqw/1 Arial,Helvetica,sans-serif;
+  letter-spacing:.09em;
+  color:#ead8b5;
+}
+.launch-bundle__covers .editorial-cover__series{
+  font:700 3.5cqw/1.3 Arial,Helvetica,sans-serif;
+  letter-spacing:.11em;
+  color:#d3b98c;
+}
+.launch-bundle__covers .editorial-cover__title span{
+  font:inherit;
+  letter-spacing:inherit;
+  color:inherit;
+}
