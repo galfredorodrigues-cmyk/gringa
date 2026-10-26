@@ -1,0 +1,94 @@
+name: HER POV responsive gallery audit
+on:
+  push:
+    branches: [main]
+    paths:
+      - "templates/home.html"
+      - "templates/upgrade.html"
+      - "static/css/gallery.css"
+      - "static/css/covers.css"
+      - ".github/workflows/gallery-audit.yml"
+permissions:
+  contents: read
+jobs:
+  gallery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install app and headless browser
+        run: |
+          pip install -r requirements.txt playwright==1.56.0
+          python -m playwright install chromium --with-deps
+      - name: Verify card alignment, readable layouts, and actual image loading
+        env:
+          STRIPE_MODE: test
+          CHECKOUT_PROVIDER: hotmart
+          LIVE_READY: "no"
+          DOWNLOAD_SIGNING_SECRET: "unit-test-gallery-visual-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          PUBLIC_BASE_URL: "https://example.test"
+          TEST_PAYMENT_LINK_ID: "plink_test_gallery"
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from threading import Thread
+          from werkzeug.serving import make_server
+          from playwright.sync_api import sync_playwright
+          import app
+          server=make_server("127.0.0.1",8765,app.app)
+          Thread(target=server.serve_forever,daemon=True).start()
+          Path("gallery-screenshots").mkdir(exist_ok=True)
+          with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True)
+              for width in (1440,820,390,320):
+                  page=browser.new_page(viewport={"width":width,"height":800},device_scale_factor=1)
+                  for route,selector,count in (
+                      ("/",".launch-bundle__covers.her-gallery",4),
+                      ("/last-offer",".books .book-row.her-gallery",3)):
+                      response=page.goto("http://127.0.0.1:8765"+route,wait_until="domcontentloaded")
+                      assert response.status==200,(route,response.status)
+                      group=page.locator(selector)
+                      assert group.count()==1,(route,"gallery missing")
+                      tiles=group.locator(".her-gallery__item")
+                      assert tiles.count()==count,(route,count,tiles.count())
+                      bbox=group.bounding_box()
+                      assert bbox and bbox["width"]>230,(route,"gallery too narrow",bbox)
+                      assert bbox["x"]>=-1 and bbox["x"]+bbox["width"]<=width+2,(route,width,"gallery overflow",bbox)
+                      positions=[]
+                      for tile in tiles.all():
+                          assert tile.locator(".editorial-cover").count()==1,(route,"cover missing")
+                          assert tile.locator(".her-gallery__name").count()==1,(route,"name missing")
+                          cover=tile.locator(".editorial-cover")
+                          cb=cover.bounding_box()
+                          tb=tile.bounding_box()
+                          assert cb and tb and cb["width"]>=80,(route,width,"cover too small",cb)
+                          assert cb["x"]>=tb["x"]-2 and cb["x"]+cb["width"]<=tb["x"]+tb["width"]+2,(route,"cover escapes card")
+                          assert cb["height"]>=cb["width"]*.95,(route,"cover aspect distorted")
+                          img=cover.locator("img.editorial-cover__photo")
+                          img.scroll_into_view_if_needed()
+                          img.evaluate("(el) => el.decode()")
+                          assert img.evaluate("(el) => el.naturalWidth")>=350,(route,"image failed to load")
+                          positions.append((tb["x"],tb["y"],tb["width"],tb["height"]))
+                      # Equal baseline and no intentionally lowered middle thumbnail.
+                      by_row={}
+                      for x,y,w,h in positions:by_row.setdefault(round(y/15)*15,[]).append(h)
+                      for heights in by_row.values():
+                          assert max(heights)-min(heights)<=3,(route,width,"cards not aligned",positions)
+                      if route=="/last-offer" and width<=390:
+                          assert len(set(round(x) for x,y,w,h in positions))==1,(route,"phone should stack cards",positions)
+                      if route=="/" and width<=390:
+                          assert len(set(round(y) for x,y,w,h in positions))==2,(route,"four-card gallery should be 2 rows",positions)
+                      group.screenshot(path=f"gallery-screenshots/{'home' if route=='/' else 'last-offer'}-{width}.png")
+                      print("PASS",route,width,"cards:",count,"positions:",positions)
+                  page.close()
+              browser.close()
+          server.shutdown()
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: responsive-gallery-screenshots
+          path: gallery-screenshots/
+          retention-days: 7
