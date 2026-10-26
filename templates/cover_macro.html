@@ -3,10 +3,10 @@
    The existing public product-art PNG serves as visual fallback if an image fails to load. #}
 {% macro editorial_cover(slug, extra_class='') -%}
 {% set covers = {
-  'first-message-formula': {'number':'01', 'title':'THE FIRST MESSAGE FORMULA', 'lines':['THE FIRST','MESSAGE','FORMULA'], 'stat':'50', 'claim':'ADAPTABLE OPENERS', 'photo':'https://images.unsplash.com/photo-1604445759020-96c93fa61557?auto=format&fit=crop&w=950&h=950&q=82'},
-  'reply-decoder': {'number':'02', 'title':'THE REPLY DECODER', 'lines':['THE REPLY','DECODER'], 'stat':'24', 'claim':'TEXTING SCENARIOS', 'photo':'https://images.unsplash.com/photo-1726047336347-77803fc5f725?auto=format&fit=crop&w=950&h=950&q=82'},
-  'profile-makeover': {'number':'03', 'title':'THE PROFILE MAKEOVER', 'lines':['THE PROFILE','MAKEOVER'], 'stat':'40', 'claim':'BIO & PROFILE IDEAS', 'photo':'https://images.unsplash.com/photo-1770363759358-d6faebd4c6ea?auto=format&fit=crop&w=950&h=950&q=82'},
-  'from-chat-to-first-date': {'number':'04', 'title':'FROM CHAT TO FIRST DATE', 'lines':['FROM CHAT','TO FIRST','DATE'], 'stat':'36', 'claim':'INVITATION EXAMPLES', 'photo':'https://images.unsplash.com/photo-1762342670289-d86a1902f0f3?auto=format&fit=crop&w=950&h=950&q=82'}
+  'first-message-formula': {'number':'01', 'title':'THE FIRST MESSAGE FORMULA', 'lines':['THE FIRST','MESSAGE','FORMULA'], 'stat':'50', 'claim':'ADAPTABLE OPENERS', 'photo':'/static/cover-photos/vol-01.jpg'},
+  'reply-decoder': {'number':'02', 'title':'THE REPLY DECODER', 'lines':['THE REPLY','DECODER'], 'stat':'24', 'claim':'TEXTING SCENARIOS', 'photo':'/static/cover-photos/vol-02.jpg'},
+  'profile-makeover': {'number':'03', 'title':'THE PROFILE MAKEOVER', 'lines':['THE PROFILE','MAKEOVER'], 'stat':'40', 'claim':'BIO & PROFILE IDEAS', 'photo':'/static/cover-photos/vol-03.jpg'},
+  'from-chat-to-first-date': {'number':'04', 'title':'FROM CHAT TO FIRST DATE', 'lines':['FROM CHAT','TO FIRST','DATE'], 'stat':'36', 'claim':'INVITATION EXAMPLES', 'photo':'/static/cover-photos/vol-04.jpg'}
 } %}
 {% set data = covers[slug] %}
 <div class="editorial-cover editorial-cover--{{ slug }} {{ extra_class }}" role="img" aria-label="HER POV Volume {{ data.number }}: {{ data.title }}. {{ data.stat }} {{ data.claim }}." style="background-image:url('/product-art/{{ slug }}.png')">
