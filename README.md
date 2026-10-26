@@ -25,6 +25,14 @@ The HER POV AI Coach is a future idea, not sold in this launch.
 - **Stripe + SendOwl** are the legacy fallback, with payment links still gated/inactive; there is no public buyer checkout today.
 - Never put buyer PDF files, merchant credentials or API tokens in GitHub.
 
+## Marketing cover artwork on both sales pages
+
+- Four distinct, high-resolution real photographic portraits are stored as locally served JPGs in `static/cover-photos/vol-01.jpg` through `vol-04.jpg` (900×900); each volume uses a **different person/photo and pose**.
+- The reusable `templates/cover_macro.html` renders the branded HTML/CSS cover design for both the main page and `/last-offer`. `static/css/covers.css` keeps labels and volume titles responsive. The hero cover and standalone first-guide checkout illustration also use Volume 01 photography.
+- Source images are free Unsplash photographs under the <https://unsplash.com/license> commercial-use license, individually downloaded and optimized by `.github/workflows/install-cover-photos.yml`. Originals: `photo-1604445759020-96c93fa61557`, `photo-1726047336347-77803fc5f725`, `photo-1770363759358-d6faebd4c6ea`, `photo-1762342670289-d86a1902f0f3`.
+- Portraits are illustrative models, **not** customer testimonials or pictures of people who used the guides. No dating outcome is implied. The original `/product-art/<slug>.png` route remains a public visual fallback and the actual downloadable PDFs are unchanged.
+- Copy, original prices and pre-checkout purchase routing are unchanged. Marketing photos do not authorize or activate payment.
+
 ## Pre-checkout Last Chance Offer (no payments active)
 
 - Main storefront: `https://vitrinyx.com/` preserves the original core story, method, educational example, guide details, real PDF excerpts and FAQ, but prioritizes **Volume 01 + bonus for USD $9.90**. The hero CTA communicates the benefit (not the price), prices are explicit in the two-option selector (starter first, **four volumes + bonus for USD $29.90** second), and the longer bundle pitch now follows the full starter-guide story. Added a real practical tip and concise objections near the selection point.
