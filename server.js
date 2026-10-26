@@ -35,7 +35,7 @@ const SLUGS = new Set([
 ]);
 
 function hotmartUrl(raw) {
-  if (!raw || raw.length > 600 || /\\s/.test(raw)) return '';
+  if (!raw || raw.length > 600 || /\s/.test(raw)) return '';
   try {
     const u = new URL(raw);
     if (u.protocol !== 'https:' || !['pay.hotmart.com', 'go.hotmart.com'].includes(u.hostname.toLowerCase()) ||
@@ -79,7 +79,7 @@ const views = nunjucks.configure(TEMPLATE_DIR, {
   noCache: process.env.NODE_ENV !== 'production',
 });
 views.addGlobal('url_for', (endpoint, options = {}) => {
-  if (endpoint === 'static') return `/static/${String(options.filename || '').replace(/^\\/+/, '')}`;
+  if (endpoint === 'static') return `/static/${String(options.filename || '').replace(/^\/+/, '')}`;
   if (endpoint === 'last_offer') return '/last-offer';
   return '/';
 });
@@ -131,7 +131,7 @@ app.get('/upgrade', (req, res) => {
 });
 
 app.get('/sample-page/:file', (req, res, next) => {
-  const match = /^([a-z-]+)\\.svg$/.exec(req.params.file);
+  const match = /^([a-z-]+)\.svg$/.exec(req.params.file);
   if (!match || !SLUGS.has(match[1])) return res.sendStatus(404);
   const file = path.join(ROOT, 'static', 'sample-pages', `${match[1]}.svg`);
   if (!fs.existsSync(file)) return res.sendStatus(404);
@@ -141,7 +141,7 @@ app.get('/sample-page/:file', (req, res, next) => {
 });
 
 app.get('/product-art/:file', (req, res, next) => {
-  const match = /^([a-z-]+)\\.png$/.exec(req.params.file);
+  const match = /^([a-z-]+)\.png$/.exec(req.params.file);
   if (!match || !ASSET_SLUGS.has(match[1])) return res.sendStatus(404);
   const file = path.join(ROOT, 'static', 'product-art', `${match[1]}.png`);
   if (!fs.existsSync(file)) return res.sendStatus(404);
