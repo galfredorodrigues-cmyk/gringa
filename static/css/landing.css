@@ -172,3 +172,13 @@
 .choice__value-questions p{font-size:12px;color:#676b6b;line-height:1.65;margin:10px 0 2px}
 .choice__value-questions p a{color:#7e5d34;text-decoration:underline}
 @media(max-width:780px){.choice__value{grid-template-columns:1fr;gap:20px;padding:23px}}
+
+/* HER POV real photography on existing cover illustrations, preserving copy. */
+.book{overflow:hidden}
+.book__photograph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:58% center;opacity:.47;filter:saturate(.78) contrast(1.14) brightness(.75);pointer-events:none}
+.book:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0a0c13de 0%,#0a0c1380 50%,transparent 100%),linear-gradient(0deg,#0a0c13d1,transparent 44%);pointer-events:none}
+.book__top,.book__center,.book__bottom{position:relative;z-index:1}
+.checkout-card__cover{position:relative;overflow:hidden}
+.checkout-card__photograph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:57% center;opacity:.45;filter:saturate(.8) brightness(.66) contrast(1.1)}
+.checkout-card__cover:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0b1019cc,transparent 90%),linear-gradient(0deg,#0b1019b0,transparent 70%);pointer-events:none}
+.checkout-card__cover>span,.checkout-card__cover>strong,.checkout-card__cover>small{position:relative;z-index:1;text-shadow:0 1px 7px #000c}
