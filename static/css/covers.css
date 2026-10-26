@@ -1,40 +1,125 @@
-/* HER POV / differentiated editorial ebook covers across both sales pages.
-   Every portrait comes from a different photo; titles remain accessible HTML.
-   Backgrounds fall back to the original /product-art PNG route if photos fail.
+/*
+  HER POV / editorial cover system V2.
+  Visual brief: an understated contemporary book-jacket series, not product ads.
+  One visual language across both pages; differentiated portrait per volume.
 */
-.editorial-cover{--cover-accent:#e4bd7b;position:relative;isolation:isolate;overflow:hidden;display:block;width:100%;aspect-ratio:1/1;container-type:inline-size;background-position:center;background-size:cover;background-color:#111821;border:1px solid #ab8961;border-radius:4px;box-shadow:0 11px 25px #0003;color:#fdf8ed}
-.editorial-cover--reply-decoder{--cover-accent:#e3a7a8}
-.editorial-cover--profile-makeover{--cover-accent:#c2d2b6}
-.editorial-cover--from-chat-to-first-date{--cover-accent:#e7b98e}
-.editorial-cover__photo{position:absolute!important;inset:0!important;display:block;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;border:0!important;border-radius:0!important;box-shadow:none!important;filter:saturate(.85) contrast(1.1)!important;opacity:.89}
-.editorial-cover--first-message-formula .editorial-cover__photo{object-position:57% center}
-.editorial-cover--reply-decoder .editorial-cover__photo{object-position:53% center;filter:saturate(.8) contrast(1.1) brightness(.78)!important}
-.editorial-cover--profile-makeover .editorial-cover__photo{object-position:59% center;filter:saturate(.65) contrast(1.13) brightness(.82)!important}
-.editorial-cover--from-chat-to-first-date .editorial-cover__photo{object-position:64% center;filter:saturate(.8) contrast(1.2) brightness(.78)!important}
-.editorial-cover__shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,12,19,.98) 0%,rgba(8,12,19,.92) 29%,rgba(8,12,19,.58) 60%,rgba(8,12,19,.08) 100%),linear-gradient(0deg,#080b13 0%,transparent 41%,rgba(7,9,13,.34) 100%);z-index:1}
-.editorial-cover__inner{position:relative;z-index:2;display:flex;flex-direction:column;width:100%;height:100%;padding:6.5%;text-align:left}
-.editorial-cover__brand{font:700 5.6cqw/1 Georgia,'Times New Roman',serif;letter-spacing:.21em;color:#fff2d6;text-transform:uppercase;white-space:nowrap;text-shadow:0 1px 8px #000}
-.editorial-cover__brand span{color:var(--cover-accent)}
-.editorial-cover__volume{align-self:flex-start;margin-top:3.7%;padding:1.5% 2.9%;border:1px solid var(--cover-accent);color:var(--cover-accent);background:#0b0e16bd;font:700 3.5cqw/1.2 Arial,sans-serif;letter-spacing:.16em}
-.editorial-cover__title{flex:1;display:flex;flex-direction:column;justify-content:center;gap:1.2%;margin:0;max-width:98%;font:700 11cqw/1.01 Georgia,'Times New Roman',serif;letter-spacing:-.055em;color:#fffcf5;text-transform:uppercase;text-shadow:1px 2px 12px #000b}
+.editorial-cover{
+  position:relative;
+  display:block;
+  isolation:isolate;
+  overflow:hidden;
+  width:100%;
+  aspect-ratio:4/5;
+  container-type:inline-size;
+  background-color:#141b24;
+  background-position:center;
+  background-size:cover;
+  border:1px solid rgba(217,191,150,.48);
+  border-radius:2px;
+  color:#f7f1e7;
+  box-shadow:0 14px 28px rgba(0,0,0,.24);
+}
+.editorial-cover__photo{
+  position:absolute!important;
+  display:block;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:cover!important;
+  object-position:center 31%;
+  filter:grayscale(.28) sepia(.13) saturate(.58) contrast(1.06) brightness(.84)!important;
+  border:0!important;
+  margin:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  opacity:1;
+}
+.editorial-cover--first-message-formula .editorial-cover__photo{object-position:52% 34%;filter:grayscale(.22) sepia(.12) saturate(.62) contrast(1.08) brightness(.94)!important}
+.editorial-cover--reply-decoder .editorial-cover__photo{object-position:56% 25%;filter:grayscale(.35) sepia(.13) saturate(.6) contrast(1.04) brightness(.78)!important}
+.editorial-cover--profile-makeover .editorial-cover__photo{object-position:51% 30%;filter:grayscale(.42) sepia(.16) saturate(.45) contrast(1.12) brightness(.78)!important}
+.editorial-cover--from-chat-to-first-date .editorial-cover__photo{object-position:58% 34%;filter:grayscale(.28) sepia(.11) saturate(.59) contrast(1.11) brightness(.83)!important}
+.editorial-cover__shade{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:
+    linear-gradient(0deg,#101720 0%,rgba(16,23,32,.99) 19%,rgba(16,23,32,.88) 37%,rgba(16,23,32,.08) 75%),
+    linear-gradient(180deg,rgba(6,10,16,.72) 0%,transparent 20%);
+}
+.editorial-cover__inner{
+  position:relative;
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  width:100%;
+  height:100%;
+  padding:8.2% 8.2% 8.8%;
+  text-align:left;
+}
+.editorial-cover__masthead{
+  display:flex;
+  justify-content:space-between;
+  align-items:start;
+  width:100%;
+  gap:8%;
+  border-bottom:1px solid rgba(234,218,192,.58);
+  padding-bottom:5%;
+}
+.editorial-cover__brand{
+  font:700 6.8cqw/1 Georgia,'Times New Roman',serif;
+  letter-spacing:.065em;
+  white-space:nowrap;
+  color:#f6ead3;
+  text-shadow:0 1px 8px #070e16c9;
+}
+.editorial-cover__brand-dot{color:#d8b987}
+.editorial-cover__volume{
+  font:700 5.4cqw/1 Arial,Helvetica,sans-serif;
+  letter-spacing:.09em;
+  color:#ead8b5;
+}
+.editorial-cover__content{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  min-width:0;
+}
+.editorial-cover__series{
+  display:block;
+  font:700 3.5cqw/1.3 Arial,Helvetica,sans-serif;
+  letter-spacing:.11em;
+  color:#d3b98c;
+  text-transform:uppercase;
+  margin-bottom:6%;
+}
+.editorial-cover__title{
+  display:flex;
+  flex-direction:column;
+  gap:1.2%;
+  margin:0 0 7%;
+  width:100%;
+  color:#f9f5ed;
+  font:400 12.3cqw/.97 Georgia,'Times New Roman',serif;
+  letter-spacing:-.055em;
+  text-transform:none;
+  text-shadow:0 1px 9px rgba(0,0,0,.48);
+}
 .editorial-cover__title span{display:block}
-.editorial-cover__title span:nth-child(2){color:var(--cover-accent)}
-.editorial-cover--first-message-formula .editorial-cover__title{font-size:11.9cqw}
-.editorial-cover--from-chat-to-first-date .editorial-cover__title{font-size:11.9cqw}
-.editorial-cover__stat{display:flex;align-items:center;gap:5%;min-width:0;padding:2.7% 4%;margin-bottom:5%;background:#350d18d6;border:1px solid #cfab71;color:#f4ead6}
-.editorial-cover__stat b{font:700 13.7cqw/.9 Georgia,serif;color:var(--cover-accent)}
-.editorial-cover__stat span{font:700 4.3cqw/1.15 Arial,sans-serif;letter-spacing:.025em;text-transform:uppercase}
-.editorial-cover__footer{border-top:1px solid #ab8961;padding-top:2.6%;font:700 3.7cqw Arial,sans-serif;letter-spacing:.13em;color:#efe1c5;white-space:nowrap}
-.editorial-cover__footer span{color:var(--cover-accent)}
-.launch-bundle__covers .editorial-cover{width:min(100%,166px)}
-.journey__item .editorial-cover{width:113px;margin:24px 0 15px}
-.book .editorial-cover{width:100%;box-shadow:0 12px 25px #0009}
-@media(max-width:700px){.journey__item .editorial-cover{margin:18px 0 13px}}
-@media(max-width:430px){.launch-bundle__covers .editorial-cover{width:min(100%,140px)}}
+.editorial-cover--from-chat-to-first-date .editorial-cover__title{font-size:11.7cqw}
+.editorial-cover__stat{
+  display:block;
+  margin:0;
+  border:0;
+  border-top:1px solid rgba(218,191,147,.75);
+  background:transparent;
+  width:100%;
+  padding:6% 0 0;
+  font:700 4.1cqw/1.3 Arial,Helvetica,sans-serif;
+  letter-spacing:.045em;
+  text-transform:uppercase;
+  color:#dbc49d;
+}
 @media(prefers-reduced-motion:reduce){.editorial-cover{transition:none!important}}
-
-/* Restore cover-specific typography against the existing site's broad thumbnail span rule. */
-.launch-bundle__covers .editorial-cover span{font-size:inherit;letter-spacing:inherit;font-weight:inherit;color:inherit}
-.launch-bundle__covers .editorial-cover__title span:nth-child(2),
-.launch-bundle__covers .editorial-cover__brand span{color:var(--cover-accent)}
-.launch-bundle__covers .editorial-cover__stat span{font-size:4.3cqw;letter-spacing:.025em}
