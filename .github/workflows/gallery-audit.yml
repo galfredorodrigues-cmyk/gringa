@@ -61,8 +61,14 @@ jobs:
                           assert tile.locator(".editorial-cover").count()==1,(route,"cover missing")
                           assert tile.locator(".her-gallery__name").count()==1,(route,"name missing")
                           cover=tile.locator(".editorial-cover")
-                          cb=cover.bounding_box()
-                          tb=tile.bounding_box()
+                          def document_box(locator):
+                              return locator.evaluate("""(el) => {
+                                  const r=el.getBoundingClientRect();
+                                  return {x:r.left+window.scrollX,y:r.top+window.scrollY,
+                                          width:r.width,height:r.height};
+                              }""")
+                          cb=document_box(cover)
+                          tb=document_box(tile)
                           assert cb and tb and cb["width"]>=80,(route,width,"cover too small",cb)
                           assert cb["x"]>=tb["x"]-2 and cb["x"]+cb["width"]<=tb["x"]+tb["width"]+2,(route,"cover escapes card")
                           assert cb["height"]>=cb["width"]*.95,(route,"cover aspect distorted")
