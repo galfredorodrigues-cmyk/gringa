@@ -3,8 +3,8 @@
 ## Current architecture
 
 - GitHub repository: `galfredorodrigues-cmyk/gringa` (source of truth).
-- Existing fallback: Flask on Render (`her-pov-preview.onrender.com`); keep it available until Hostinger has passed validation and DNS is intentionally migrated.
-- Hostinger candidate: the same existing Jinja templates rendered by a new Express/Nunjucks adapter in `server.js`. This retains the approved HTML/CSS design and the `/`, `/last-offer`, `/upgrade`, legal, preview-art, and `/health` routes. Do not serve buyer PDFs from the public site.
+- Public production: Hostinger Business, Node 20 / Express. The app renders the existing Jinja templates with Nunjucks and retains the approved HTML/CSS design and the `/`, `/last-offer`, `/upgrade`, legal, preview-art, and `/health` routes. Do not serve buyer PDFs from the public site.
+- Existing fallback: the Flask app remains on Render, but public DNS now points to Hostinger.
 - Hotmart is intended to process checkout and deliver the digital files. The storefront does not directly handle card data.
 
 ## Commerce map (observed in Hotmart UI)
@@ -18,7 +18,7 @@
 | Complete Library — base offer `ajaj42kr` | Product 8808376 | $29.90 USD | Four guides + Cheat Sheet |
 | Last Chance Offer — `si2c0upa` | Same product 8808376 | $21.90 USD | Same five files as Complete Library |
 
-On 2026-10-26, all five products showed **Vendas ativas** in Hotmart. The three relevant checkout pages were opened without entering buyer data or submitting an order: Starter displayed $9.90, the Complete Library offer displayed $29.90, and the Last Chance offer displayed $21.90 as a total for the same full library. Hotmart's checkout pages are live and chargeable if a buyer uses a link; the HER POV website continues to keep its buttons gated in preview mode.
+On 2026-10-26, all five products showed **Vendas ativas** in Hotmart. The three relevant checkout pages were opened without entering buyer data or submitting an order: Starter displayed $9.90, the Complete Library offer displayed $29.90, and the Last Chance offer displayed $21.90 as a total for the same full library. Hotmart's direct checkout pages are live and chargeable. The website continues to keep its buttons gated in preview mode.
 
 The Starter eBook management page showed exactly `01_The_First_Message_Formula.pdf` and `Bonus_First_Message_Cheat_Sheet.pdf`. Its buyer-facing producer preview listed both with open/download controls. Complete Library's management page showed exactly the five named PDFs; the buyer-facing producer preview listed all five, and each opened in the preview. The opened PDFs displayed the expected page counts (56, 19, 19, 19, and 1 for the bonus) and updated covers. This verifies Hotmart's attached files and producer-side rendering, but not actual post-payment delivery to a buyer. No transaction was made. Hotmart documentation states approved orders trigger automatic access instructions by email; the actual receipt/access flow still requires a no-charge platform test if available, otherwise an authorized test order.
 
@@ -50,19 +50,18 @@ The server validates Hotmart domains, distinct standard offer URLs, all required
 
 ## Hostinger deployment and domain cutover
 
-Hostinger's current official guidance lists Business Web Hosting as supporting Node.js web apps and Express, including deployment from GitHub. Account-specific app slots, resource limits and DNS/SSL settings still need inspection inside the owner's hPanel.
+Hostinger Business has one app deployed and uses 20% of plan resources. The production app was uploaded as `her-pov-hostinger-fixed.zip` and uses Node 20 / Express. The custom domain `vitrinyx.com` (with “y”; the account-registered domain) is now connected to this app. hPanel shows SSL and CDN active. Automatic GitHub deployment is not connected; GitHub `main` remains the source of truth, and future releases must be uploaded/redeployed through hPanel until a Git deployment is explicitly connected.
 
 For this Hostinger app:
 
-1. Create a Node.js web app for a temporary Hostinger domain/subdomain. Use Node 20/22/24 supported by hPanel, framework Express, repository `galfredorodrigues-cmyk/gringa`, and branch `main` (the adapter is merged there).
-2. Build command: `npm install`; entry file: `server.js`.
-3. Keep the Hotmart checkout gates closed. Set no real seller secrets in source files.
-4. Test `/`, `/last-offer`, `/upgrade`, `/terms`, `/privacy`, `/refunds`, `/contact`, all four `/sample-page/*.svg` previews, `/product-art/*.png`, and `/health` on the temporary Hostinger URL, desktop and mobile. Verify no 404/500, no sensitive PDFs exposed, and check TLS on that temporary domain.
-5. Confirm app logs, resource behavior, Hostinger SSL, and custom-domain binding. Do not change `vitrinyx.com` DNS yet.
-6. Only after the Hostinger copy is healthy, approved, and ready should the owner authorize a DNS switch. Keep Render unchanged until DNS, HTTPS, redirects and real device/browser smoke checks pass.
-7. Future releases: commit to GitHub, review, merge/deploy the approved branch in hPanel, run the route and health checks, then promote the deployment.
+1. The production Node app is already deployed and bound to `vitrinyx.com`.
+2. The DNS cutover is complete: apex ALIAS and `www` CNAME point to Hostinger CDN targets; the old Render `www` CNAME was removed. Hostinger hPanel shows SSL and CDN active.
+3. Keep the Hotmart checkout gates closed until delivery, policy, tax, seller identity and support details are confirmed.
+4. Production `/` and `/last-offer` load with the approved design; `/health` reports Hotmart and the fail-closed preview state. Legal, sample-art and health routes had been checked on the temporary app before cutover. Mobile performance testing did not produce a result and remains unverified.
+5. Keep Render running as a fallback, but do not expect the public domain to use it while DNS remains on Hostinger.
+6. Future releases: commit to GitHub `main`, update/redeploy the Hostinger app via hPanel, and repeat route, health, HTTPS and device checks. The app is not yet configured for automatic GitHub deploys.
 
-The temporary app `dodgerblue-seal-706434.hostingersite.com` was created in the owner's Business plan and deployed from `her-pov-hostinger-fixed.zip`. The first version returned 503 because Hostinger imports the entry file and does not support a `require.main === module` guard around `listen()`. The fix now uses `HOSTINGER_MANAGED_NODE=yes`. After redeployment, `/health` returned Hotmart with `integration_operational=false`, `checkout_enabled=false`, `live_ready=false`, and `mode=preview`; Hostinger runtime logs reported zero errors. Desktop routes for the home, offer, redirect, legal pages, sample SVGs, product-art images, health, and the expected 404 were checked. The approved editorial design rendered. The temporary site loaded over HTTPS without a browser certificate warning. Mobile performance was not checked in this pass. Keep the custom domain/DNS untouched until delivery and seller/policy checks pass.
+The initial temporary app `dodgerblue-seal-706434.hostingersite.com` returned 503 because Hostinger imports the entry file. The server fix uses `HOSTINGER_MANAGED_NODE=yes`. After redeployment, Hostinger logs reported zero errors. The account-registered custom domain was then connected and the public DNS was moved to Hostinger. On 2026-10-26, `https://www.vitrinyx.com/health` returned `checkout_provider=hotmart`, `delivery_provider=hotmart`, `integration_operational=false`, `checkout_enabled=false`, `live_ready=false`, and `mode=preview`. The home and Last Chance pages rendered on the custom domain with the approved design and disabled payment buttons. hPanel shows SSL and CDN active. The temporary hostname no longer serves the app after custom-domain binding.
 
 ## Release validation gates
 
@@ -72,9 +71,10 @@ Before opening checkout, verify in Hotmart:
 - USD one-time amounts and offer-specific checkout links match the table above.
 - Starter has exactly Volume 01 + Cheat Sheet; Complete $29.90 and Last Chance $21.90 each deliver the same five PDFs.
 - Covers on Hotmart correspond to current approved sales-page covers; PDF page counts/content remain intact.
-- The owner confirms the seller bank account is approved. A previously viewed HotPay Brasil screen did not display a payout account, so reconcile that account-level view in Hotmart before setting `HOTMART_PAYOUTS_CONFIRMED=yes`; do not treat bank approval itself as pending without a current platform block.
-- Seller identity, policies, tax position, refund window, customer-support inbox, payment methods and US buyer checkout are confirmed.
-- Test accept/decline/direct-bundle routing on the deployed preview and test automatic post-payment file access using a platform no-charge method if available. Producer previews and checkout-page inspection are complete, but they do not prove post-payment buyer email/access. Never conduct a real purchase without the owner's authorization.
-- Test Hostinger deployment and temporary-domain HTTPS before any DNS change.
+- The seller confirms the bank account is approved; `HOTMART_PAYOUTS_CONFIRMED=yes` is set in hPanel.
+- `HOTMART_DELIVERY_TESTED=no` and `LAST_OFFER_DELIVERY_TESTED=no`: Hotmart producer previews and checkout inspection do not prove the post-payment email/access path. Hotmart's buyer help says access instructions are emailed after an order is approved, but no HER POV buyer order was tested. No purchase was made.
+- `MERCHANT_POLICIES_APPROVED=no` and `LAST_OFFER_POLICIES_APPROVED=no`; `MERCHANT_TAX_REVIEWED=no`; `LIVE_READY=no`; `LAST_OFFER_LAUNCH_APPROVED=no`.
+- Public Hotmart checkout still shows author `Magic Wolf`, while the account public profile is set to HER POV. Seller/legal name, mailing address and a verified support inbox have not been supplied for publication.
+- The Hostinger public domain uses valid HTTPS according to hPanel. Mobile speed checks did not return a result. No real purchase or payment test was made.
 
-At the current checked state, all five product records show active sales and the three checkout totals match the planned prices. The Hostinger preview and the public Render site both keep checkout disabled; Render remains unchanged as the fallback. Do not set `LIVE_READY=yes`, mark delivery as fully verified, or promote the site until the temporary Hostinger deployment and post-payment delivery path are verified.
+At the current checked state, all five product records show active sales, and the configured checkout URLs and USD totals match the plan. Direct Hotmart checkouts are live/chargeable, while the website buttons remain disabled by `LIVE_READY=no`. Do not open the website checkouts, claim delivery was tested, or remove the preview notice until post-payment delivery, seller contact/legal details, policy approval, tax review and the public-name mismatch are resolved.
