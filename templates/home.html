@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+{% from 'cover_macro.html' import editorial_cover %}
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -51,6 +52,7 @@
         <div class="book-wrap">
           <div class="book-shadow"></div>
           <div class="book">
+            <img class="book__photograph" src="https://images.unsplash.com/photo-1604445759020-96c93fa61557?auto=format&fit=crop&w=950&h=950&q=82" alt="" loading="eager" fetchpriority="high" decoding="async" referrerpolicy="no-referrer" width="950" height="950">
             <div class="book__top"><span>HER POV</span><span>VOL. 01</span></div>
             <div class="book__center">
               <div class="book__ornament">✳</div>
@@ -219,7 +221,7 @@
       </div>
       <aside class="checkout-card" aria-label="Product price and launch status">
         <div class="checkout-card__top"><span>THE HER POV STARTER GUIDE</span><span>VOLUME 01</span></div>
-        <div class="checkout-card__cover"><span>HER POV</span><strong>THE FIRST<br>MESSAGE<br><em>FORMULA</em></strong><small>STOP OVERTHINKING. START CONNECTING.</small></div>
+        <div class="checkout-card__cover"><img class="checkout-card__photograph" src="https://images.unsplash.com/photo-1604445759020-96c93fa61557?auto=format&fit=crop&w=950&h=950&q=82" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="950" height="950"><span>HER POV</span><strong>THE FIRST<br>MESSAGE<br><em>FORMULA</em></strong><small>STOP OVERTHINKING. START CONNECTING.</small></div>
         <div class="checkout-card__body">
           <div class="checkout-card__description"><div><strong>Complete digital edition</strong><small>PDF + bonus cheat sheet</small></div><span class="badge-one-time">ONE TIME</span></div>
           <div class="checkout-card__price"><span>$9.90</span><small>USD</small></div>
@@ -264,10 +266,10 @@
       </div>
 
       <div class="launch-bundle__covers" aria-label="Every digital guide in the bundle">
-        <div><img src="/product-art/first-message-formula.png" alt="The First Message Formula digital guide cover" loading="lazy" width="160" height="160"><span>01 / FIRST MESSAGE</span></div>
-        <div><img src="/product-art/reply-decoder.png" alt="The Reply Decoder digital guide cover" loading="lazy" width="160" height="160"><span>02 / REPLIES</span></div>
-        <div><img src="/product-art/profile-makeover.png" alt="The Profile Makeover digital guide cover" loading="lazy" width="160" height="160"><span>03 / PROFILE</span></div>
-        <div><img src="/product-art/from-chat-to-first-date.png" alt="From Chat to First Date digital guide cover" loading="lazy" width="160" height="160"><span>04 / FIRST DATE</span></div>
+        <div>{{ editorial_cover('first-message-formula') }}<span>01 / FIRST MESSAGE</span></div>
+        <div>{{ editorial_cover('reply-decoder') }}<span>02 / REPLIES</span></div>
+        <div>{{ editorial_cover('profile-makeover') }}<span>03 / PROFILE</span></div>
+        <div>{{ editorial_cover('from-chat-to-first-date') }}<span>04 / FIRST DATE</span></div>
       </div>
 
       <div class="preview-intro" id="samples">
@@ -330,10 +332,10 @@
       <div class="section-kicker">07 / THE BIGGER PICTURE</div>
       <div class="series__intro"><div><h2>One conversation is<br><em>just the beginning.</em></h2></div><div><p class="section-lead">Meet the four complete HER POV playbooks. From the first message to the first date, every guide has its own real exercises, examples and practical tools.</p><p class="series__honest">All four guide manuscripts and PDFs are complete. Checkout and secure delivery for the collection are being finalized. Only the future AI Coach remains in development.</p></div></div>
       <div class="journey" aria-label="HER POV four-guide collection">
-        <article class="journey__item journey__item--current"><div class="journey__head"><span>01 / START</span><span class="journey__tag">FIRST RELEASE</span></div><img class="journey__cover" src="/product-art/first-message-formula.png" alt="The First Message Formula digital e-book cover" loading="lazy" width="160" height="160"><h3>The First Message<br>Formula</h3><p>Learn to start conversations that feel natural.</p><div class="journey__price">$9.90 <small>ONE-TIME · {% if checkout_ready %}AVAILABLE NOW{% else %}LAUNCH PENDING{% endif %}</small></div></article>
-        <article class="journey__item"><div class="journey__head"><span>02 / RESPOND</span><span class="journey__tag">GUIDE COMPLETE</span></div><img class="journey__cover" src="/product-art/reply-decoder.png" alt="The Reply Decoder digital e-book cover" loading="lazy" width="160" height="160"><h3>The Reply<br>Decoder</h3><p>Make sense of the conversation without spiraling into guesswork.</p><div class="journey__price">PART OF THE COMPLETE LIBRARY <small>FINISHED DIGITAL GUIDE</small></div></article>
-        <article class="journey__item"><div class="journey__head"><span>03 / PRESENT</span><span class="journey__tag">GUIDE COMPLETE</span></div><img class="journey__cover" src="/product-art/profile-makeover.png" alt="The Profile Makeover digital e-book cover" loading="lazy" width="160" height="160"><h3>The Profile<br>Makeover</h3><p>Put your best, most authentic self forward on your profile.</p><div class="journey__price">PART OF THE COMPLETE LIBRARY <small>FINISHED DIGITAL GUIDE</small></div></article>
-        <article class="journey__item"><div class="journey__head"><span>04 / CONNECT</span><span class="journey__tag">GUIDE COMPLETE</span></div><img class="journey__cover" src="/product-art/from-chat-to-first-date.png" alt="From Chat to First Date digital e-book cover" loading="lazy" width="160" height="160"><h3>From Chat to<br>First Date</h3><p>Navigate the transition from messages to making real plans.</p><div class="journey__price">PART OF THE COMPLETE LIBRARY <small>FINISHED DIGITAL GUIDE</small></div></article>
+        <article class="journey__item journey__item--current"><div class="journey__head"><span>01 / START</span><span class="journey__tag">FIRST RELEASE</span></div>{{ editorial_cover('first-message-formula') }}<h3>The First Message<br>Formula</h3><p>Learn to start conversations that feel natural.</p><div class="journey__price">$9.90 <small>ONE-TIME · {% if checkout_ready %}AVAILABLE NOW{% else %}LAUNCH PENDING{% endif %}</small></div></article>
+        <article class="journey__item"><div class="journey__head"><span>02 / RESPOND</span><span class="journey__tag">GUIDE COMPLETE</span></div>{{ editorial_cover('reply-decoder') }}<h3>The Reply<br>Decoder</h3><p>Make sense of the conversation without spiraling into guesswork.</p><div class="journey__price">PART OF THE COMPLETE LIBRARY <small>FINISHED DIGITAL GUIDE</small></div></article>
+        <article class="journey__item"><div class="journey__head"><span>03 / PRESENT</span><span class="journey__tag">GUIDE COMPLETE</span></div>{{ editorial_cover('profile-makeover') }}<h3>The Profile<br>Makeover</h3><p>Put your best, most authentic self forward on your profile.</p><div class="journey__price">PART OF THE COMPLETE LIBRARY <small>FINISHED DIGITAL GUIDE</small></div></article>
+        <article class="journey__item"><div class="journey__head"><span>04 / CONNECT</span><span class="journey__tag">GUIDE COMPLETE</span></div>{{ editorial_cover('from-chat-to-first-date') }}<h3>From Chat to<br>First Date</h3><p>Navigate the transition from messages to making real plans.</p><div class="journey__price">PART OF THE COMPLETE LIBRARY <small>FINISHED DIGITAL GUIDE</small></div></article>
       </div>
 
       <div class="coach"><div><span class="coach__tag">FUTURE RELEASE / NOT AVAILABLE FOR PURCHASE</span><h3>HER POV <em>AI Coach</em></h3><p>A future interactive companion for personalized conversation practice. Unlike the one-time guides, it is envisioned as an ongoing service with a separate monthly plan. Features and availability are still in development.</p></div><div class="coach__price"><strong>$24.90<span>/mo</span></strong><small>PROPOSED PRICE · SUBJECT TO CHANGE</small></div></div>
