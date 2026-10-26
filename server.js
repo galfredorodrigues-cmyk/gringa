@@ -29,6 +29,20 @@ const LAST_FLAGS = [
   'LAST_OFFER_DELIVERY_TESTED', 'LAST_OFFER_POLICIES_APPROVED',
   'LAST_OFFER_LAUNCH_APPROVED',
 ];
+const THANK_YOU_OFFERS = {
+  starter: {
+    title: 'The First Message Formula',
+    includes: ['Volume 01 — The First Message Formula', 'First Message Cheat Sheet bonus'],
+  },
+  bundle: {
+    title: 'Complete Library',
+    includes: ['All four HER POV guides', 'First Message Cheat Sheet bonus'],
+  },
+  'last-chance': {
+    title: 'Last Chance Offer — Complete Library',
+    includes: ['All four HER POV guides', 'First Message Cheat Sheet bonus'],
+  },
+};
 const SLUGS = new Set([
   'first-message-formula', 'reply-decoder', 'profile-makeover',
   'from-chat-to-first-date',
@@ -62,7 +76,7 @@ function hotmartCheckoutOpen() {
 }
 
 function lastOfferCheckoutUrl() {
-  if (!hotmartCheckoutOpen() || !LAST_FLAGS.every(f => process.env[f] === 'yes')) return '';
+  if (!checkoutOpen()) return '';
   const url = hotmartUrl(process.env.HOTMART_LINK_LAST_OFFER || '');
   return url && !Object.values(hotmartLinks()).includes(url) ? url : '';
 }
@@ -70,7 +84,14 @@ function lastOfferCheckoutUrl() {
 function checkoutOpen() {
   // This Hostinger adaptation deliberately supports the requested Hotmart
   // integration only. Legacy Stripe/SendOwl stays on the Render Flask app.
-  return hotmartCheckoutOpen();
+  const links = Object.values(hotmartLinks());
+  const lastOffer = hotmartUrl(process.env.HOTMART_LINK_LAST_OFFER || '');
+  const sellerAuthorized = process.env.STOREFRONT_LAUNCH_AUTHORIZED === 'yes';
+  // Seller authorization exposes only validated, distinct official Hotmart
+  // URLs. It does not mark delivery, tax, or policy checks as completed.
+  return sellerAuthorized && process.env.CHECKOUT_PROVIDER === 'hotmart' &&
+    links.every(Boolean) && new Set(links).size === HOTMART_LINK_KEYS.length &&
+    Boolean(lastOffer) && !links.includes(lastOffer);
 }
 
 const views = nunjucks.configure(TEMPLATE_DIR, {
@@ -130,6 +151,13 @@ app.get('/upgrade', (req, res) => {
   res.redirect(302, '/last-offer');
 });
 
+app.get('/thank-you', (req, res) => {
+  const offer = THANK_YOU_OFFERS[String(req.query.offer || '').toLowerCase()] || null;
+  res.set('Cache-Control', 'no-store, private');
+  res.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  res.render('thank-you.html', { offer });
+});
+
 app.get('/sample-page/:file', (req, res, next) => {
   const match = /^([a-z-]+)\.svg$/.exec(req.params.file);
   if (!match || !SLUGS.has(match[1])) return res.sendStatus(404);
@@ -177,7 +205,8 @@ app.get('/health', (req, res) => {
     status: 'ok', checkout_provider: provider || 'unconfigured',
     delivery_provider: isHotmart ? 'hotmart' : (provider === 'stripe' ? 'stripe' : 'unconfigured'),
     integration_operational: isHotmart && linksValid && process.env.HOTMART_DELIVERY_TESTED === 'yes',
-    checkout_enabled: enabled, live_ready: enabled, mode: enabled ? 'live' : 'preview',
+    delivery_tested: process.env.HOTMART_DELIVERY_TESTED === 'yes',
+    checkout_enabled: enabled, live_ready: hotmartCheckoutOpen(), mode: enabled ? 'live' : 'preview',
   });
 });
 
