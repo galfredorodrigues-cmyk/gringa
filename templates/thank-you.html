@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10151d">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="description" content="Next steps for your HER POV digital guide order.">
+<title>Thank You | HER POV</title>
+<link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/thank-you.css') }}">
+</head>
+<body>
+<header class="topline"><a class="brand" href="/" aria-label="HER POV home">HER <i></i> POV<span>.</span></a><span>DIGITAL GUIDE SERIES</span></header>
+<main class="page">
+  <section class="card" aria-labelledby="thank-you-title">
+    <p class="eyebrow"><span aria-hidden="true">✳</span> HER POV / ORDER NEXT STEPS</p>
+    <div class="rule"></div>
+    <h1 id="thank-you-title">Thank you for choosing <em>HER POV.</em></h1>
+    {% if offer %}
+    <p class="selection-label">YOUR SELECTION</p>
+    <h2>{{ offer.title }}</h2>
+    <ul class="included">
+      {% for item in offer.includes %}<li><span aria-hidden="true">✓</span>{{ item }}</li>{% endfor %}
+    </ul>
+    {% else %}
+    <p class="intro">Hotmart is handling your order and digital access. Your order details will identify the product you selected.</p>
+    {% endif %}
+    <div class="notice" role="status">
+      <span class="notice-mark" aria-hidden="true">01</span>
+      <div><h3>Check your email for access</h3>
+      <p>After Hotmart approves the payment, it sends access instructions to the email address entered at checkout. Check your inbox, spam, and promotions folders.</p></div>
+    </div>
+    <div class="notice notice--plain">
+      <span class="notice-mark" aria-hidden="true">02</span>
+      <div><h3>Need help with your order?</h3>
+      <p>Use the order confirmation from Hotmart to check payment status or request support. This page confirms your selection only; it does not verify payment or grant access by itself.</p></div>
+    </div>
+    <div class="actions"><a href="https://help.hotmart.com/" rel="noopener noreferrer">VISIT HOTMART HELP <span aria-hidden="true">↗</span></a><a class="home-link" href="/">RETURN TO HER POV</a></div>
+    <p class="fineprint">HER POV provides educational digital guides. Your purchase and access are subject to Hotmart's payment confirmation and applicable purchase terms.</p>
+  </section>
+</main>
+<footer><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/refunds">Refunds</a><a href="/contact">Support</a><span>© 2026 HER POV</span></footer>
+</body>
+</html>
