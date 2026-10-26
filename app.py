@@ -139,9 +139,9 @@ LEGAL = {
              "paragraphs":["You must be at least 18 years old and legally permitted to transact in your location. If you buy on behalf of someone else, you must have the right to use the payment method."],"points":[]},
             {"heading":"Prices, checkout & confirmation",
              "paragraphs":["Prices shown on the HER POV storefront are in US dollars (USD), generally as one-time purchases, unless a product listing expressly states otherwise. Your payment provider or issuing bank may apply currency conversion or fees. Any applicable taxes, when collected, should be disclosed before you confirm payment.",
-                           "Payments are processed by Stripe. A successful charge is not a subscription enrollment. Do not submit multiple payments if a transaction appears delayed: check the purchase confirmation or contact support."],"points":[]},
+                           "Payments are processed by Hotmart. A successful charge is not a subscription enrollment. Do not submit multiple payments if a transaction appears delayed: check the purchase confirmation or contact support."],"points":[]},
             {"heading":"Digital delivery and access",
-             "paragraphs":["After payment, we intend to provide access through SendOwl, which delivers the purchased digital files using the email provided at checkout. Delivery may depend on correct contact information and third-party processing availability.",
+             "paragraphs":["After payment, we intend to provide access through Hotmart, which is intended to deliver the purchased digital files using the email provided at checkout. Delivery may depend on correct contact information and third-party processing availability.",
                            "Download files to your own device and store them safely. If a download is missing, corrupt or inaccessible, contact support with your order reference. We will make reasonable efforts to restore access or provide an appropriate remedy in accordance with applicable law."],"points":[]},
             {"heading":"Personal license & intellectual property",
              "paragraphs":["Purchase grants the buyer a limited, nonexclusive, nontransferable license to download and use the purchased materials for personal, noncommercial educational purposes. Copyright and ownership are not transferred."],
@@ -164,16 +164,16 @@ LEGAL = {
              "paragraphs":["This notice concerns the HER POV storefront, checkout referrals, e-book delivery and support. The merchant identified below is responsible for the personal information it controls. Third-party providers may be independently responsible for certain processing under their own policies."],"points":[]},
             {"heading":"Information involved",
              "paragraphs":["Depending on how you interact with the store, relevant information can include your email address, the name you choose to provide, product selection, order identifier, purchase amount, payment status, delivery history, customer support messages and technical data needed to operate the site and prevent abuse."],
-             "points":["Stripe processes payment information. The storefront is not designed to receive or store full card numbers.",
-                       "SendOwl may process email, order and download-access details to fulfill digital purchases.",
-                       "Render hosts the storefront and may process technical request data and routine server logs. External font services may receive technical request information when their resources load."]},
+             "points":["Hotmart processes payment information. The storefront is not designed to receive or store full card numbers.",
+                       "Hotmart may process checkout, email and product-access details to fulfill digital purchases.",
+                       "The storefront host may process technical request data and routine server logs. External font services may receive technical request information when their resources load."]},
             {"heading":"Why we process information",
              "paragraphs":["We use necessary information to process and verify transactions, deliver purchased PDFs, respond to requests, protect the store against misuse or fraud, maintain records where legally necessary, and comply with legal requirements."],"points":[]},
             {"heading":"Legal grounds and communications",
              "paragraphs":["Where required by applicable law, we rely on grounds such as fulfilling the customer agreement, complying with legal obligations, legitimate operational and security interests, or valid consent. These grounds vary by jurisdiction.",
                            "Transactional receipts, downloads, access help and fraud notices are distinct from promotional marketing. Marketing communication would require a lawful basis and any consent required by your location."],"points":[]},
             {"heading":"Payments and service providers",
-             "paragraphs":["The planned sales stack is Stripe for payment processing, SendOwl for secure digital product delivery and Render for website hosting. Service providers process information according to their roles and contractual terms. Visit their own privacy notices for details about processing they independently control.",
+             "paragraphs":["The planned sales stack uses Hotmart for payment processing and digital product delivery. Website hosting is provided by the storefront host. Service providers process information according to their roles and contractual terms. Visit their own privacy notices for details about processing they independently control.",
                            "We may also disclose information where legally required, to resolve a payment dispute or to protect customers and the platform from fraud."],"points":[]},
             {"heading":"International transfers, retention and security",
              "paragraphs":["Providers may process information in countries other than your home country. Required safeguards depend on the applicable jurisdiction and provider arrangements.",
@@ -182,7 +182,7 @@ LEGAL = {
              "paragraphs":["Depending on where you live, you may have rights to request access, correction, deletion, restriction, portability, objection or review of certain uses of your personal information. These rights are subject to applicable law and legal retention requirements.",
                            "To exercise a right, contact the operator using the details below. We may need reasonable verification that you are the relevant buyer, without asking for passwords or complete payment card details."],"points":[]},
             {"heading":"Cookies and website resources",
-             "paragraphs":["The marketing page uses static styling and may load external font resources. Stripe and SendOwl may use cookies or similar technologies within their own payment and fulfillment interfaces. We do not represent those third-party cookies as being controlled by this site.",
+             "paragraphs":["The marketing page uses static styling and may load external font resources. Hotmart may use cookies or similar technologies within its payment and fulfillment interfaces. We do not represent those third-party cookies as being controlled by this site.",
                            "Any future marketing analytics, advertising tags, or nonessential tracking will require an update to this disclosure and consent controls where legally required."],"points":[]},
             {"heading":"Changes and questions",
              "paragraphs":["If practices change, this notice will be revised. Significant changes will be handled in the manner required by applicable law. Contact the verified merchant support address below with any privacy questions."],"points":[]},
@@ -195,14 +195,14 @@ LEGAL = {
              "paragraphs":["HER POV products are downloadable educational PDFs, not physical goods. The first standalone product includes its stated one-page bonus; other guides are separate unless you buy the Complete Library bundle.",
                            "Review the product name, included files, one-time price and applicable taxes before confirming payment. The bundle contains all four HER POV guides plus the bonus."],"points":[]},
             {"heading":"How delivery works",
-             "paragraphs":["After a successful Stripe payment, the SendOwl integration is intended to email a private access link to the buyer's checkout email. Please check the inbox and spam folder. Download and save your purchased files promptly."],"points":[]},
+             "paragraphs":["After a successful Hotmart payment, Hotmart is intended to email access to the buyer's checkout email. Please check the inbox and spam folder. Download and save your purchased files promptly."],"points":[]},
             {"heading":"A missing, broken or incorrect download",
              "paragraphs":["If the paid file does not arrive, cannot be opened, or is not the product purchased, contact customer support with the receipt or order identifier. Do not send full card details. We will investigate and offer delivery correction, restored access, replacement or a refund when required by law or appropriate under the circumstances."],"points":[]},
             {"heading":"Refund requests",
              "paragraphs":["Send your request to the verified support contact below, with your order reference, date of purchase and a brief explanation of the issue. Refunds are reviewed according to the product description, evidence of the order, payment provider rules and applicable consumer law.",
                            "We do not claim that downloading a PDF automatically removes all refund or withdrawal rights. Where your jurisdiction gives mandatory rights, those rights continue to apply. Additional discretionary refund terms will be published before the store accepts payment."],"points":[]},
             {"heading":"Duplicate payments and unauthorized charges",
-             "paragraphs":["If you were charged more than once for the same order or notice a payment you did not authorize, contact support promptly. You may also contact Stripe or your card issuer through the normal dispute process. We will not ask for sensitive payment credentials to resolve an order."],"points":[]},
+             "paragraphs":["If you were charged more than once for the same order or notice a payment you did not authorize, contact support promptly. You may also contact Hotmart or your card issuer through the normal dispute process. We will not ask for sensitive payment credentials to resolve an order."],"points":[]},
             {"heading":"Timing of any approved refund",
              "paragraphs":["If a refund is approved, it is submitted through the original payment provider where practicable. The time for funds to appear depends on the provider, bank, card network and relevant jurisdiction. We cannot guarantee a particular bank posting date."],"points":[]},
         ]},
@@ -211,7 +211,7 @@ LEGAL = {
         "lead":"Where to find help with purchases, downloads, billing and privacy requests.",
         "sections":[
             {"heading":"Support for purchases",
-             "paragraphs":["Use the merchant support email listed below for missing files, incorrect delivery, questions about the purchased PDFs, billing issues or a refund request. Please keep your Stripe receipt and order reference for verification."],
+             "paragraphs":["Use the merchant support email listed below for missing files, incorrect delivery, questions about the purchased PDFs, billing issues or a refund request. Please keep your Hotmart receipt and order reference for verification."],
              "points":["For a missing download, describe the product purchased and the message or error you saw.",
                        "For billing concerns, include the transaction date and order identifier.",
                        "For data/privacy requests, describe what information you are asking about. Do not include passwords or full card details."]},
@@ -305,9 +305,21 @@ def policy():
 @app.get("/health")
 def health():
     enabled = checkout_open()
-    return jsonify(status="ok", live_ready=enabled,
-                   checkout_enabled=enabled,
-                   delivery_provider="sendowl",
+    provider = os.environ.get("CHECKOUT_PROVIDER", "stripe").strip().lower()
+    if provider == "hotmart":
+        links = _hotmart_checkout_links()
+        links_valid = all(links.values()) and len(set(links.values())) == len(HOTMART_LINK_KEYS)
+        delivery_verified = os.environ.get("HOTMART_DELIVERY_TESTED") == "yes"
+    elif provider == "stripe":
+        links_valid = bool(os.environ.get("STRIPE_MODE") == "live")
+        delivery_verified = os.environ.get("SENDOWL_DELIVERY_TESTED") == "yes"
+    else:
+        links_valid = False
+        delivery_verified = False
+    return jsonify(status="ok", checkout_provider=provider,
+                   delivery_provider=provider if provider in ("hotmart", "stripe") else "unconfigured",
+                   integration_operational=bool(provider == "hotmart" and links_valid and delivery_verified),
+                   checkout_enabled=enabled, live_ready=enabled,
                    mode="live" if enabled else "preview")
 from commerce import register as register_delivery
 register_delivery(app)
