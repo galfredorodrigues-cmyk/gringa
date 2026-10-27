@@ -8,15 +8,15 @@ header{background:#0b1119;border-bottom:1px solid #3a3b39}header .container{disp
 .brand{text-decoration:none;font:28px Georgia,serif;color:#e2c58e;letter-spacing:-.035em}nav{display:flex;gap:17px;flex-wrap:wrap}nav a{text-decoration:none;text-transform:uppercase;font-size:11px;letter-spacing:.08em;font-weight:700;color:#d7c9b4}
 main{padding:65px 0 90px}.overline{color:#d8b987;font-weight:800;letter-spacing:.18em;text-transform:uppercase;font-size:11px}.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:72px}
 h1,h2,h3{font-family:Georgia,serif;font-weight:400;line-height:1.2}h1{font-size:clamp(42px,5vw,70px);margin:20px 0}h2{font-size:28px;margin:0 0 14px;color:#f0ddc1}p,li{color:#c3c0bb}li{margin:8px 0}.lead{font-size:18px;color:#dbd3c6;max-width:760px}.label{font-size:11px;letter-spacing:.13em;font-weight:700;color:#a89b87;margin:30px 0 10px}.info{border:1px solid #665b44;border-radius:6px;padding:22px;margin:32px 0;background:#1c2430}.info strong{color:#e1c184}.info p{margin-bottom:0}
-aside{position:sticky;align-self:start;top:30px}aside a{display:block;text-decoration:none;border-bottom:1px solid #343a40;font-size:12px;padding:12px 0;color:#bfc0c1}.section{padding:28px 0;border-top:1px solid #343a40;scroll-margin-top:25px}.section:first-of-type{margin-top:42px}.contact{background:#1e2630;border:1px solid #554b3b;border-radius:7px;padding:20px}.contact h3{font-size:24px;margin-bottom:9px}.contact p{font-size:14px;margin-bottom:7px;overflow-wrap:anywhere}
+aside{position:sticky;align-self:start;top:30px}aside a{display:block;text-decoration:none;border-bottom:1px solid #343a40;font-size:12px;padding:12px 0;color:#bfc0c1}.section{padding:28px 0;border-top:1px solid #343a40;scroll-margin-top:25px}.section:first-of-type{margin-top:42px}.contact{background:#1e2630;border:1px solid #554b3b;border-radius:7px;padding:20px}.contact h3{font-size:24px;margin-bottom:9px}.contact p{font-size:14px;margin-bottom:7px;overflow-wrap:anywhere}.support-help{margin:28px 0;padding:22px;background:#171f2a;border:1px solid #665b44;border-radius:7px}.support-help h2{font-size:24px}.support-help ol{padding-left:23px;margin-bottom:0}.support-help li{padding-left:4px;margin-bottom:14px}.support-help a{color:#e9c993;text-decoration-thickness:1px;text-underline-offset:3px}
 footer{border-top:1px solid #343a40;background:#0b1119;padding:27px 0;color:#999;font-size:12px}.foot{display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap}
 @media(max-width:730px){.layout{grid-template-columns:1fr;gap:25px}aside{position:static;display:flex;flex-wrap:wrap;column-gap:16px}aside a{font-size:11px;padding:7px 0}main{padding:42px 0 70px}nav{gap:10px}nav a{font-size:10px}}
 </style>
 {% include 'tracking.html' %}
 </head><body><header><div class="container"><a href="/" class="brand">HER POV.</a><nav><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/refunds">Refunds</a><a href="/contact">Support</a></nav></div></header>
 <main><div class="container"><div class="overline">HER POV / CUSTOMER INFORMATION</div>
-<h1>{{ title }}</h1><p class="lead">{{ lead }}</p><div class="label">Prepared October 25, 2026 · Digital products · English-language store</div>
-{% if not ready %}<div class="info"><strong>Pre-launch policy notice</strong><p>This page is being prepared for merchant review. Sales are not open. The operator's verified legal identity and direct support contact will be published before checkout activation. This notice is not a claim that the policy has already been legally approved.</p></div>{% endif %}
+<h1>{{ title }}</h1><p class="lead">{{ lead }}</p><div class="label">Updated October 27, 2026 · Digital guides · Hotmart checkout</div>
+{% if not ready %}<div class="info"><strong>Checkout availability</strong><p>Some purchase options may be temporarily unavailable while the store completes its checks. Payments, when available, take place on Hotmart's secure checkout, not on this website.</p></div>{% endif %}
 <div class="layout"><aside aria-label="Policy navigation">
 {% for part in sections %}<a href="#part{{ loop.index }}">{{ part.heading }}</a>{% endfor %}
 <a href="#operator">Operator &amp; contact</a>
@@ -31,12 +31,19 @@ footer{border-top:1px solid #343a40;background:#0b1119;padding:27px 0;color:#999
 <div class="contact">
 <h3>HER POV customer support</h3>
 <p><strong>Brand:</strong> HER POV</p>
-<p><strong>Seller:</strong> {% if legal_name %}{{ legal_name }}{% else %}Legal merchant name pending publication{% endif %}</p>
-<p><strong>Country:</strong> {% if merchant_country %}{{ merchant_country }}{% else %}Not yet published{% endif %}</p>
-<p><strong>Business mailing address:</strong> {% if merchant_address %}{{ merchant_address }}{% else %}Pending merchant verification{% endif %}</p>
-<p><strong>Support email:</strong> {% if support_email %}<a href="mailto:{{ support_email }}">{{ support_email }}</a>{% else %}To be published before checkout opens{% endif %}</p>
+<p><strong>Seller:</strong> {% if legal_name %}{{ legal_name }}{% else %}Please review the legal seller details displayed by Hotmart at checkout and in your purchase confirmation before paying.{% endif %}</p>
+{% if merchant_country %}<p><strong>Country:</strong> {{ merchant_country }}</p>{% endif %}
+{% if merchant_address %}<p><strong>Business mailing address:</strong> {{ merchant_address }}</p>{% endif %}
+<p><strong>Contact:</strong> {% if support_email %}<a href="mailto:{{ support_email }}">{{ support_email }}</a>{% else %}If you have already ordered, open your Hotmart purchase details for the creator's official support contact. A separate direct HER POV support address has not been verified for publication on this website.{% endif %}</p>
 <p>For order assistance, include the transaction date and receipt reference, but never send full card details, account passwords or identity documents by unencrypted email.</p>
 </div></section>
+{% if title == 'Contact & Order Support' or title == 'Refunds & Digital Delivery' %}
+<section class="support-help" aria-labelledby="hotmart-help"><h2 id="hotmart-help">Help with a Hotmart order</h2><ol>
+<li><strong>Access or missing files:</strong> Open <a href="https://consumer.hotmart.com/" target="_blank" rel="noopener noreferrer">your Hotmart purchases</a> using the email used at checkout. Open the order details to find access instructions and the creator's contact.</li>
+<li><strong>Refund requests:</strong> If your order is within its applicable guarantee window, use <a href="https://refund.hotmart.com/" target="_blank" rel="noopener noreferrer">Hotmart's official refund portal</a> with the transaction code from your purchase confirmation.</li>
+<li><strong>Billing questions or privacy:</strong> Use the verified merchant contact above when available. For Hotmart account, payment and access issues, follow the support options shown in your Hotmart purchase details. Never share passwords or full card numbers.</li>
+</ol></section>
+{% endif %}
 <p style="margin-top:45px"><a href="/">← Back to HER POV storefront</a></p></div></div></div></main>
 <footer><div class="container foot"><span>© 2026 HER POV · Adult educational digital products</span><span>No guarantee of replies, matches, romantic interest or dates.</span></div></footer>
 </body></html>
