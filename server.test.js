@@ -172,3 +172,38 @@ test('thank-you page identifies the selected offer without claiming payment appr
     assert.match(html, /does not verify payment or grant access by itself/i);
   }
 });
+
+test('legal pages show real Hotmart help routes and never make false blanket prelaunch claims', async t => {
+  const previous = Object.fromEntries(envKeys.map(k => [k, process.env[k]]));
+  clearEnv();
+  const server = app.listen(0);
+  t.after(() => {
+    server.close();
+    for (const key of envKeys) previous[key] === undefined ? delete process.env[key] : process.env[key] = previous[key];
+  });
+  const base = `http://127.0.0.1:${server.address().port}`;
+  for (const page of ['/terms', '/privacy', '/refunds', '/contact']) {
+    const response = await fetch(base + page);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.doesNotMatch(html, /Purchases are not yet available|Sales are not open|Pre-launch policy notice|Legal merchant name pending publication|Pending merchant verification/i);
+    assert.match(html, /Hotmart/);
+  }
+  const contact = await (await fetch(base + '/contact')).text();
+  const refunds = await (await fetch(base + '/refunds')).text();
+  for (const html of [contact, refunds]) {
+    assert.match(html, /https:\/\/consumer\.hotmart\.com\//);
+    assert.match(html, /https:\/\/refund\.hotmart\.com\//);
+    assert.match(html, /applicable guarantee/i);
+  }
+  assert.doesNotMatch(contact, /mailto:support@/i);
+  process.env.SUPPORT_EMAIL = 'customer-care@example.test';
+  process.env.MERCHANT_LEGAL_NAME = 'Verified Test Merchant';
+  process.env.MERCHANT_COUNTRY = 'Test Country';
+  process.env.MERCHANT_CONTACT_ADDRESS = 'Test Business Street';
+  const verified = await (await fetch(base + '/contact')).text();
+  assert.match(verified, /Verified Test Merchant/);
+  assert.match(verified, /mailto:customer-care@example\.test/);
+  assert.match(verified, /Test Business Street/);
+  assert.doesNotMatch(verified, /has not been verified for publication/);
+});
