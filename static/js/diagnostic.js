@@ -57,6 +57,16 @@
       "If you’ve both been engaged in the conversation, suggest a simple plan. Leave room for her to decline, and respect her answer."
     ][stage];
     byId("diagnostic-example").textContent = examples[stage][detail][tone];
+    byId("diagnostic-why").textContent = [
+      "Why this works as a starting point: it uses a specific detail and gives her one easy thing to respond to. Use a detail that is actually in her profile.",
+      "Why this works as a starting point: it follows a topic already shared instead of jumping to an unrelated question. Use the real details of your chat.",
+      "Why this works as a starting point: it proposes a simple plan and makes the question clear. It only fits a mutually engaged conversation."
+    ][stage];
+    byId("diagnostic-bridge").textContent = [
+      "Your focus: the first message. The starter guide develops this exact skill with a framework, examples and practice.",
+      "Your focus: moving beyond small talk. The starter guide focuses on opening conversations; the Complete Library also includes The Reply Decoder for the next stage.",
+      "Your focus: suggesting a date. The starter guide focuses on first messages; the Complete Library adds From Chat to First Date for clear, low-pressure invitations."
+    ][stage];
     byId("sales-content").hidden = false;
     document.body.classList.remove("diagnostic-locked");
     byId("diagnostic-unlock-note")?.remove();

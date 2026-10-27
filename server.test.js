@@ -81,7 +81,7 @@ test('Hotmart mode reports its provider but never opens checkouts on incomplete 
   assert.match(await (await fetch(base)).text(), /STARTER CHECKOUT OPENING SOON/);
 });
 
-test('verified test configuration maps the pre-checkout special price and direct bundle separately', async t => {
+test('verified configuration offers the same library price through one review step', async t => {
   const previous = Object.fromEntries(envKeys.map(k => [k, process.env[k]]));
   clearEnv();
   process.env.CHECKOUT_PROVIDER = 'hotmart';
@@ -110,7 +110,9 @@ test('verified test configuration maps the pre-checkout special price and direct
   });
   const base = `http://127.0.0.1:${server.address().port}`;
   const home = await (await fetch(base)).text();
-  assert.match(home, /href="https:\/\/pay\.hotmart\.com\/TEST-LIBRARY\?off=testbundle"/);
+  assert.match(home, /href="\/last-offer"/);
+  assert.doesNotMatch(home, /href="https:\/\/pay\.hotmart\.com\/TEST-LIBRARY\?off=testbundle"/);
+  assert.match(home, /REVIEW THE \$21\.90 LIBRARY OFFER/);
   const offer = await (await fetch(`${base}/last-offer`)).text();
   assert.match(offer, /href="https:\/\/pay\.hotmart\.com\/TEST-LIBRARY\?off=testlast"/);
   assert.match(offer, /href="https:\/\/pay\.hotmart\.com\/TEST-VOL-01\?off=test01"/);
@@ -134,7 +136,9 @@ test('seller-authorized official Hotmart links open while delivery status stays 
   });
   const base = `http://127.0.0.1:${server.address().port}`;
   const home = await (await fetch(base)).text();
-  assert.match(home, /href="https:\/\/pay\.hotmart\.com\/TEST-LIBRARY\?off=testbundle"/);
+  assert.match(home, /href="\/last-offer"/);
+  assert.doesNotMatch(home, /href="https:\/\/pay\.hotmart\.com\/TEST-LIBRARY\?off=testbundle"/);
+  assert.match(home, /REVIEW THE \$21\.90 LIBRARY OFFER/);
   const offer = await (await fetch(`${base}/last-offer`)).text();
   assert.match(offer, /href="https:\/\/pay\.hotmart\.com\/TEST-LIBRARY\?off=testlast"/);
   assert.match(offer, /href="https:\/\/pay\.hotmart\.com\/TEST-VOL-01\?off=test01"/);

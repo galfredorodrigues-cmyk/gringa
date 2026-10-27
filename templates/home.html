@@ -19,8 +19,8 @@
 <link rel="stylesheet" href="{{ url_for('static',filename='css/landing.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/covers.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
-<link rel="stylesheet" href="/static/css/diagnostic.css?v=gate2">
-<script src="/static/js/diagnostic.js?v=gate2" defer></script>
+<link rel="stylesheet" href="/static/css/diagnostic.css?v=journey3">
+<script src="/static/js/diagnostic.js?v=journey3" defer></script>
 </head>
 <body class="diagnostic-locked">
 <a class="skip" href="#main">Skip to content</a>
@@ -64,8 +64,9 @@
         <h2 id="diagnostic-result-title" tabindex="-1"></h2>
         <p id="diagnostic-advice"></p>
         <blockquote id="diagnostic-example"></blockquote>
+        <p id="diagnostic-why" class="diagnostic__why"></p>
         <p class="diagnostic__note">Illustrative example based on your choices, not an analysis of a real profile. Adapt it to the actual conversation. No message guarantees a reply.</p>
-        <a class="btn btn--gold" href="#guide-introduction">EXPLORE THE FIRST MESSAGE FORMULA <span aria-hidden="true">↓</span></a>
+        <a class="btn btn--gold" href="#guide-introduction">SEE HOW TO BUILD YOUR OWN <span aria-hidden="true">↓</span></a>
         <button type="button" class="diagnostic__back" id="diagnostic-restart">Try different answers</button>
       </div>
     </div>
@@ -77,15 +78,16 @@
     <div class="container hero__grid">
       <div class="hero__copy">
         <p class="eyebrow"><span class="gold-line"></span> FOR MEN WHO WANT BETTER DATING CONVERSATIONS — NO GAMES</p>
-        <h2 id="hero-title">You had something to say.<br><em>Then you deleted it.</em></h2>
-        <p class="hero__lead">Ten minutes rewriting one message. A dozen doubts before hitting send. Sound familiar? The problem isn't that you need a better pickup line. <strong>You need a better starting point.</strong></p>
-        <p class="hero__secondary">The First Message Formula is a practical guide to getting past that moment. Discover a simple four-part method, 50 adaptable openers and exercises that help you write something that actually sounds like you. <strong>No scripts to memorize. No pretending to be someone else.</strong></p>
+        <h2 id="hero-title">Know what to say.<br><em>Keep it sounding like you.</em></h2>
+        <p class="hero__lead">One example gives you a starting point. <strong>A repeatable method helps you find the next one yourself.</strong></p>
+        <p class="hero__secondary">The First Message Formula helps you turn a real profile detail into a natural opener. Learn the four-part C.A.R.E. method, explore 50 adaptable examples, and practice with a seven-day challenge. <strong>A 56-page digital guide plus a one-page cheat sheet.</strong></p>
+        <p id="diagnostic-bridge" class="journey-bridge">Start with the skill behind a thoughtful first message, then build from there.</p>
         <div class="hero__actions">
-          <a class="btn btn--gold" href="#starter-choice">START WITH A BETTER MESSAGE <span aria-hidden="true">↗</span></a>
-          <a class="inline-link" href="#example">SEE A REAL EXAMPLE <span aria-hidden="true">↓</span></a>
+          <a class="btn btn--gold" href="#example">SEE THE METHOD IN ACTION <span aria-hidden="true">↗</span></a>
+          <a class="inline-link" href="#offer">VIEW GUIDE &amp; PRICE <span aria-hidden="true">↓</span></a>
         </div>
         <div class="hero__checks"><span>50 adaptable openers</span><span>A real step-by-step method</span><span>PDF + cheat sheet bonus</span></div>
-        <p class="hero__disclosure">{% if checkout_ready %}Secure checkout with {{ "Hotmart" if checkout_provider == "hotmart" else "Stripe" }}. Digital access after payment confirmation.{% else %}Preview edition. Checkout opens after secure delivery testing.{% endif %}</p>
+        <p class="hero__disclosure">{% if checkout_ready %}Secure checkout with {{ "Hotmart" if checkout_provider == "hotmart" else "Stripe" }}. Payment and delivery instructions are shown at checkout.{% else %}Preview edition. Checkout opens after secure delivery testing.{% endif %}</p>
       </div>
       <div class="hero__visual" aria-label="The First Message Formula book illustration with example message">
         <div class="circle-type" aria-hidden="true">THE ART OF THE FIRST HELLO · HER POV ·</div>
@@ -112,103 +114,10 @@
     </div>
   </section>
 
-  <section class="choice section-cream" id="choose" aria-labelledby="choice-heading">
-    <div class="container">
-      <div class="choice__head">
-        <div class="section-kicker">YOUR JOURNEY / YOUR CHOICE</div>
-        <h2 id="choice-heading">One first step.<br><em>More confidence to start.</em></h2>
-        <p>Start with the guide built for your next message. Prefer the complete collection? That option is here too — with every price clear before checkout.</p>
-      </div>
-      <div class="choice__grid">
-        <article class="choice__card choice__card--featured" id="starter-choice" aria-labelledby="choice-starter-title">
-          <div class="choice__eyebrow">OPTION 01 / THE FOUNDATION</div>
-          <h3 id="choice-starter-title">The First Message <em>Formula</em></h3>
-          <p class="choice__description">One practical guide to help you stop overthinking and write a more natural first message.</p>
-          <div class="choice__price">$9.90 <span>USD · ONE TIME</span></div>
-          <ul class="choice__list">
-            <li>56-page digital guide with 50 adaptable openers</li>
-            <li>Practical exercises and 7-day challenge</li>
-            <li>First Message Cheat Sheet bonus PDF</li>
-          </ul>
-          <div class="choice__actions">
-            <a href="{{ url_for('last_offer') }}" class="choice__button choice__button--gold">START WITH 1 GUIDE — $9.90 <span aria-hidden="true">↗</span></a>
-            <p class="choice__step-note">Review your optional final offer before checkout. Nothing is charged on the next page.{% if not checkout_ready %} <strong>STARTER CHECKOUT OPENING SOON.</strong>{% endif %}</p>
-            <a class="choice__learn" href="#offer">See what's inside <span aria-hidden="true">↓</span></a>
-          </div>
-        </article>
-        <article class="choice__card" id="complete-choice" aria-labelledby="choice-complete-title">
-          <div class="choice__eyebrow">OPTION 02 / THE COMPLETE LIBRARY</div>
-          <h3 id="choice-complete-title">All four <em>HER POV</em> guides</h3>
-          <p class="choice__description">The complete collection for everything from the first message to your first date.</p>
-          <div class="choice__price">$29.90 <span>USD · ONE TIME</span></div>
-          <ul class="choice__list">
-            <li>All 4 complete English-language PDF guides</li>
-            <li>First Message Cheat Sheet bonus PDF</li>
-            <li>Save $12.70 versus buying separately</li>
-          </ul>
-          <div class="choice__actions">
-            {% if bundle_checkout_ready %}
-            <a href="{{ bundle_checkout_url }}" rel="noopener noreferrer" class="choice__button choice__button--dark">GET ALL 4 GUIDES — $29.90 <span aria-hidden="true">↗</span></a>
-            {% else %}
-            <button type="button" disabled class="choice__button choice__button--disabled">BUNDLE CHECKOUT OPENING SOON</button>
-            {% endif %}
-            <a class="choice__learn" href="#bundle">Explore the complete library <span aria-hidden="true">↓</span></a>
-          </div>
-        </article>
-      </div>
-      <p class="choice__footnote">Both options are one-time purchases, not subscriptions. Selecting the first guide shows one optional final offer before payment; you can decline it and keep your original choice. {% if not checkout_ready %}Checkout remains closed until secure delivery has been verified.{% else %}Payment and delivery details are shown at the secure checkout.{% endif %}</p>
-      <div class="choice__value" aria-label="Practical advice and common questions">
-        <div class="choice__value-main">
-          <span class="choice__value-label">A PRACTICAL TIP YOU CAN USE RIGHT NOW</span>
-          <p><strong>Look at one real detail in their profile.</strong> Mention it naturally, then ask something easy to answer. That's a better starting point than trying to invent the perfect line.</p>
-          <a href="#example">SEE A BEFORE-AND-AFTER EXAMPLE <span aria-hidden="true">↗</span></a>
-        </div>
-        <div class="choice__value-questions">
-          <details><summary>Do I need to memorize pickup lines?<span aria-hidden="true">+</span></summary><p>No. The guide teaches principles and adaptable examples, not a script you're required to copy.</p></details>
-          <details><summary>Can I preview real pages before buying?<span aria-hidden="true">+</span></summary><p>Yes. <a href="#samples">Read genuine excerpts and open a sample page</a> from the finished guides.</p></details>
-          <details><summary>Can I keep just the first guide?<span aria-hidden="true">+</span></summary><p>Yes. After you choose the starter, you can decline the optional final offer and proceed only with Volume 01 and its included bonus.</p></details>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="problem section-cream" id="problem">
-    <div class="container problem__grid">
-      <div class="section-index">01 / THE PROBLEM</div>
-      <div>
-        <h2>It's not the first message.<br><em>It's everything you put on it.</em></h2>
-        <p class="section-lead">You see a profile, open the text box, and suddenly a simple hello feels like a high-stakes performance.</p>
-        <div class="frictions">
-          <div class="friction"><span class="friction__num">01</span><div><h3>You type. You delete. Repeat.</h3><p>Every opener gets judged before anyone else can read it.</p></div></div>
-          <div class="friction"><span class="friction__num">02</span><div><h3>Everything feels either boring or forced.</h3><p>"Hey" feels empty. Pickup lines feel like someone else's personality.</p></div></div>
-          <div class="friction"><span class="friction__num">03</span><div><h3>You make the reply mean too much.</h3><p>One stranger's response starts to feel like a verdict on your confidence.</p></div></div>
-        </div>
-        <div class="problem__close"><span class="tiny-star">✳</span> What if a first message could just be <em>a natural beginning?</em></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="method section-light" id="method">
-    <div class="container">
-      <div class="section-kicker">02 / THE METHOD</div>
-      <div class="centered">
-        <h2>Confidence isn't a clever line.<br><em>It's knowing what to say next.</em></h2>
-        <p class="section-lead">Inside the guide, you'll learn C.A.R.E. — four simple principles that turn a blank screen into a thoughtful, low-pressure opening.</p>
-      </div>
-      <div class="care-grid">
-        <article class="care-card"><div class="care-card__letter">C</div><div class="care-card__word">CONTEXT</div><h3>Notice something real.</h3><p>Start with a detail that actually belongs to the conversation.</p></article>
-        <article class="care-card"><div class="care-card__letter">A</div><div class="care-card__word">AUTHENTICITY</div><h3>Sound like yourself.</h3><p>Say something you would comfortably say in person.</p></article>
-        <article class="care-card"><div class="care-card__letter">R</div><div class="care-card__word">RESPECT</div><h3>Make space for choice.</h3><p>Drop the pressure and leave room for any response, including none.</p></article>
-        <article class="care-card"><div class="care-card__letter">E</div><div class="care-card__word">EASE</div><h3>Keep it easy to answer.</h3><p>Give a natural opening instead of a speech or interrogation.</p></article>
-      </div>
-      <div class="method__foot">ONE FRAMEWORK <span aria-hidden="true">✳</span> YOUR OWN VOICE <span aria-hidden="true">✳</span> ZERO MAGIC TRICKS</div>
-    </div>
-  </section>
-
   <section class="example section-dark" id="example">
     <div class="container example__grid">
       <div>
-        <div class="section-kicker">03 / MAKE IT REAL</div>
+        <div class="section-kicker">01 / SEE THE DIFFERENCE</div>
         <h2>Same profile.<br><em>Different approach.</em></h2>
         <p class="section-lead">You don't have to be the funniest person in the inbox. You just have to be present enough to notice what's there.</p>
         <p class="example__small">An illustrative teaching example — not a claim about anyone's results.</p>
@@ -221,9 +130,26 @@
     </div>
   </section>
 
+  <section class="method section-light" id="method">
+    <div class="container">
+      <div class="section-kicker">02 / THE METHOD</div>
+      <div class="centered">
+        <h2>Four checks.<br><em>A better way to begin.</em></h2>
+        <p class="section-lead">Inside the guide, you'll learn C.A.R.E. — four simple principles that turn a blank screen into a thoughtful, low-pressure opening.</p>
+      </div>
+      <div class="care-grid">
+        <article class="care-card"><div class="care-card__letter">C</div><div class="care-card__word">CONTEXT</div><h3>Notice something real.</h3><p>Start with a detail that actually belongs to the conversation.</p></article>
+        <article class="care-card"><div class="care-card__letter">A</div><div class="care-card__word">AUTHENTICITY</div><h3>Sound like yourself.</h3><p>Say something you would comfortably say in person.</p></article>
+        <article class="care-card"><div class="care-card__letter">R</div><div class="care-card__word">RESPECT</div><h3>Make space for choice.</h3><p>Drop the pressure and leave room for any response, including none.</p></article>
+        <article class="care-card"><div class="care-card__letter">E</div><div class="care-card__word">EASE</div><h3>Keep it easy to answer.</h3><p>Give a natural opening instead of a speech or interrogation.</p></article>
+      </div>
+      <div class="method__foot">ONE FRAMEWORK <span aria-hidden="true">✳</span> YOUR OWN VOICE <span aria-hidden="true">✳</span> ZERO MAGIC TRICKS</div>
+    </div>
+  </section>
+
   <section class="inside section-cream" id="inside">
     <div class="container inside__grid">
-      <div class="inside__sidebar"><div class="section-index">04 / THE PLAYBOOK</div><h2>Everything you need to stop <em>staring at the keyboard.</em></h2><p class="section-lead">A practical 56-page guide with clear frameworks, adaptable examples, and exercises you can use. No canned pickup lines or manipulative tricks.</p><a class="inline-link inline-link--dark" href="#offer">See what's included <span aria-hidden="true">↓</span></a></div>
+      <div class="inside__sidebar"><div class="section-index">03 / INSIDE THE GUIDE</div><h2>From a blank screen<br><em>to a message you can send.</em></h2><p class="section-lead">A practical 56-page guide with clear frameworks, adaptable examples, and exercises you can use. No canned pickup lines or manipulative tricks.</p><a class="inline-link inline-link--dark" href="#offer">See what's included <span aria-hidden="true">↓</span></a></div>
       <div class="chapters" role="list">
         <div class="chapter" role="listitem"><span>01</span><strong>The Empty Text Box</strong><small>Why it's harder than it needs to be</small></div>
         <div class="chapter" role="listitem"><span>02</span><strong>The Attention Audit</strong><small>Notice before you type</small></div>
@@ -237,20 +163,32 @@
     </div>
   </section>
 
-  <section class="outcomes section-light"><div class="container">
-    <div class="section-kicker">05 / WHAT CHANGES</div>
-    <div class="outcomes__head"><h2>Not a new personality.<br><em>A better process.</em></h2><p>It's not about making someone reply. It's about taking the pressure off your next hello — and building a skill you can use repeatedly.</p></div>
-    <div class="outcomes__grid">
-      <article><span>BEFORE</span><h3>Overanalyzing every word.</h3><p>Guessing which version of yourself might impress someone.</p></article>
-      <div class="outcomes__arrow" aria-hidden="true">→</div>
-      <article><span>AFTER THE PRACTICE</span><h3>Writing with more intention.</h3><p>Use the framework to draft a specific, respectful opener in your own voice.</p></article>
+  <section class="guide-preview section-light" id="samples" aria-labelledby="sample-title">
+    <div class="container guide-preview__grid">
+      <div><div class="section-kicker">04 / READ A REAL PAGE</div><h2 id="sample-title">Look inside.<br><em>Before you decide.</em></h2>
+      <p class="section-lead">See how the guide turns a familiar moment into a practical lesson. This is an excerpt from Chapter 3, not a testimonial or a promised result.</p>
+      <ul class="preview-benefits"><li>A concrete situation to learn from</li><li>The reasoning behind the message</li><li>A principle you can adapt to your own conversation</li></ul>
+      <a class="inline-link inline-link--dark" href="#offer">SEE THE GUIDE &amp; BONUS <span aria-hidden="true">↓</span></a></div>
+      <div class="samples-grid samples-grid--single"><details class="sample-card" open>
+          <summary><span class="sample-card__number">01 / FIRST MESSAGES</span><strong>The C.A.R.E. Formula</strong><span class="sample-card__action">READ SAMPLE PAGE <span aria-hidden="true">+</span></span></summary>
+          <div class="sample-paper"><div class="sample-paper__top"><span>HER POV · VOL. 01</span><span>PDF PAGE 13 OF 56</span></div>
+            <div class="sample-paper__kicker">CHAPTER 03</div>
+            <h4>THE C.A.R.E. FORMULA</h4><p class="sample-paper__subtitle">Four principles behind a better opener</p><figure class="sample-paper__source"><a href="/sample-page/first-message-formula.svg" target="_blank" rel="noopener noreferrer" title="View original page layout at full size"><img src="/sample-page/first-message-formula.svg" loading="lazy" width="432" height="648" alt="Actual PDF source-page layout preview: The C.A.R.E. Formula"></a><figcaption>SELECTED ORIGINAL PDF PAGE · OPEN TO ZOOM <span aria-hidden="true">↗</span></figcaption></figure>
+            <p>Daniel matches with Olivia. Her profile jokes: "My irrational fear is being stuck in an elevator with someone who wants to make small talk." Daniel's first idea is a generic compliment. His second is an exaggerated flirt. Neither reflects what interested him. Finally he writes: "If we got stuck in an elevator, would complete silence be the official rule?"</p>
+            <p>The opening is relevant and lightly playful. It isn't a guarantee of chemistry. It simply shows a better decision: respond to the context without performing.</p>
+            <h5>C — Context: Does it belong here?</h5>
+            <p>Context is the connection between what you're saying and the situation. If someone writes "I'm training for my first 10K," an opener like "How's the training going?" belongs.</p>
+            <div class="sample-paper__watermark">EXCERPT · NOT THE FULL GUIDE</div>
+          </div>
+        </details></div>
     </div>
-  </div></section>
+    <div class="container"><p class="sample-scope">The source-page preview reproduces text and layout from the completed PDF. Browser fonts may differ slightly from the download. The complete guide includes additional chapters, examples and exercises.</p></div>
+  </section>
 
   <section class="offer section-dark" id="offer">
     <div class="container offer__grid">
       <div class="offer__copy">
-        <div class="section-kicker">06 / YOUR NEXT MOVE</div>
+        <div class="section-kicker">05 / YOUR NEXT STEP</div>
         <h2>Your next first message<br><em>deserves a better plan.</em></h2>
         <p class="section-lead">Start with the foundation. Learn a method, see it in action, and make it your own.</p>
         <div class="offer__value">
@@ -258,35 +196,28 @@
           <div><span class="tick" aria-hidden="true">✓</span><span><strong>Practical exercises + 7-day challenge</strong><small>Take the ideas from reading to practice</small></span></div>
           <div><span class="tick" aria-hidden="true">✓</span><span><strong>Bonus: First Message Cheat Sheet</strong><small>One-page reference PDF included at no additional charge</small></span></div>
         </div>
+        <p class="offer__note">English-language PDFs. One-time purchase, no subscription. <a href="/refunds">Read refund information</a>.</p>
         <p class="offer__note">A first message is an invitation, not a guarantee. Results depend on many factors beyond your control.</p>
       </div>
-      <aside class="checkout-card" aria-label="Product price and launch status">
+      <aside id="starter-choice" class="checkout-card" aria-label="Product price and launch status">
         <div class="checkout-card__top"><span>THE HER POV STARTER GUIDE</span><span>VOLUME 01</span></div>
         <div class="checkout-card__cover"><img class="checkout-card__photograph" src="/static/cover-photos/vol-01.jpg" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="950" height="950"><span>HER POV</span><strong>THE FIRST<br>MESSAGE<br><em>FORMULA</em></strong><small>STOP OVERTHINKING. START CONNECTING.</small></div>
         <div class="checkout-card__body">
           <div class="checkout-card__description"><div><strong>Complete digital edition</strong><small>PDF + bonus cheat sheet</small></div><span class="badge-one-time">ONE TIME</span></div>
           <div class="checkout-card__price"><span>$9.90</span><small>USD</small></div>
-          <a class="btn btn--gold" style="width:100%" href="{{ url_for('last_offer') }}">START WITH THE FIRST GUIDE <span aria-hidden="true">↗</span></a>
-          <p class="checkout-card__secure">Next: a final optional offer, then choose your secure checkout. No payment is collected on the next page.{% if not checkout_ready %} CHECKOUT OPENING SOON — secure delivery testing is still in progress.{% endif %}</p>
+          <a class="btn btn--gold" style="width:100%" href="{{ url_for('last_offer') }}">GET THE GUIDE + BONUS — $9.90 <span aria-hidden="true">↗</span></a>
+          <p class="checkout-card__secure">Next: keep this $9.90 guide, or choose the optional $21.90 Complete Library. Review both before entering Hotmart checkout. Nothing is charged on the next page.{% if not checkout_ready %} STARTER CHECKOUT OPENING SOON — this is a preview.{% endif %}</p>
           <div class="checkout-card__details"><div><span>✓</span> No subscription</div><div><span>✓</span> Digital PDF format</div><div><span>✓</span> Bonus included</div></div>
         </div>
       </aside>
     </div>
   </section>
 
-  <section class="proofline" aria-label="What's included"><div class="container proofline__inner">
-    <div><strong>04</strong><span>COMPLETE GUIDES</span></div>
-    <div><strong>05</strong><span>PDF FILES INCLUDING BONUS</span></div>
-    <div><strong>114</strong><span>PAGES ACROSS ALL FILES</span></div>
-    <div><strong>$29.90</strong><span>COMPLETE BUNDLE · ONE TIME</span></div>
-  </div></section>
-
-
   <section class="launch-bundle section-dark" aria-label="Complete HER POV bundle offer">
     <div class="container">
       <div class="launch-bundle__head">
-        <div class="section-kicker">THE COMPLETE SYSTEM / ONE-TIME PURCHASE</div>
-        <h2>Four real-world skills.<br><em>One complete library.</em></h2>
+        <div class="section-kicker">06 / WANT TO GO BEYOND THE FIRST MESSAGE?</div>
+        <h2>First messages are the beginning.<br><em>Build the next skills, too.</em></h2>
         <p>Learn how to start conversations, make sense of replies, build a profile that sounds like you, and suggest a first date respectfully. Each guide focuses on one skill you can practice.</p>
       </div>
       <div id="bundle" class="bundle-offer" aria-labelledby="bundle-heading">
@@ -298,11 +229,11 @@
           <p class="bundle-offer__bonus">Plus practical seven-day exercises and the First Message Cheat Sheet bonus.</p>
         </div>
         <div style="text-align:center">
-          <div style="font-size:12px;text-decoration:line-through;color:#bbb4a7">Regular combined value: $42.60</div>
-          <div style="font:56px/1.1 Georgia,serif;color:#e5c791;margin:7px 0">$29.90 <span style="font:13px Arial,sans-serif;color:#c7bdae">USD</span></div>
-          <div style="font-size:12px;color:#e5c791;font-weight:700;margin-bottom:13px">SAVE $12.70 · ONE-TIME</div>
-          {% if bundle_checkout_ready %}<a href="{{ bundle_checkout_url }}" rel="noopener noreferrer" class="btn btn--gold" style="width:100%">GET ALL 4 GUIDES — $29.90 <span aria-hidden="true">↗</span></a>{% else %}<button type="button" disabled style="display:block;width:100%;min-height:49px;padding:13px 15px;background:#979084;color:#141a20;border:0;border-radius:4px;cursor:not-allowed;font-size:12px;font-weight:800;letter-spacing:.07em">BUNDLE CHECKOUT OPENING SOON</button>{% endif %}
-          <small style="color:#aeb0ae;display:block;margin-top:8px">{% if bundle_checkout_ready %}Four guides and a bonus · No subscription · Digital delivery{% else %}No payment collected until delivery is verified.{% endif %}</small>
+          <div style="font-size:12px;text-decoration:line-through;color:#bbb4a7">Buying all four guides separately: $42.60</div>
+          <div style="font:56px/1.1 Georgia,serif;color:#e5c791;margin:7px 0">$21.90 <span style="font:13px Arial,sans-serif;color:#c7bdae">USD</span></div>
+          <div style="font-size:12px;color:#e5c791;font-weight:700;margin-bottom:13px">SAVE $20.70 · ONE-TIME</div>
+          {% if bundle_checkout_ready %}<a href="{{ url_for('last_offer') }}" rel="noopener noreferrer" class="btn btn--gold" style="width:100%">REVIEW THE $21.90 LIBRARY OFFER <span aria-hidden="true">↗</span></a>{% else %}<button type="button" disabled style="display:block;width:100%;min-height:49px;padding:13px 15px;background:#979084;color:#141a20;border:0;border-radius:4px;cursor:not-allowed;font-size:12px;font-weight:800;letter-spacing:.07em">BUNDLE CHECKOUT OPENING SOON</button>{% endif %}
+          <small style="color:#aeb0ae;display:block;margin-top:8px">{% if bundle_checkout_ready %}Same five PDFs as the standard $29.90 library. Review the existing $21.90 offer before payment; you can also keep just the $9.90 guide.{% else %}No payment collected until delivery is verified.{% endif %}</small>
         </div>
       </div>
 
@@ -341,25 +272,8 @@
         </figure>
       </div>
 
-      <div class="preview-intro" id="samples">
-        <div class="section-kicker">READ BEFORE YOU BUY / REAL BOOK EXCERPTS</div>
-        <h3>See what you will <em>actually learn.</em></h3>
-        <p>Read an excerpt from each finished guide and see a sample page from the original PDF. Open any preview to take a closer look at the writing and teaching style before you decide.</p>
-      </div>
-      <div class="samples-grid" aria-label="Genuine excerpts from four HER POV PDFs">
-        <details class="sample-card">
-          <summary><span class="sample-card__number">01 / FIRST MESSAGES</span><strong>The C.A.R.E. Formula</strong><span class="sample-card__action">READ SAMPLE PAGE <span aria-hidden="true">+</span></span></summary>
-          <div class="sample-paper"><div class="sample-paper__top"><span>HER POV · VOL. 01</span><span>PDF PAGE 13 OF 56</span></div>
-            <div class="sample-paper__kicker">CHAPTER 03</div>
-            <h4>THE C.A.R.E. FORMULA</h4><p class="sample-paper__subtitle">Four principles behind a better opener</p><figure class="sample-paper__source"><a href="/sample-page/first-message-formula.svg" target="_blank" rel="noopener noreferrer" title="View original page layout at full size"><img src="/sample-page/first-message-formula.svg" loading="lazy" width="432" height="648" alt="Actual PDF source-page layout preview: The C.A.R.E. Formula"></a><figcaption>SELECTED ORIGINAL PDF PAGE · OPEN TO ZOOM <span aria-hidden="true">↗</span></figcaption></figure>
-            <p>Daniel matches with Olivia. Her profile jokes: "My irrational fear is being stuck in an elevator with someone who wants to make small talk." Daniel's first idea is a generic compliment. His second is an exaggerated flirt. Neither reflects what interested him. Finally he writes: "If we got stuck in an elevator, would complete silence be the official rule?"</p>
-            <p>The opening is relevant and lightly playful. It isn't a guarantee of chemistry. It simply shows a better decision: respond to the context without performing.</p>
-            <h5>C — Context: Does it belong here?</h5>
-            <p>Context is the connection between what you're saying and the situation. If someone writes "I'm training for my first 10K," an opener like "How's the training going?" belongs.</p>
-            <div class="sample-paper__watermark">EXCERPT · NOT THE FULL GUIDE</div>
-          </div>
-        </details>
-        <details class="sample-card">
+      <div class="preview-intro"><div class="section-kicker">EXPLORE THE OTHER THREE GUIDES</div><h3>Support for what <em>comes next.</em></h3><p>Open a real excerpt from each additional guide. The Complete Library includes all four finished guides and the First Message Cheat Sheet.</p></div>
+      <div class="samples-grid"><details class="sample-card">
           <summary><span class="sample-card__number">02 / REPLIES</span><strong>The S.I.G.N.A.L. Check</strong><span class="sample-card__action">READ SAMPLE PAGE <span aria-hidden="true">+</span></span></summary>
           <div class="sample-paper"><div class="sample-paper__top"><span>HER POV · VOL. 02</span><span>PDF PAGE 6 OF 19</span></div>
             <div class="sample-paper__kicker">CHAPTER 02</div>
@@ -368,8 +282,7 @@
             <p>This is a reflection tool, not a scoring system. A reply that lacks a question may still be friendly. A long answer may still be polite rather than romantic.</p>
             <div class="sample-paper__watermark">EXCERPT · NOT THE FULL GUIDE</div>
           </div>
-        </details>
-        <details class="sample-card">
+        </details><details class="sample-card">
           <summary><span class="sample-card__number">03 / PROFILES</span><strong>The O.P.E.N. Bio Framework</strong><span class="sample-card__action">READ SAMPLE PAGE <span aria-hidden="true">+</span></span></summary>
           <div class="sample-paper"><div class="sample-paper__top"><span>HER POV · VOL. 03</span><span>PDF PAGE 7 OF 19</span></div>
             <div class="sample-paper__kicker">CHAPTER 03</div>
@@ -378,8 +291,7 @@
             <p>Example: "I make one ambitious dinner every Sunday. The results range from great to smoke alarm. Tell me which recipe I should attempt next." It offers a habit, a touch of personality and an easy topic.</p>
             <div class="sample-paper__watermark">EXCERPT · NOT THE FULL GUIDE</div>
           </div>
-        </details>
-        <details class="sample-card">
+        </details><details class="sample-card">
           <summary><span class="sample-card__number">04 / FIRST DATES</span><strong>The C.L.E.A.R. Invitation</strong><span class="sample-card__action">READ SAMPLE PAGE <span aria-hidden="true">+</span></span></summary>
           <div class="sample-paper"><div class="sample-paper__top"><span>HER POV · VOL. 04</span><span>PDF PAGE 5 OF 19</span></div>
             <div class="sample-paper__kicker">CHAPTER 02</div>
@@ -388,38 +300,21 @@
             <p>Example: "I've enjoyed talking about bookstores with you. Would you like to get coffee at the place near the library on Saturday afternoon? No pressure if you'd rather keep chatting here."</p>
             <div class="sample-paper__watermark">EXCERPT · NOT THE FULL GUIDE</div>
           </div>
-        </details>
-      </div>
-      <p class="sample-scope">Sample excerpts and SVG page previews are drawn from the completed PDFs. The SVG reproduces text and placement from one real page, with browser fonts that may differ slightly from the downloadable PDF. The complete paid guides include additional chapters, examples and exercises. <a href="/refunds">Read digital delivery and refund information.</a></p>
-
+        </details></div>
       <p class="launch-bundle__fineprint">Includes the 56-page First Message Formula, three 19-page guides and a one-page bonus. Examples are educational, not promises of replies or dates.</p>
-    </div>
-  </section>
-
-  <section class="series section-cream" id="series">
-    <div class="container">
-      <div class="section-kicker">07 / THE BIGGER PICTURE</div>
-      <div class="series__intro"><div><h2>One conversation is<br><em>just the beginning.</em></h2></div><div><p class="section-lead">Meet the four complete HER POV playbooks. From the first message to the first date, every guide has its own real exercises, examples and practical tools.</p><p class="series__honest">All four guide manuscripts and PDFs are complete. The Complete Library is available as a one-time digital purchase; delivery details are shown at secure checkout. Only the future AI Coach remains in development.</p></div></div>
-      <div class="journey" aria-label="HER POV four-guide collection">
-        <article class="journey__item journey__item--current"><div class="journey__head"><span>01 / START</span><span class="journey__tag">FIRST RELEASE</span></div>{{ editorial_cover('first-message-formula') }}<h3>The First Message<br>Formula</h3><p>Learn to start conversations that feel natural.</p><div class="journey__price">$9.90 <small>ONE-TIME · {% if checkout_ready %}AVAILABLE NOW{% else %}LAUNCH PENDING{% endif %}</small></div></article>
-        <article class="journey__item"><div class="journey__head"><span>02 / RESPOND</span><span class="journey__tag">GUIDE COMPLETE</span></div>{{ editorial_cover('reply-decoder') }}<h3>The Reply<br>Decoder</h3><p>Make sense of the conversation without spiraling into guesswork.</p><div class="journey__price">PART OF THE COMPLETE LIBRARY <small>FINISHED DIGITAL GUIDE</small></div></article>
-        <article class="journey__item"><div class="journey__head"><span>03 / PRESENT</span><span class="journey__tag">GUIDE COMPLETE</span></div>{{ editorial_cover('profile-makeover') }}<h3>The Profile<br>Makeover</h3><p>Put your best, most authentic self forward on your profile.</p><div class="journey__price">PART OF THE COMPLETE LIBRARY <small>FINISHED DIGITAL GUIDE</small></div></article>
-        <article class="journey__item"><div class="journey__head"><span>04 / CONNECT</span><span class="journey__tag">GUIDE COMPLETE</span></div>{{ editorial_cover('from-chat-to-first-date') }}<h3>From Chat to<br>First Date</h3><p>Navigate the transition from messages to making real plans.</p><div class="journey__price">PART OF THE COMPLETE LIBRARY <small>FINISHED DIGITAL GUIDE</small></div></article>
-      </div>
-
-      <div class="coach"><div><span class="coach__tag">FUTURE RELEASE / NOT AVAILABLE FOR PURCHASE</span><h3>HER POV <em>AI Coach</em></h3><p>A future interactive companion for personalized conversation practice. Unlike the one-time guides, it is envisioned as an ongoing service with a separate monthly plan. Features and availability are still in development.</p></div><div class="coach__price"><strong>$24.90<span>/mo</span></strong><small>PROPOSED PRICE · SUBJECT TO CHANGE</small></div></div>
     </div>
   </section>
 
   <section class="faq section-light" id="faq">
     <div class="container faq__grid">
-      <div><div class="section-kicker">08 / GOOD TO KNOW</div><h2>Know what you get.<br><em>Before you buy.</em></h2><p>What comes in the complete library, how it differs from the starter guide, and what to expect from your purchase.</p></div>
+      <div><div class="section-kicker">07 / BEFORE CHECKOUT</div><h2>Know what you get.<br><em>Before you buy.</em></h2><p>What comes in the complete library, how it differs from the starter guide, and what to expect from your purchase.</p></div>
       <div class="faq__list">
-        <details><summary>What comes in the $29.90 bundle?<span aria-hidden="true">+</span></summary><p>The First Message Formula (56 pages) and its 1-page bonus, plus three finished 19-page PDFs: The Reply Decoder, The Profile Makeover, and From Chat to First Date. All four are English-language educational guides. The AI Coach is not included.</p></details>
+        <details><summary>What comes in the $21.90 library offer?<span aria-hidden="true">+</span></summary><p>The First Message Formula (56 pages) and its 1-page bonus, plus three finished 19-page PDFs: The Reply Decoder, The Profile Makeover, and From Chat to First Date. All four are English-language educational guides.</p></details>
         <details><summary>What comes with the $9.90 starter guide?<span aria-hidden="true">+</span></summary><p>The First Message Formula: a 56-page English-language PDF with 50 adaptable openers, practical exercises and a seven-day challenge, plus a separate one-page First Message Cheat Sheet.</p></details>
-        <details><summary>Can I start with just one guide?<span aria-hidden="true">+</span></summary><p>Yes. Choose The First Message Formula for $9.90 or the standard Complete Library for $29.90. When you select the starter, you will see an optional final offer before checkout. You can decline it and continue with only the starter guide and its bonus. Nothing is charged before you select a checkout and confirm payment.</p></details>
-        <details><summary>How will the files be delivered?<span aria-hidden="true">+</span></summary><p>Once the checkout launches, paid orders will receive secure personal download links. We will not open orders until that process is verified end to end.</p></details>
-        <details><summary>Is this a subscription?<span aria-hidden="true">+</span></summary><p>No. The four HER POV guides and the $29.90 Complete Library bundle are one-time digital purchases. The future AI Coach is only a concept, with a proposed $24.90/month price subject to change. It is not available to purchase or included in the bundle.</p></details>
+        <details><summary>Can I start with just one guide?<span aria-hidden="true">+</span></summary><p>Yes. The next page lets you keep The First Message Formula and its bonus for $9.90, or choose the same five PDFs as the standard $29.90 Complete Library through the existing $21.90 offer. Both prices are totals for one purchase, not subscriptions. Nothing is charged on this page.</p></details>
+        <details><summary>How will the files be delivered?<span aria-hidden="true">+</span></summary><p>Hotmart handles checkout and digital delivery. Check the product, currency, total price and delivery instructions on its checkout page before paying. Follow the access instructions from Hotmart after payment confirmation. This website does not collect your card details.</p></details>
+        <details><summary>Is this a subscription?<span aria-hidden="true">+</span></summary><p>No. The $9.90 starter guide and the $21.90 Complete Library offer are one-time digital purchases. Neither includes a recurring membership.</p></details>
+        <details><summary>What if I want a refund?<span aria-hidden="true">+</span></summary><p>Read our <a href="/refunds">refund information</a> and the terms displayed by Hotmart before payment. Use the support and refund options shown in your Hotmart purchase information if you need help with an order.</p></details>
         <details><summary>Can I use it for Instagram, Tinder, Bumble or Hinge?<span aria-hidden="true">+</span></summary><p>Yes. The guide includes platform-aware examples. The point is to adapt the principles to the real context rather than copy lines blindly.</p></details>
         <details><summary>Will this guarantee replies or dates?<span aria-hidden="true">+</span></summary><p>No. Nobody can guarantee another person's interest, replies, attraction, or decisions. This guide helps you practice authentic and considerate openers.</p></details>
       </div>
@@ -427,9 +322,9 @@
   </section>
 
   <section class="closing section-dark">
-    <div class="container closing__inner"><div class="eyebrow">THE FIRST MESSAGE IS NOT AN AUDITION</div><h2>Make it real.<br><em>Make it yours.</em></h2><p>You don't need fifty lines memorized. You need one better way to begin.</p><a href="#starter-choice" class="btn btn--gold">START WITH A BETTER MESSAGE <span aria-hidden="true">↗</span></a><small>HER POV · FIRST MESSAGE FORMULA · PDF + BONUS · {% if checkout_ready %}Secure digital delivery{% else %}Checkout coming soon{% endif %}</small></div>
+    <div class="container closing__inner"><div class="eyebrow">THE FIRST MESSAGE IS NOT AN AUDITION</div><h2>Make it real.<br><em>Make it yours.</em></h2><p>You don't need fifty lines memorized. You need one better way to begin.</p><a href="#starter-choice" class="btn btn--gold">VIEW THE $9.90 GUIDE + BONUS <span aria-hidden="true">↗</span></a><small>HER POV · FIRST MESSAGE FORMULA · PDF + BONUS · {% if checkout_ready %}Secure digital delivery{% else %}Checkout coming soon{% endif %}</small></div>
   </section>
   </div>
 </main>
-<footer class="footer"><div class="container footer__grid"><div><a class="logo logo--footer" href="/">HER <i></i> POV<span>.</span></a><p>Digital guides for better conversations.<br>No pressure. No performance. Just a better start.</p></div><div><strong>EXPLORE</strong><a href="#method">The Method</a><a href="#inside">What's Inside</a><a href="#series">The Series</a><a href="#faq">FAQ</a></div><div><strong>INFORMATION</strong><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/refunds">Refunds</a><a href="/contact">Contact &amp; Support</a></div></div><div class="container footer__bottom"><span>© 2026 HER POV. ALL RIGHTS RESERVED.</span><span>FOR ADULTS · NO GUARANTEED DATING OUTCOMES{% if not checkout_ready %} · PRE-LAUNCH PREVIEW{% endif %}</span></div></footer>
+<footer class="footer"><div class="container footer__grid"><div><a class="logo logo--footer" href="/">HER <i></i> POV<span>.</span></a><p>Digital guides for better conversations.<br>No pressure. No performance. Just a better start.</p></div><div><strong>EXPLORE</strong><a href="#method">The Method</a><a href="#inside">What's Inside</a><a href="#bundle">The Complete Library</a><a href="#faq">FAQ</a></div><div><strong>INFORMATION</strong><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/refunds">Refunds</a><a href="/contact">Contact &amp; Support</a></div></div><div class="container footer__bottom"><span>© 2026 HER POV. ALL RIGHTS RESERVED.</span><span>FOR ADULTS · NO GUARANTEED DATING OUTCOMES{% if not checkout_ready %} · PRE-LAUNCH PREVIEW{% endif %}</span></div></footer>
 </body></html>
