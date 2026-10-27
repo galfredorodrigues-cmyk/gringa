@@ -57,6 +57,9 @@
       "If you’ve both been engaged in the conversation, suggest a simple plan. Leave room for her to decline, and respect her answer."
     ][stage];
     byId("diagnostic-example").textContent = examples[stage][detail][tone];
+    byId("sales-content").hidden = false;
+    document.body.classList.remove("diagnostic-locked");
+    byId("diagnostic-unlock-note")?.remove();
     byId("diagnostic-result-title").focus({preventScroll: true});
   }
   byId("diagnostic-start").hidden = false;
