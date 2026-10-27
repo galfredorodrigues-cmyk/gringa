@@ -5,8 +5,8 @@
   else api.install(root, root.document);
 })(typeof window !== 'undefined' ? window : globalThis, function () {
   'use strict';
-  const CONFIG = {googleAds: 'AW-18540742704', ga4: '', metaPixel: '', checkoutLabel: ''};
-  const KEY = 'herpov_consent_v1';
+  const CONFIG = {googleAds: 'AW-18540742704', ga4: '', metaPixel: '1175307691488519', checkoutLabel: ''};
+  const KEY = 'herpov_consent_v2';
   const EVENTS = new Set(['page_view','quiz_start','quiz_complete','offer_view','library_view','sample_view','review_offer','begin_checkout','navigation_click']);
   function eventData(name, data = {}) {
     if (!EVENTS.has(name)) return null;
@@ -17,7 +17,7 @@
     return clean;
   }
   function readConsent(raw, now = Date.now()) {
-    try {const c=JSON.parse(raw); return c.version===1 && typeof c.analytics==='boolean' && typeof c.marketing==='boolean' && typeof c.savedAt==='number' && c.savedAt<=now && now-c.savedAt<180*86400000 ? c : null;} catch {return null;}
+    try {const c=JSON.parse(raw); return c.version===2 && typeof c.analytics==='boolean' && typeof c.marketing==='boolean' && typeof c.savedAt==='number' && c.savedAt<=now && now-c.savedAt<180*86400000 ? c : null;} catch {return null;}
   }
   function createCore(config, sink) {
     let consent={analytics:false,marketing:false}; let google=false, meta=false;
@@ -59,16 +59,16 @@
       google:(...args)=>w.gtag(...args),
       page:()=>({page_location:w.location.origin+w.location.pathname,page_referrer:'',page_title:d.title}),
       loadGoogle:id=>script('https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(id)),
-      loadMeta:id=>{const f=function(){f.callMethod?f.callMethod.apply(f,arguments):f.queue.push(arguments);};f.queue=[];f.loaded=true;f.version='2.0';w.fbq=f;w._fbq=f;script('https://connect.facebook.net/en_US/fbevents.js');f('init',id);},
+      loadMeta:id=>{const f=function(){f.callMethod?f.callMethod.apply(f,arguments):f.queue.push(arguments);};f.queue=[];f.loaded=true;f.version='2.0';w.fbq=f;w._fbq=f;script('https://connect.facebook.net/en_US/fbevents.js');f('set','autoConfig',false,id);f('init',id);},
       meta:(...args)=>w.fbq?.(...args),local:(name,data)=>w.dataLayer.push({event:'herpov_'+name,...data})
     });
     w.HerPovTracking={track:core.track};
     let previous=null;try{previous=readConsent(w.localStorage.getItem(KEY));}catch{}
     const panel=d.createElement('section');panel.className='privacy-panel';panel.setAttribute('aria-label','Privacy choices');
-    panel.innerHTML='<h2>Your privacy choices</h2><p>HER POV uses optional measurement technologies. Our Google advertising tag loads only if you allow advertising. Your quiz answers are not sent to advertising platforms. <a href="/privacy">Read our privacy notice</a>.</p><div class="privacy-options"><label><input type="checkbox" name="analytics"> Analytics</label><label><input type="checkbox" name="marketing"> Advertising</label></div><div class="privacy-actions"><button type="button" data-consent="all">Accept all</button><button type="button" data-consent="none">Reject optional</button><button type="button" data-consent="save">Save choices</button></div>';
+    panel.innerHTML='<h2>Your privacy choices</h2><p>HER POV uses optional measurement technologies. Our Google advertising tag and Meta Pixel load only if you allow advertising. Your quiz answers are not sent to advertising platforms. <a href="/privacy">Read our privacy notice</a>.</p><div class="privacy-options"><label><input type="checkbox" name="analytics"> Analytics</label><label><input type="checkbox" name="marketing"> Advertising</label></div><div class="privacy-actions"><button type="button" data-consent="all">Accept all</button><button type="button" data-consent="none">Reject optional</button><button type="button" data-consent="save">Save choices</button></div>';
     d.body.appendChild(panel);
     const reopen=d.createElement('button');reopen.type='button';reopen.className='privacy-reopen';reopen.textContent='Privacy choices';reopen.addEventListener('click',()=>{panel.hidden=false;panel.querySelector('button').focus();});d.body.appendChild(reopen);
-    function setChoices(c,save){core.choose(c);panel.querySelector('[name="analytics"]').checked=c.analytics;panel.querySelector('[name="marketing"]').checked=c.marketing;if(save){try{w.localStorage.setItem(KEY,JSON.stringify({version:1,analytics:c.analytics,marketing:c.marketing,savedAt:Date.now()}));}catch{}}panel.hidden=true;core.track('page_view');}
+    function setChoices(c,save){core.choose(c);panel.querySelector('[name="analytics"]').checked=c.analytics;panel.querySelector('[name="marketing"]').checked=c.marketing;if(save){try{w.localStorage.setItem(KEY,JSON.stringify({version:2,analytics:c.analytics,marketing:c.marketing,savedAt:Date.now()}));}catch{}}panel.hidden=true;core.track('page_view');}
     panel.addEventListener('click',e=>{const b=e.target.closest('button[data-consent]');if(!b)return;const a=b.dataset.consent;const c=a==='all'?{analytics:true,marketing:true}:a==='none'?{analytics:false,marketing:false}:{analytics:panel.querySelector('[name="analytics"]').checked,marketing:panel.querySelector('[name="marketing"]').checked};setChoices(c,true);});
     if(previous)setChoices(previous,false);
     d.addEventListener('click',e=>{const a=e.target.closest('a[href]');if(!a)return;let u;try{u=new URL(a.href,w.location.href);}catch{return;}

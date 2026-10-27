@@ -133,9 +133,9 @@
       {
         "heading": "Cookies and website resources",
         "paragraphs": [
-          "The website uses optional Google Ads technology to measure advertising after you allow advertising in Privacy choices. Google may process page visits, advertising identifiers and device or browser information for advertising measurement. Optional advertising scripts are not loaded before your consent.",
+          "The website uses optional Google Ads technology and Meta Pixel after you allow advertising in Privacy choices. Google and Meta may process page visits, advertising identifiers and device or browser information for advertising measurement. Meta receives page views and selected funnel actions, including checkout clicks with the offer value and currency. Optional advertising scripts are not loaded before your consent.",
           "Privacy choices stores your analytics and advertising preferences in your browser for up to 180 days. You can reject optional tracking or reopen Privacy choices to change your selection. Our funnel events do not include your answers to the dating-conversation questionnaire, message text, email, or payment details. Opening the thank-you page is not recorded as a confirmed purchase.",
-          "The website may load external font resources. Hotmart operates its own checkout, payment and delivery interfaces, with its own privacy and cookie practices. Your choices on this website do not control tracking on Hotmart. Google Analytics and Meta Pixel have not been activated on this website at this stage."
+          "The website may load external font resources. Hotmart operates its own checkout, payment and delivery interfaces, with its own privacy and cookie practices. Your choices on this website do not control tracking on Hotmart. Google Analytics has not been activated on this website at this stage."
         ],
         "points": []
       },
