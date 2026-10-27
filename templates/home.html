@@ -19,6 +19,8 @@
 <link rel="stylesheet" href="{{ url_for('static',filename='css/landing.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/covers.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
+<link rel="stylesheet" href="/static/css/diagnostic.css">
+<script src="/static/js/diagnostic.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -33,12 +35,48 @@
   </div>
 </header>
 <main id="main">
-  <section class="hero section-dark" aria-labelledby="hero-title">
+<section class="diagnostic section-dark" aria-labelledby="diagnostic-title">
+  <div class="container diagnostic__grid">
+    <div>
+      <p class="eyebrow">A BETTER CONVERSATION STARTS WITH SOMETHING REAL</p>
+      <h1 id="diagnostic-title">You matched.<br><em>Now what do you say?</em></h1>
+      <p class="diagnostic__lead">You type a message. Delete it. Try again. Find a starting point that feels more like you.</p>
+      <p>Three quick questions. One practical example. No email needed.</p>
+      <a class="inline-link" href="#guide-introduction">Skip to the guide <span aria-hidden="true">↓</span></a>
+    </div>
+    <div class="diagnostic__card">
+      <div id="diagnostic-intro">
+        <p class="diagnostic__label">YOUR STARTING POINT / HER POV</p>
+        <h2>A blank message box.<br>A better way to begin.</h2>
+        <p>Choose your situation, a profile detail, and your natural tone. Get an example you can make your own.</p>
+        <button class="btn btn--gold" type="button" id="diagnostic-start" hidden>FIND MY STARTING POINT <span aria-hidden="true">↗</span></button>
+        <noscript><p>Notice a genuine detail in her profile, then ask a short question you actually want answered.</p><a href="#guide-introduction">Explore the guide ↓</a></noscript>
+      </div>
+      <div id="diagnostic-questions" hidden>
+        <p id="diagnostic-progress" class="diagnostic__label"></p>
+        <div class="diagnostic__track" aria-hidden="true"><span id="diagnostic-bar"></span></div>
+        <h2 id="diagnostic-question" tabindex="-1"></h2>
+        <div id="diagnostic-options"></div>
+        <button type="button" class="diagnostic__back" id="diagnostic-back">← Previous question</button>
+      </div>
+      <div id="diagnostic-result" hidden>
+        <p class="diagnostic__label">YOUR STARTING POINT</p>
+        <h2 id="diagnostic-result-title" tabindex="-1"></h2>
+        <p id="diagnostic-advice"></p>
+        <blockquote id="diagnostic-example"></blockquote>
+        <p class="diagnostic__note">Illustrative example based on your choices, not an analysis of a real profile. Adapt it to the actual conversation. No message guarantees a reply.</p>
+        <a class="btn btn--gold" href="#guide-introduction">EXPLORE THE FIRST MESSAGE FORMULA <span aria-hidden="true">↓</span></a>
+        <button type="button" class="diagnostic__back" id="diagnostic-restart">Try different answers</button>
+      </div>
+    </div>
+  </div>
+</section>
+  <section class="hero section-dark" id="guide-introduction" aria-labelledby="hero-title">
     <div class="ambient ambient--one"></div><div class="ambient ambient--two"></div>
     <div class="container hero__grid">
       <div class="hero__copy">
         <p class="eyebrow"><span class="gold-line"></span> FOR MEN WHO WANT BETTER DATING CONVERSATIONS — NO GAMES</p>
-        <h1 id="hero-title">You had something to say.<br><em>Then you deleted it.</em></h1>
+        <h2 id="hero-title">You had something to say.<br><em>Then you deleted it.</em></h2>
         <p class="hero__lead">Ten minutes rewriting one message. A dozen doubts before hitting send. Sound familiar? The problem isn't that you need a better pickup line. <strong>You need a better starting point.</strong></p>
         <p class="hero__secondary">The First Message Formula is a practical guide to getting past that moment. Discover a simple four-part method, 50 adaptable openers and exercises that help you write something that actually sounds like you. <strong>No scripts to memorize. No pretending to be someone else.</strong></p>
         <div class="hero__actions">
