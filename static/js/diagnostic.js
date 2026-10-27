@@ -48,6 +48,7 @@
     byId("diagnostic-question").focus({preventScroll: true});
   }
   function result() {
+    if (typeof window !== "undefined") window.HerPovTracking?.track("quiz_complete");
     show("diagnostic-result");
     const [stage, detail, tone] = answers;
     byId("diagnostic-result-title").textContent = ["Start with something she chose to share.", "Follow a detail already in the conversation.", "Make a clear, low-pressure invitation."][stage];
@@ -73,7 +74,10 @@
     byId("diagnostic-result-title").focus({preventScroll: true});
   }
   byId("diagnostic-start").hidden = false;
-  byId("diagnostic-start").addEventListener("click", question);
+  byId("diagnostic-start").addEventListener("click", () => {
+    if (typeof window !== "undefined") window.HerPovTracking?.track("quiz_start");
+    question();
+  });
   byId("diagnostic-back").addEventListener("click", () => { step--; question(); });
   byId("diagnostic-restart").addEventListener("click", () => { step = 0; answers = []; question(); });
 })();
