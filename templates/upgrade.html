@@ -15,7 +15,7 @@
 </head>
 <body>
 <a class="skip" href="#main">Skip to offer</a>
-<div class="prelaunch"><span class="status-dot" aria-hidden="true"></span> PRE-CHECKOUT CHOICE PREVIEW · PAYMENT NOT ACTIVE</div>
+<div class="prelaunch"><span class="status-dot" aria-hidden="true"></span> {% if offer_checkout_ready and starter_checkout_ready %}YOUR PRE-CHECKOUT CHOICE · ONE PURCHASE{% else %}PRE-CHECKOUT CHOICE PREVIEW · PAYMENT NOT ACTIVE{% endif %}</div>
 <header class="site-header">
   <div class="shell header-row">
     <a class="brand" href="/" aria-label="HER POV home">HER <span class="brand-dot"></span> POV<span class="period">.</span></a>
@@ -109,6 +109,6 @@
   </section>
   <section class="closing"><div class="shell closing-row"><div><p class="eyebrow">A BETTER WAY TO CONNECT</p><h2>Real conversations. <em>At your pace.</em></h2></div><p>Practical material for adults. Results depend on your choices and the other person's decisions. Respect boundaries, privacy and consent.</p></div></section>
 </main>
-<footer class="footer"><div class="shell footer-row"><a class="footer-brand" href="/">HER POV.</a><div class="footer-links"><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/refunds">Refunds</a><a href="/contact">Support</a></div><p>© 2026 HER POV · PRE-LAUNCH PREVIEW</p></div></footer>
+<footer class="footer"><div class="shell footer-row"><a class="footer-brand" href="/">HER POV.</a><div class="footer-links"><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/refunds">Refunds</a><a href="/contact">Support</a></div><p>© 2026 HER POV{% if not offer_checkout_ready or not starter_checkout_ready %} · PRE-LAUNCH PREVIEW{% endif %}</p></div></footer>
 </body>
 </html>
