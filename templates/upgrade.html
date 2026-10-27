@@ -6,8 +6,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#10151d">
 <meta name="robots" content="noindex,nofollow,noarchive">
-<meta name="description" content="HER POV Last Chance Offer: choose four digital dating guides for $21.90 or keep the starter guide at $9.90, before payment.">
-<title>Last Chance Offer — HER POV</title>
+<meta name="description" content="HER POV: review your guide or Complete Library choice. choose four digital dating guides for $21.90 or keep the starter guide at $9.90, before payment.">
+<title>Review Your Choice — HER POV</title>
 <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/upgrade.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/covers.css') }}">
@@ -19,17 +19,17 @@
 <header class="site-header">
   <div class="shell header-row">
     <a class="brand" href="/" aria-label="HER POV home">HER <span class="brand-dot"></span> POV<span class="period">.</span></a>
-    <span class="header-aside">HER POV <span class="divider" aria-hidden="true">/</span> LAST CHANCE OFFER</span>
+    <span class="header-aside">HER POV <span class="divider" aria-hidden="true">/</span> REVIEW YOUR CHOICE</span>
   </div>
 </header>
 <main id="main">
   <section class="hero" aria-labelledby="upgrade-headline">
     <div class="shell hero-grid">
       <div class="hero-content">
-        <div class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span> LAST CHANCE OFFER / BEFORE CHECKOUT</div>
+        <div class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span> REVIEW YOUR CHOICE / BEFORE CHECKOUT</div>
         <p class="intro">Before you decide how to start</p>
         <h1 id="upgrade-headline">One guide or the <em>whole journey?</em><br>Make your <em>next move.</em></h1>
-        <p class="hero-lede">You came for The First Message Formula at $9.90. Before checkout, here's an optional way to get the entire HER POV collection for less.</p>
+        <p class="hero-lede">Choose the learning path that fits you: start with The First Message Formula for $9.90, or get the Complete Library for $21.90.</p>
         <p class="hero-text">Choose all four complete guides plus the bonus for $21.90 in one purchase, instead of the standard $29.90 collection price. Or skip this offer and continue with just your first guide for $9.90. Nothing has been charged yet.</p>
         <div class="trustline"><span>4 complete guides + bonus</span><span>Digital PDFs</span><span>One-time purchase</span></div>
       </div>
@@ -78,9 +78,9 @@
         <p class="scope-note">Accepting this offer includes The First Message Formula (Volume 01), its bonus cheat sheet, and the three additional guides shown above. This is one purchase before checkout — you have not paid for the starter guide yet.</p>
       </div>
       <aside class="offer" aria-labelledby="offer-title">
-        <div class="offer-top"><span>HER POV / LAST CHANCE OFFER</span><span>ALL 04 GUIDES</span></div>
+        <div class="offer-top"><span>HER POV / REVIEW YOUR CHOICE</span><span>ALL 04 GUIDES</span></div>
         <h2 id="offer-title">Get all four. <em>One price.</em></h2>
-        <p class="offer-sub">A special pre-checkout option for visitors who selected the $9.90 starter guide.</p>
+        <p class="offer-sub">Review the complete-library option before entering secure checkout.</p>
         <div class="upgrade-total"><span>ALL 4 GUIDES + BONUS</span><strong>$21.90 <small>USD TOTAL</small></strong><p>Save $8.00 versus the standard $29.90 bundle.</p></div>
         <p class="add-charge">ONE CHECKOUT · ONE PAYMENT · NO SUBSCRIPTION</p>
         <p class="price-context">Accept: pay $21.90 once for all four guides + bonus. Decline: pay only $9.90 for Volume 01 + bonus. Any applicable taxes or fees are shown at checkout.</p>
@@ -93,14 +93,14 @@
         </ul>
         <div class="offer-actions" aria-label="Choose your final offer">
           {% if offer_checkout_ready %}
-          <a class="offer-button offer-button--active" href="{{ offer_checkout_url }}" rel="noopener noreferrer">YES — GET ALL 4 FOR $21.90 <span aria-hidden="true">↗</span></a>
+          <a class="offer-button offer-button--active" href="{{ offer_checkout_url }}" rel="noopener noreferrer">CONTINUE WITH ALL 4 — $21.90 <span aria-hidden="true">↗</span></a>
           {% else %}
-          <button class="offer-button" type="button" disabled aria-disabled="true">YES — GET ALL 4 FOR $21.90 <span class="offer-pending">CHECKOUT COMING SOON</span></button>
+          <button class="offer-button" type="button" disabled aria-disabled="true">CONTINUE WITH ALL 4 — $21.90 <span class="offer-pending">CHECKOUT COMING SOON</span></button>
           {% endif %}
           {% if starter_checkout_ready %}
-          <a class="skip-offer skip-offer--active" href="{{ starter_checkout_url }}" rel="noopener noreferrer">NO — LOSE THIS OFFER, GET 1 FOR $9.90 <span aria-hidden="true">↗</span></a>
+          <a class="skip-offer skip-offer--active" href="{{ starter_checkout_url }}" rel="noopener noreferrer">CONTINUE WITH 1 GUIDE — $9.90 <span aria-hidden="true">↗</span></a>
           {% else %}
-          <button class="skip-offer skip-offer--disabled" type="button" disabled aria-disabled="true">NO — LOSE THIS OFFER, GET 1 FOR $9.90 <span class="offer-pending">CHECKOUT COMING SOON</span></button>
+          <button class="skip-offer skip-offer--disabled" type="button" disabled aria-disabled="true">CONTINUE WITH 1 GUIDE — $9.90 <span class="offer-pending">CHECKOUT COMING SOON</span></button>
           {% endif %}
         </div>
         <p class="no-charge">{% if offer_checkout_ready and starter_checkout_ready %}Both options use a separate secure checkout. You will be charged only for the option you select.{% else %}Preview only. No payment can be made through unavailable options. Checkout links activate only after verification.{% endif %}</p>
