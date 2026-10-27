@@ -206,7 +206,7 @@
           <div class="checkout-card__description"><div><strong>Complete digital edition</strong><small>PDF + bonus cheat sheet</small></div><span class="badge-one-time">ONE TIME</span></div>
           <div class="checkout-card__price"><span>$9.90</span><small>USD</small></div>
           <a class="btn btn--gold" style="width:100%" href="{{ url_for('last_offer') }}">GET THE GUIDE + BONUS — $9.90 <span aria-hidden="true">↗</span></a>
-          <p class="checkout-card__secure">Next: keep this $9.90 guide, or choose the optional $21.90 Complete Library. Review both before entering Hotmart checkout. Nothing is charged on the next page.{% if not checkout_ready %} STARTER CHECKOUT OPENING SOON — this is a preview.{% endif %}</p>
+          <p class="checkout-card__secure">Next: review one optional final offer, then continue to secure checkout. You can keep just this guide and bonus for $9.90. Nothing is charged on the next page.{% if not checkout_ready %} STARTER CHECKOUT OPENING SOON — this is a preview.{% endif %}</p>
           <div class="checkout-card__details"><div><span>✓</span> No subscription</div><div><span>✓</span> Digital PDF format</div><div><span>✓</span> Bonus included</div></div>
         </div>
       </aside>
@@ -230,10 +230,10 @@
         </div>
         <div style="text-align:center">
           <div style="font-size:12px;text-decoration:line-through;color:#bbb4a7">Buying all four guides separately: $42.60</div>
-          <div style="font:56px/1.1 Georgia,serif;color:#e5c791;margin:7px 0">$21.90 <span style="font:13px Arial,sans-serif;color:#c7bdae">USD</span></div>
-          <div style="font-size:12px;color:#e5c791;font-weight:700;margin-bottom:13px">SAVE $20.70 · ONE-TIME</div>
-          {% if bundle_checkout_ready %}<a href="{{ url_for('last_offer') }}" rel="noopener noreferrer" class="btn btn--gold" style="width:100%">REVIEW THE $21.90 LIBRARY OFFER <span aria-hidden="true">↗</span></a>{% else %}<button type="button" disabled style="display:block;width:100%;min-height:49px;padding:13px 15px;background:#979084;color:#141a20;border:0;border-radius:4px;cursor:not-allowed;font-size:12px;font-weight:800;letter-spacing:.07em">BUNDLE CHECKOUT OPENING SOON</button>{% endif %}
-          <small style="color:#aeb0ae;display:block;margin-top:8px">{% if bundle_checkout_ready %}Same five PDFs as the standard $29.90 library. Review the existing $21.90 offer before payment; you can also keep just the $9.90 guide.{% else %}No payment collected until delivery is verified.{% endif %}</small>
+          <div style="font:56px/1.1 Georgia,serif;color:#e5c791;margin:7px 0">$29.90 <span style="font:13px Arial,sans-serif;color:#c7bdae">USD</span></div>
+          <div style="font-size:12px;color:#e5c791;font-weight:700;margin-bottom:13px">SAVE $12.70 · ONE-TIME</div>
+          {% if bundle_checkout_ready %}<a href="{{ bundle_checkout_url }}" rel="noopener noreferrer" class="btn btn--gold" style="width:100%">GET ALL 4 GUIDES — $29.90 <span aria-hidden="true">↗</span></a>{% else %}<button type="button" disabled style="display:block;width:100%;min-height:49px;padding:13px 15px;background:#979084;color:#141a20;border:0;border-radius:4px;cursor:not-allowed;font-size:12px;font-weight:800;letter-spacing:.07em">BUNDLE CHECKOUT OPENING SOON</button>{% endif %}
+          <small style="color:#aeb0ae;display:block;margin-top:8px">{% if bundle_checkout_ready %}Four complete guides and the bonus. One-time purchase, no subscription. Payment and delivery details are shown at secure checkout.{% else %}No payment collected until delivery is verified.{% endif %}</small>
         </div>
       </div>
 
@@ -309,11 +309,11 @@
     <div class="container faq__grid">
       <div><div class="section-kicker">07 / BEFORE CHECKOUT</div><h2>Know what you get.<br><em>Before you buy.</em></h2><p>What comes in the complete library, how it differs from the starter guide, and what to expect from your purchase.</p></div>
       <div class="faq__list">
-        <details><summary>What comes in the $21.90 library offer?<span aria-hidden="true">+</span></summary><p>The First Message Formula (56 pages) and its 1-page bonus, plus three finished 19-page PDFs: The Reply Decoder, The Profile Makeover, and From Chat to First Date. All four are English-language educational guides.</p></details>
+        <details><summary>What comes in the $29.90 Complete Library?<span aria-hidden="true">+</span></summary><p>The First Message Formula (56 pages) and its 1-page bonus, plus three finished 19-page PDFs: The Reply Decoder, The Profile Makeover, and From Chat to First Date. All four are English-language educational guides.</p></details>
         <details><summary>What comes with the $9.90 starter guide?<span aria-hidden="true">+</span></summary><p>The First Message Formula: a 56-page English-language PDF with 50 adaptable openers, practical exercises and a seven-day challenge, plus a separate one-page First Message Cheat Sheet.</p></details>
-        <details><summary>Can I start with just one guide?<span aria-hidden="true">+</span></summary><p>Yes. The next page lets you keep The First Message Formula and its bonus for $9.90, or choose the same five PDFs as the standard $29.90 Complete Library through the existing $21.90 offer. Both prices are totals for one purchase, not subscriptions. Nothing is charged on this page.</p></details>
+        <details><summary>Can I start with just one guide?<span aria-hidden="true">+</span></summary><p>Yes. Choose The First Message Formula and its bonus for $9.90, or buy the Complete Library for $29.90. Selecting the starter guide takes you to one optional final offer before checkout. You can decline it and keep only the starter guide. Nothing is charged before you confirm payment at checkout.</p></details>
         <details><summary>How will the files be delivered?<span aria-hidden="true">+</span></summary><p>Hotmart handles checkout and digital delivery. Check the product, currency, total price and delivery instructions on its checkout page before paying. Follow the access instructions from Hotmart after payment confirmation. This website does not collect your card details.</p></details>
-        <details><summary>Is this a subscription?<span aria-hidden="true">+</span></summary><p>No. The $9.90 starter guide and the $21.90 Complete Library offer are one-time digital purchases. Neither includes a recurring membership.</p></details>
+        <details><summary>Is this a subscription?<span aria-hidden="true">+</span></summary><p>No. The $9.90 starter guide and the $29.90 Complete Library are one-time digital purchases. Neither includes a recurring membership.</p></details>
         <details><summary>What if I want a refund?<span aria-hidden="true">+</span></summary><p>Read our <a href="/refunds">refund information</a> and the terms displayed by Hotmart before payment. Use the support and refund options shown in your Hotmart purchase information if you need help with an order.</p></details>
         <details><summary>Can I use it for Instagram, Tinder, Bumble or Hinge?<span aria-hidden="true">+</span></summary><p>Yes. The guide includes platform-aware examples. The point is to adapt the principles to the real context rather than copy lines blindly.</p></details>
         <details><summary>Will this guarantee replies or dates?<span aria-hidden="true">+</span></summary><p>No. Nobody can guarantee another person's interest, replies, attraction, or decisions. This guide helps you practice authentic and considerate openers.</p></details>
