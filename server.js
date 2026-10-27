@@ -180,15 +180,19 @@ app.get('/product-art/:file', (req, res, next) => {
 app.get(['/terms', '/privacy', '/refunds', '/contact'], (req, res) => {
   const key = req.path.slice(1);
   if (!LEGAL_KEYS.has(key)) return res.sendStatus(404);
-  let legal;
-  try { legal = JSON.parse(fs.readFileSync(path.join(ROOT, 'legal-content.json'), 'utf8'))[key]; }
+  let legal, publicSeller;
+  try {
+    const content = JSON.parse(fs.readFileSync(path.join(ROOT, 'legal-content.json'), 'utf8'));
+    legal = content[key];
+    publicSeller = content.public_seller || {};
+  }
   catch { return res.sendStatus(503); }
   const clean = value => String(value || '').trim().slice(0, 350);
-  const email = clean(process.env.SUPPORT_EMAIL).slice(0, 255);
+  const email = clean(process.env.SUPPORT_EMAIL || publicSeller.support_email).slice(0, 255);
   res.render('legal.html', {
     ...legal,
     support_email: email.includes('@') ? email : '',
-    legal_name: clean(process.env.MERCHANT_LEGAL_NAME).slice(0, 200),
+    legal_name: clean(process.env.MERCHANT_LEGAL_NAME || publicSeller.name).slice(0, 200),
     merchant_country: clean(process.env.MERCHANT_COUNTRY).slice(0, 100),
     merchant_address: clean(process.env.MERCHANT_CONTACT_ADDRESS),
     ready: checkoutOpen(),

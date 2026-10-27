@@ -197,6 +197,10 @@ test('legal pages show real Hotmart help routes and never make false blanket pre
     assert.match(html, /applicable guarantee/i);
   }
   assert.doesNotMatch(contact, /mailto:support@/i);
+  assert.match(contact, /Vitrinyx Company/);
+  assert.match(contact, /mailto:vitrinyxcompany@gmail\.com/);
+  assert.doesNotMatch(contact, /Business mailing address:/);
+  assert.doesNotMatch(contact, /has not been verified for publication/);
   process.env.SUPPORT_EMAIL = 'customer-care@example.test';
   process.env.MERCHANT_LEGAL_NAME = 'Verified Test Merchant';
   process.env.MERCHANT_COUNTRY = 'Test Country';
