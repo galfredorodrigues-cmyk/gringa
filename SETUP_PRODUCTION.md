@@ -1,5 +1,21 @@
 # HER POV production setup
 
+## Public legal pages and support (October 27, 2026)
+
+The four policy routes (`/terms`, `/privacy`, `/refunds`, `/contact`) now use one shared template. Old fixed claims that all purchases are unavailable were removed. The Contact and Refunds pages give buyers actual official Hotmart paths to find orders (`https://consumer.hotmart.com/`) and request eligible refunds (`https://refund.hotmart.com/`). No blanket statutory or extra refund guarantee was invented.
+
+**This source update is NOT automatically published to Hostinger.** The account does not currently sync GitHub commits to the live app. In hPanel, update/redeploy the Node app from the approved GitHub `main` version and verify all four pages on both `vitrinyx.com` and `www.vitrinyx.com` after the new deployment.
+
+**Owner-provided business details still required for a trustworthy and compliant store:**
+
+- Verify a customer-support email inbox that can actually receive replies. Put the address in Hostinger `SUPPORT_EMAIL`, and configure the same sender/contact in the Hotmart product support settings.
+- Confirm the merchant's public legal/business name, country, and appropriate business mailing contact address for publication; set Hostinger `MERCHANT_LEGAL_NAME`, `MERCHANT_COUNTRY`, and `MERCHANT_CONTACT_ADDRESS` only with the owner's permission. Do not commit personal addresses to GitHub.
+- Review the exact refund/guarantee terms selected on each Hotmart offer and obtain business/legal approval of the privacy, refund and terms pages before representing them as final. Do not mark `MERCHANT_POLICIES_APPROVED` or `MERCHANT_TAX_REVIEWED` as `yes` solely because a website test passes.
+- Confirm buyer-facing Hotmart producer identity matches the HER POV brand; earlier screenshots showed the legacy `Magic Wolf` author label.
+
+When values are present, legal pages show them. When they are absent, the website gives transparent Hotmart buyer-help directions instead of inventing contact information. That fallback is **not** a substitute for a verified direct seller contact or legal review.
+
+## Previous project setup
 ## Current architecture
 
 - GitHub repository: `galfredorodrigues-cmyk/gringa` (source of truth).
