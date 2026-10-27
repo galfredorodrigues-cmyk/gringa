@@ -1,0 +1,29 @@
+name: HER POV Node production and legal page tests
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'server.js'
+      - 'server.test.js'
+      - 'templates/legal.html'
+      - 'legal-content.json'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/her-pov-node-tests.yml'
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  node-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install locked production dependencies
+        run: npm ci --ignore-scripts
+      - name: Run storefront and legal page tests
+        run: npm test
