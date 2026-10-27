@@ -29,7 +29,7 @@
       {
         "heading": "Digital delivery and access",
         "paragraphs": [
-          "After payment, we intend to provide access through Hotmart, which is intended to deliver the purchased digital files using the email provided at checkout. Delivery may depend on correct contact information and third-party processing availability.",
+          "For a confirmed Hotmart purchase, access instructions for the purchased digital files are generally emailed to the address supplied at checkout. If the email does not arrive, check spam or junk and open your Hotmart purchases area to review access and seller support options.",
           "Download files to your own device and store them safely. If a download is missing, corrupt or inaccessible, contact support with your order reference. We will make reasonable efforts to restore access or provide an appropriate remedy in accordance with applicable law."
         ],
         "points": []
@@ -63,7 +63,7 @@
         "heading": "Site availability, updates and contact",
         "paragraphs": [
           "We may correct errors or update product descriptions and these terms prospectively. Material changes affecting an existing order will be handled according to applicable law. The terms applicable to your purchase are those presented at the time of purchase.",
-          "If you need help, contact the seller using the verified details below. Merchant legal identity and contact details must be approved and published before sales open."
+          "For order help, see our Contact & Order Support page. Buyers can also find the creator's contact information in their Hotmart purchase details. Review the seller identification shown on the checkout before placing an order."
         ],
         "points": []
       }
@@ -109,7 +109,7 @@
       {
         "heading": "Payments and service providers",
         "paragraphs": [
-          "The planned sales stack uses Hotmart for payment processing and digital product delivery. Website hosting is provided by the storefront host. Service providers process information according to their roles and contractual terms. Visit their own privacy notices for details about processing they independently control.",
+          "Hotmart processes checkout payments and provides access to digital purchases made through its platform. This storefront is hosted by a separate website hosting provider. Each service provider handles information according to its role and applicable privacy notices.",
           "We may also disclose information where legally required, to resolve a payment dispute or to protect customers and the platform from fraud."
         ],
         "points": []
@@ -142,7 +142,7 @@
       {
         "heading": "Changes and questions",
         "paragraphs": [
-          "If practices change, this notice will be revised. Significant changes will be handled in the manner required by applicable law. Contact the verified merchant support address below with any privacy questions."
+          "If our practices change, we will update this notice and handle material changes as required by law. For questions about personal data controlled by the HER POV seller, use the verified merchant contact below when published or the creator contact displayed in your Hotmart purchase details. For data processed by Hotmart, consult Hotmart's privacy and support channels."
         ],
         "points": []
       }
@@ -163,7 +163,7 @@
       {
         "heading": "How delivery works",
         "paragraphs": [
-          "After a successful Hotmart payment, Hotmart is intended to email access to the buyer's checkout email. Please check the inbox and spam folder. Download and save your purchased files promptly."
+          "After Hotmart confirms your payment, it normally sends purchase confirmation and digital access instructions to the email used at checkout. Check your inbox and spam folder, then consult your Hotmart purchases area if the message is missing."
         ],
         "points": []
       },
@@ -177,8 +177,8 @@
       {
         "heading": "Refund requests",
         "paragraphs": [
-          "Send your request to the verified support contact below, with your order reference, date of purchase and a brief explanation of the issue. Refunds are reviewed according to the product description, evidence of the order, payment provider rules and applicable consumer law.",
-          "We do not claim that downloading a PDF automatically removes all refund or withdrawal rights. Where your jurisdiction gives mandatory rights, those rights continue to apply. Additional discretionary refund terms will be published before the store accepts payment."
+          "For a Hotmart order within its applicable guarantee period, you can request a refund through Hotmart's official refund portal using the transaction code from your receipt and the email associated with your purchase. You can also contact the creator using the details in your Hotmart order.",
+          "The guarantee period and conditions displayed for your purchase apply alongside any mandatory consumer rights. Downloading a PDF does not automatically remove statutory rights. This page does not create an additional unconditional refund guarantee."
         ],
         "points": []
       },
@@ -205,7 +205,7 @@
       {
         "heading": "Support for purchases",
         "paragraphs": [
-          "Use the merchant support email listed below for missing files, incorrect delivery, questions about the purchased PDFs, billing issues or a refund request. Please keep your Hotmart receipt and order reference for verification."
+          "For an existing order, sign in to Hotmart using the email used at checkout and open the purchase details. You can find digital-access instructions and the creator's support contact there. If a verified HER POV email is published below, you may also contact us directly."
         ],
         "points": [
           "For a missing download, describe the product purchased and the message or error you saw.",
@@ -214,9 +214,10 @@
         ]
       },
       {
-        "heading": "Pre-launch availability",
+        "heading": "Access, payments and refunds",
         "paragraphs": [
-          "The HER POV storefront is currently in preview mode. Purchases are not yet available. An official seller name and support contact will be published before any real checkout is opened."
+          "Payments for HER POV products, when offered, are processed on Hotmart. This website does not collect credit-card details. Check the merchant, product, currency, total amount and guarantee terms shown on the checkout page before paying.",
+          "If you have bought a guide, use your Hotmart purchase confirmation to find the transaction number and access instructions. Eligible refunds may be requested directly through Hotmart's official refund portal."
         ],
         "points": []
       }
