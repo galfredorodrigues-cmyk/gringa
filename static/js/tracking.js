@@ -20,7 +20,7 @@
     try {const c=JSON.parse(raw); return c.version===3 && typeof c.analytics==='boolean' && typeof c.marketing==='boolean' && typeof c.savedAt==='number' && c.savedAt<=now && now-c.savedAt<180*86400000 ? c : null;} catch {return null;}
   }
   function createCore(config, sink) {
-    let consent={analytics:false,marketing:false}; let google=false, meta=false;
+    let consent={analytics:false,marketing:false}; let google=false, meta=false; let localPage=false, googlePage=false, metaPage=false;
     function choose(next) {
       consent={analytics:next.analytics===true,marketing:next.marketing===true};
       sink.google('consent','update',{analytics_storage:consent.analytics?'granted':'denied',ad_storage:consent.marketing?'granted':'denied',ad_user_data:consent.marketing?'granted':'denied',ad_personalization:consent.marketing?'granted':'denied'});
@@ -37,11 +37,16 @@
     function track(name,data) {
       const clean=eventData(name,data);if(clean===null)return false;
       if (!consent.analytics && !consent.marketing)return false;
+      if (name==='page_view') {
+        if (!localPage) {sink.local(name,clean);localPage=true;}
+        if (consent.analytics && config.ga4 && !googlePage) {sink.google('event',name,{send_to:config.ga4,...sink.page()});googlePage=true;}
+        if (consent.marketing && config.metaPixel && !metaPage) {sink.meta('track','PageView');metaPage=true;}
+        return true;
+      }
       sink.local(name,clean);
       if (consent.analytics && config.ga4) sink.google('event',name,{...clean,send_to:config.ga4,...sink.page()});
       if (consent.marketing && config.metaPixel) {
-        if (name==='page_view')sink.meta('track','PageView');
-        else if(name==='begin_checkout')sink.meta('track','InitiateCheckout',{value:clean.value,currency:'USD',content_ids:[clean.offer],content_type:'product'});
+        if(name==='begin_checkout')sink.meta('track','InitiateCheckout',{value:clean.value,currency:'USD',content_ids:[clean.offer],content_type:'product'});
         else sink.meta('trackCustom',name,clean);
       }
       if(name==='begin_checkout' && consent.marketing && config.googleAds && config.checkoutLabel) sink.google('event','conversion',{send_to:config.googleAds+'/'+config.checkoutLabel,...clean});

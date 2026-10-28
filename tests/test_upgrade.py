@@ -51,7 +51,7 @@ class LastOfferTests(unittest.TestCase):
             self.assertIn(photo, homepage)
         for photo in photo_ids[1:]:
             self.assertIn(photo, final_offer)
-        self.assertEqual(homepage.count(b'class="editorial-cover editorial-cover--'), 8)
+        self.assertEqual(homepage.count(b'class="editorial-cover editorial-cover--'), 4)
         self.assertEqual(final_offer.count(b'class="editorial-cover editorial-cover--'), 3)
         for page in (homepage, final_offer):
             self.assertIn(b"/static/css/covers.css", page)
@@ -94,37 +94,17 @@ class LastOfferTests(unittest.TestCase):
     def test_original_homepage_still_has_all_sections_and_both_choices(self):
         with patch.dict(os.environ, {"STRIPE_MODE":"test", "CHECKOUT_PROVIDER":"hotmart", "LIVE_READY":"no"}):
             page = self.client.get("/").data
-            self.assertIn(b'id="choose"', page)
-            self.assertIn(b'id="starter-choice"', page)
-            self.assertIn(b'id="complete-choice"', page)
-            self.assertIn(b"THE FOUNDATION", page)
-            self.assertIn(b"THE COMPLETE LIBRARY", page)
-            self.assertIn(b"STARTER CHECKOUT OPENING SOON", page)
-            self.assertIn(b"BUNDLE CHECKOUT OPENING SOON", page)
-            self.assertIn(b"$9.90", page)
-            self.assertIn(b"$29.90", page)
-            self.assertEqual(page.count(b'href="/last-offer"'), 2)
-            self.assertLess(page.index(b'id="choose"'), page.index(b'id="bundle"'))
+            for section in (b'diagnostic-intro', b'diagnostic-questions', b'diagnostic-result', b'id="sales-content"', b'id="guide-introduction"', b'id="method"', b'id="inside"', b'id="samples"', b'id="offer"', b'id="bundle"', b'id="starter-choice"', b'id="faq"'):
+                self.assertIn(section, page)
+            self.assertIn(b'diagnostic-locked', page)
+            self.assertIn(b'FIND MY STARTING POINT', page)
+            self.assertIn(b'$9.90', page)
+            self.assertIn(b'$29.90', page)
+            self.assertEqual(page.count(b'href="/last-offer"'), 1)
             self.assertLess(page.index(b'id="offer"'), page.index(b'id="bundle"'))
-            self.assertLess(page.index(b'id="starter-choice"'), page.index(b'id="complete-choice"'))
-            hero = page.split(b'<section class="hero section-dark"')[1].split(b'</section>')[0]
-            self.assertNotIn(b"$29.90", hero)
-            self.assertNotIn(b"$9.90", hero)
-            self.assertIn(b"START WITH A BETTER MESSAGE", hero)
-            self.assertIn(b"SEE A REAL EXAMPLE", hero)
-            self.assertIn(b"Do I need to memorize pickup lines?", page)
-            self.assertIn(b"A PRACTICAL TIP YOU CAN USE RIGHT NOW", page)
-            self.assertEqual(page.count(b"journey__checkout-link"), 0)
-            for retained in (
-                b'id="problem"', b'id="method"', b'id="example"',
-                b'id="inside"', b'id="offer"', b'id="series"',
-                b'id="faq"', b"You had something to say.",
-                b"Then you deleted it.", b"Four real-world skills.",
-            ):
-                self.assertIn(retained, page)
             self.assertNotIn(b'/upgrade', page)
-            self.assertNotIn(b"https://pay.hotmart.com/", page)
-            self.assertNotIn(b"https://buy.stripe.com/", page)
+            self.assertNotIn(b'https://pay.hotmart.com/', page)
+            self.assertNotIn(b'https://buy.stripe.com/', page)
 
     def _ready_hotmart(self):
         return {

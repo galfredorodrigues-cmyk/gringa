@@ -48,7 +48,7 @@ class StorefrontTests(unittest.TestCase):
         with patch.dict(os.environ, ready):
             self.assertTrue(app.checkout_open())
             html = self.client.get("/").data
-            self.assertIn(b"START WITH THE FIRST GUIDE", html)
+            self.assertIn(b"GET THE GUIDE + BONUS", html)
             self.assertIn(b'href="/last-offer"', html)
             self.assertNotIn(b"buy.stripe.com", html)
             last_offer = self.client.get("/last-offer").data
@@ -142,53 +142,25 @@ class StorefrontTests(unittest.TestCase):
         }):
             self.assertFalse(app.hotmart_checkout_open())
 
-    def test_american_bundle_offer_appears_before_long_copy(self):
+    def test_approved_quiz_first_copy_and_separate_bundle_offer(self):
         page = self.client.get("/").data
-        self.assertIn(b"START WITH A BETTER MESSAGE",page)
-        self.assertIn(b"Four real-world skills.",page)
-        self.assertIn(b"One complete library.",page)
-        self.assertIn(b"24 common texting scenarios",page)
-        self.assertIn(b"Know what you get.",page)
-        self.assertNotIn(b"not a stock mockup or an invented testimonial",page)
-        self.assertIn(b"Can I start with just one guide?",page)
-        self.assertIn(b"$29.90",page)
-        self.assertIn(b"114",page)
-        self.assertLess(page.index(b'id="problem"'),page.index(b'id="offer"'))
-        self.assertLess(page.index(b'id="offer"'),page.index(b'id="bundle"'))
-        self.assertLess(page.index(b'id="starter-choice"'),page.index(b'id="complete-choice"'))
-        first_fold=page.split(b'<section class="hero section-dark"')[1].split(b'</section>')[0]
-        self.assertNotIn(b"$29.90",first_fold)
-        self.assertNotIn(b"$9.90",first_fold)
-        self.assertIn(b"50 adaptable openers",first_fold)
-        self.assertIn(b"SEE A REAL EXAMPLE",first_fold)
-        self.assertIn(b"A PRACTICAL TIP YOU CAN USE RIGHT NOW",page)
-        self.assertIn(b"Do I need to memorize pickup lines?",page)
-        self.assertEqual(page.count(b'id="bundle"'),1)
-        self.assertIn(b'property="og:image"',page)
-        for slug in ["first-message-formula","reply-decoder",
-                     "profile-makeover","from-chat-to-first-date"]:
-            self.assertIn(("/product-art/"+slug+".png").encode(),page)
-        self.assertIn(b"BUNDLE CHECKOUT OPENING SOON",page)
-        self.assertNotIn(b"https://buy.stripe.com/",page)
+        for phrase in (b'You matched.', b'Now what do you say?', b'Know what to say.', b'Keep it sounding like you.', b'50 adaptable openers', b'$9.90', b'$29.90', b'id="starter-choice"', b'id="bundle"'):
+            self.assertIn(phrase, page)
+        self.assertEqual(page.count(b'id="bundle"'), 1)
+        self.assertLess(page.index(b'id="diagnostic-intro"'), page.index(b'id="sales-content"'))
+        self.assertNotIn(b'https://buy.stripe.com/', page)
+        self.assertIn(b'property="og:image"', page)
 
-    def test_authentic_sample_excerpt_gallery_and_future_app_pricing(self):
-        html=self.client.get("/").data
-        self.assertIn(b"READ BEFORE YOU BUY",html)
-        self.assertEqual(html.count(b'class="sample-card"'),4)
-        self.assertIn(b"The C.A.R.E. Formula",html)
-        self.assertIn(b"The S.I.G.N.A.L. Check",html)
-        self.assertIn(b"The O.P.E.N. Bio Framework",html)
-        self.assertIn(b"The C.L.E.A.R. Invitation",html)
-        for source_page in [b"PDF PAGE 13 OF 56",b"PDF PAGE 6 OF 19",
-                            b"PDF PAGE 7 OF 19",b"PDF PAGE 5 OF 19"]:
-            self.assertIn(source_page,html)
-        self.assertIn(b"EXCERPT",html)
-        self.assertIn(b"Sample excerpts and SVG page previews are drawn",html)
-        self.assertIn(b"$24.90",html)
-        self.assertIn(b"PROPOSED PRICE",html)
-        self.assertIn(b"NOT AVAILABLE FOR PURCHASE",html)
-        self.assertNotIn(b"buy.stripe.com",html)
-        self.assertNotIn(b"<script",html)
+    def test_current_sample_previews_and_tracking_are_preserved(self):
+        html = self.client.get("/").data
+        self.assertEqual(html.count(b'class="sample-card"'), 4)
+        for framework in (b'The C.A.R.E. Formula', b'The S.I.G.N.A.L. Check', b'The O.P.E.N. Bio Framework', b'The C.L.E.A.R. Invitation'):
+            self.assertIn(framework, html)
+        for slug in ("first-message-formula", "reply-decoder", "profile-makeover", "from-chat-to-first-date"):
+            self.assertIn(("/sample-page/"+slug+".svg").encode(), html)
+        self.assertEqual(html.count(b'src="/static/js/tracking.js?v=4"'), 1)
+        self.assertEqual(html.count(b'src="/static/js/diagnostic.js?v=journey5"'), 1)
+        self.assertNotIn(b'buy.stripe.com', html)
 
     def test_bundle_payment_url_needs_valid_link_and_every_approval(self):
         ready = {
@@ -228,7 +200,7 @@ class StorefrontTests(unittest.TestCase):
             response=self.client.get(path)
             self.assertEqual(response.status_code, 200, path)
             self.assertIn(phrase, response.data, path)
-            self.assertIn(b"Pre-launch policy notice", response.data)
+            self.assertNotIn(b"Pre-launch policy notice", response.data)
             self.assertIn(b"Operator &amp; contact", response.data)
             self.assertIn(b"HER POV", response.data)
         self.assertIn(b"Contact &amp; Support",self.client.get("/").data)
@@ -241,7 +213,7 @@ class StorefrontTests(unittest.TestCase):
             html=self.client.get("/privacy").data
             self.assertIn(b"Example Company LLC",html)
             self.assertIn(b"help@example.test",html)
-            self.assertIn(b"Pre-launch policy notice",html)
+            self.assertNotIn(b"Pre-launch policy notice",html)
 
     def test_five_stripe_cover_images_public_and_no_pdf_leak(self):
         slugs = [

@@ -7,6 +7,15 @@ on:
       - 'server.test.js'
       - 'templates/legal.html'
       - 'legal-content.json'
+      - 'app.py'
+      - 'commerce.py'
+      - 'private_storage.py'
+      - 'requirements.txt'
+      - 'tests/**'
+      - 'static/**'
+      - 'templates/**'
+      - 'tracking.test.js'
+      - 'diagnostic.test.js'
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/her-pov-node-tests.yml'
@@ -27,3 +36,14 @@ jobs:
         run: npm ci --ignore-scripts
       - name: Run storefront and legal page tests
         run: npm test
+
+  python-legacy-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -v
