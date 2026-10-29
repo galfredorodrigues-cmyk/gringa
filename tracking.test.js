@@ -15,3 +15,22 @@ test('previous Google-only consent is not reused for Meta activation',()=>{asser
 test('GA4 analytics permission does not grant advertising or initialize Meta',()=>{const {core,log}=harness({googleAds:'AW-18540742704',ga4:'G-D62D560WV7',metaPixel:'1175307691488519'});core.choose({analytics:true,marketing:false});core.track('quiz_complete',{answer:'private'});assert.deepEqual(log.filter(x=>x[0]==='loadGoogle'),[['loadGoogle','G-D62D560WV7']]);assert.equal(log.some(x=>x[0]==='loadMeta'),false);const e=log.find(x=>x[0]==='google'&&x[1]==='event'&&x[2]==='quiz_complete');assert.equal(e[3].send_to,'G-D62D560WV7');assert.equal(e[3].answer,undefined);});
 
 test('resaving privacy choices never duplicates page views and newly allowed vendors receive one',()=>{const {core,log}=harness({googleAds:'AW-18540742704',ga4:'G-D62D560WV7',metaPixel:'1175307691488519'});core.choose({analytics:true});core.track('page_view');core.choose({analytics:true});core.track('page_view');core.choose({analytics:true,marketing:true});core.track('page_view');core.choose({analytics:true,marketing:true});core.track('page_view');assert.equal(log.filter(x=>x[0]==='local'&&x[1]==='page_view').length,1);assert.equal(log.filter(x=>x[0]==='google'&&x[1]==='event'&&x[2]==='page_view').length,1);assert.equal(log.filter(x=>x[0]==='meta'&&x[1]==='track'&&x[2]==='PageView').length,1);});
+const {install}=require('./static/js/tracking');
+test('analytics-only button records the funnel in GA4 without loading advertising, and rejection stops it',()=>{
+ const scripts=[],saved=new Map(); let click;
+ const fields={analytics:{checked:false},marketing:{checked:false}};
+ const panel={setAttribute(){},querySelector(s){return s.includes('analytics')?fields.analytics:s.includes('marketing')?fields.marketing:{focus(){}};},addEventListener(type,fn){click=fn;}};
+ const d={title:'HER POV',head:{appendChild(s){scripts.push(s.src);}},body:{appendChild(){}},createElement(tag){return tag==='section'?panel:{addEventListener(){}};},addEventListener(){}};
+ const w={document:d,location:{origin:'https://vitrinyx.com',pathname:'/',href:'https://vitrinyx.com/'},localStorage:{getItem(k){return saved.get(k)||null;},setItem(k,v){saved.set(k,v);}}};
+ install(w,d);
+ assert.ok(panel.innerHTML.includes('data-consent="analytics"'));
+ click({target:{closest(){return {dataset:{consent:'analytics'}};}}});
+ assert.deepEqual(scripts,['https://www.googletagmanager.com/gtag/js?id=G-D62D560WV7']);
+ assert.equal(JSON.parse(saved.get('herpov_consent_v3')).marketing,false);
+ assert.equal(w.HerPovTracking.track('quiz_complete'),true);
+ assert.ok(w.dataLayer.some(x=>x[0]==='event'&&x[1]==='quiz_complete'&&x[2].send_to==='G-D62D560WV7'));
+ assert.equal(w.fbq,undefined);
+ click({target:{closest(){return {dataset:{consent:'none'}};}}});
+ assert.equal(w.HerPovTracking.track('quiz_start'),false);
+ assert.equal(w.HerPovTracking.track('purchase'),false);
+});
