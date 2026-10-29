@@ -16,6 +16,20 @@
     if (name === 'begin_checkout' && [9.9,21.9,29.9].includes(data.value)) {clean.value=data.value; clean.currency='USD';}
     return clean;
   }
+  // Only public HER POV campaign labels are accepted; never forward a raw query string.
+  function campaignData(search) {
+    const params = new URLSearchParams(search || '');
+    const result = {};
+    const source = params.get('utm_source');
+    const medium = params.get('utm_medium');
+    const name = params.get('utm_campaign');
+    const content = params.get('utm_content');
+    if (['meta','facebook','instagram','google','herpov_qa'].includes(source)) result.campaign_source=source;
+    if (['paid_social','cpc','paid_search','test'].includes(medium)) result.campaign_medium=medium;
+    if (/^herpov_[a-z0-9_-]{1,64}$/.test(name || '')) result.campaign_name=name;
+    if (/^(creative_[a-z0-9_-]{1,48}|qa_[a-z0-9_-]{1,48})$/.test(content || '')) result.campaign_content=content;
+    return result;
+  }
   function readConsent(raw, now = Date.now()) {
     try {const c=JSON.parse(raw); return c.version===3 && typeof c.analytics==='boolean' && typeof c.marketing==='boolean' && typeof c.savedAt==='number' && c.savedAt<=now && now-c.savedAt<180*86400000 ? c : null;} catch {return null;}
   }
@@ -26,7 +40,7 @@
       sink.google('consent','update',{analytics_storage:consent.analytics?'granted':'denied',ad_storage:consent.marketing?'granted':'denied',ad_user_data:consent.marketing?'granted':'denied',ad_personalization:consent.marketing?'granted':'denied'});
       if ((consent.analytics && config.ga4)||(consent.marketing && config.googleAds)) {
         if (!google) {google=true;sink.loadGoogle(consent.analytics&&config.ga4?config.ga4:config.googleAds);sink.google('js',new Date());}
-        if (consent.analytics && config.ga4) sink.google('config',config.ga4,{send_page_view:false,allow_google_signals:consent.marketing,allow_ad_personalization_signals:consent.marketing,...sink.page()});
+        if (consent.analytics && config.ga4) sink.google('config',config.ga4,{send_page_view:false,allow_google_signals:consent.marketing,allow_ad_personalization_signals:consent.marketing,...sink.campaign?.(),...sink.page()});
         if (consent.marketing && config.googleAds) sink.google('config',config.googleAds,sink.page());
       }
       if (consent.marketing && config.metaPixel) {
@@ -62,6 +76,7 @@
     function script(src){const s=d.createElement('script');s.async=true;s.src=src;d.head.appendChild(s);}
     const core=createCore(CONFIG,{
       google:(...args)=>w.gtag(...args),
+      campaign:()=>campaignData(w.location.search),
       page:()=>({page_location:w.location.origin+w.location.pathname,page_referrer:'',page_title:d.title}),
       loadGoogle:id=>script('https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(id)),
       loadMeta:id=>{const f=function(){f.callMethod?f.callMethod.apply(f,arguments):f.queue.push(arguments);};f.queue=[];f.loaded=true;f.version='2.0';w.fbq=f;w._fbq=f;script('https://connect.facebook.net/en_US/fbevents.js');f('set','autoConfig',false,id);f('init',id);},
@@ -85,5 +100,5 @@
     });
     if(w.IntersectionObserver){const viewed=new Set();const observer=new w.IntersectionObserver(entries=>entries.forEach(entry=>{if(!entry.isIntersecting||viewed.has(entry.target.id))return;const name={offer:'offer_view',bundle:'library_view',samples:'sample_view'}[entry.target.id];if(core.track(name))viewed.add(entry.target.id);}),{threshold:0.15});['offer','bundle','samples'].forEach(id=>{const e=d.getElementById(id);if(e)observer.observe(e);});}
   }
-  return {eventData,readConsent,createCore,install};
+  return {eventData,campaignData,readConsent,createCore,install};
 });
