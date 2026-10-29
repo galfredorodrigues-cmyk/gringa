@@ -34,3 +34,14 @@ test('analytics-only button records the funnel in GA4 without loading advertisin
  assert.equal(w.HerPovTracking.track('quiz_start'),false);
  assert.equal(w.HerPovTracking.track('purchase'),false);
 });
+
+test('HER POV campaign attribution is kept without forwarding arbitrary queries or identifiers',()=>{
+ const {campaignData}=require('./static/js/tracking');
+ const campaign=campaignData('?utm_source=meta&utm_medium=paid_social&utm_campaign=herpov_us_test01&utm_content=creative_b&email=private@example.com&fbclid=private&answer=private');
+ assert.deepEqual(campaign,{campaign_source:'meta',campaign_medium:'paid_social',campaign_name:'herpov_us_test01',campaign_content:'creative_b'});
+ assert.deepEqual(campaignData('?utm_source=private@example.com&utm_campaign=private@example.com&utm_content=https://private.example&token=secret'),{});
+ const log=[];const core=createCore({ga4:'G-D62D560WV7'}, {google:(...x)=>log.push(x),loadGoogle(){},campaign:()=>campaign,page:()=>({page_location:'https://vitrinyx.com/'}),local(){}});
+ core.choose({analytics:true,marketing:false});
+ const config=log.find(x=>x[0]==='config');assert.equal(config[2].campaign_source,'meta');assert.equal(config[2].campaign_content,'creative_b');assert.equal(config[2].allow_google_signals,false);
+ const before=log.length;core.choose({analytics:false,marketing:false});assert.equal(log.length,before+1);assert.equal(core.track('quiz_complete'),false);
+});
