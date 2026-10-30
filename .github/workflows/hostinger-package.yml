@@ -1,0 +1,45 @@
+name: HER POV Hostinger production package
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - server.js
+      - package.json
+      - package-lock.json
+      - legal-content.json
+      - static/**
+      - templates/**
+      - tracking.test.js
+      - .github/workflows/hostinger-package.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install project dependencies
+        run: npm ci --ignore-scripts
+      - name: Verify Node storefront and tracking
+        run: npm test
+      - name: Create Hostinger upload ZIP (no secrets, no environment files)
+        run: |
+          zip -q -r her-pov-hostinger-production.zip \
+            server.js package.json package-lock.json legal-content.json \
+            templates static
+          unzip -t her-pov-hostinger-production.zip | tail -n 2
+      - name: Save Hostinger package as downloadable artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: her-pov-hostinger-production
+          path: her-pov-hostinger-production.zip
+          retention-days: 14
+          if-no-files-found: error
