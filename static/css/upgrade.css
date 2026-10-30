@@ -30,3 +30,5 @@
 .offer-includes{margin-bottom:0}
 .no-charge{margin-top:17px}
 @media(max-width:630px){.offer-button,.skip-offer{font-size:10px;padding:17px 10px}}
+
+.decision-summary{margin:28px 0;padding:24px;border:1px solid #8d7954;background:#171e27;border-radius:4px;max-width:560px}.decision-summary p{font-size:15px;line-height:1.65}.decision-summary strong{color:#f2dfbc}.decision-summary .offer-actions{margin-top:18px}.decision-summary .decision-summary__note{font-size:12px;color:#ccc2b2}.decision-details{color:#e9c993;font-size:13px;text-underline-offset:3px}.purchase-help{font-size:13px;line-height:1.65;margin-top:20px;padding-top:16px;border-top:1px solid #867963}.purchase-help p{margin:0 0 10px}.purchase-help a{color:inherit;overflow-wrap:anywhere;text-underline-offset:3px}#upgrade-details{scroll-margin-top:25px}@media(max-width:630px){.decision-summary{padding:20px}.decision-summary .offer-button,.decision-summary .skip-offer{font-size:11px;line-height:1.5;min-height:48px}}

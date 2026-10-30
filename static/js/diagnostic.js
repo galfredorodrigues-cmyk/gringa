@@ -68,6 +68,11 @@
       "Your focus: moving beyond small talk. The starter guide focuses on opening conversations; the Complete Library also includes The Reply Decoder for the next stage.",
       "Your focus: suggesting a date. The starter guide focuses on first messages; the Complete Library adds From Chat to First Date for clear, low-pressure invitations."
     ][stage];
+    byId("diagnostic-next-step").textContent = byId("diagnostic-bridge").textContent;
+    const nextLink = byId("diagnostic-next-link");
+    nextLink.textContent = ["SEE THE FIRST-MESSAGE METHOD", "EXPLORE THE REPLY DECODER IN THE LIBRARY", "EXPLORE THE FIRST-DATE GUIDE IN THE LIBRARY"][stage];
+    nextLink.href = ["#guide-introduction", "#reply-decoder-preview", "#first-date-preview"][stage];
+    byId("diagnostic-starter-link").hidden = stage === 0;
     byId("sales-content").hidden = false;
     document.body.classList.remove("diagnostic-locked");
     byId("diagnostic-unlock-note")?.remove();

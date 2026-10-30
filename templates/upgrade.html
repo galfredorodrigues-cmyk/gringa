@@ -9,7 +9,7 @@
 <meta name="description" content="HER POV Last Chance Offer: choose four digital dating guides for $21.90 or keep the starter guide at $9.90, before payment.">
 <title>Last Chance Offer — HER POV</title>
 <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/upgrade.css') }}">
+<link rel="stylesheet" href="/static/css/upgrade.css?v=choice2">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/covers.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
 {% include 'tracking.html' %}
@@ -32,6 +32,24 @@
         <h1 id="upgrade-headline">One guide or the <em>whole journey?</em><br>Make your <em>next move.</em></h1>
         <p class="hero-lede">You came for The First Message Formula at $9.90. Before checkout, here's an optional way to get the entire HER POV collection for less.</p>
         <p class="hero-text">Choose all four complete guides plus the bonus for $21.90 in one purchase, instead of the standard $29.90 collection price. Or skip this offer and continue with just your first guide for $9.90. Nothing has been charged yet.</p>
+        <div class="decision-summary" aria-label="Your two purchase options">
+          <p><strong>Your choice, before payment</strong></p>
+          <p>Starter + bonus: <strong>$9.90 USD</strong><br>All four guides + bonus: <strong>$21.90 USD total</strong></p>
+        <div class="offer-actions" aria-label="Choose your final offer">
+          {% if offer_checkout_ready %}
+          <a class="offer-button offer-button--active" href="{{ offer_checkout_url }}" rel="noopener noreferrer">YES — GET ALL 4 FOR $21.90 <span aria-hidden="true">↗</span></a>
+          {% else %}
+          <button class="offer-button" type="button" disabled aria-disabled="true">YES — GET ALL 4 FOR $21.90 <span class="offer-pending">CHECKOUT COMING SOON</span></button>
+          {% endif %}
+          {% if starter_checkout_ready %}
+          <a class="skip-offer skip-offer--active" href="{{ starter_checkout_url }}" rel="noopener noreferrer">CONTINUE WITH THE STARTER — $9.90 <span aria-hidden="true">↗</span></a>
+          {% else %}
+          <button class="skip-offer skip-offer--disabled" type="button" disabled aria-disabled="true">CONTINUE WITH THE STARTER — $9.90 <span class="offer-pending">CHECKOUT COMING SOON</span></button>
+          {% endif %}
+        </div>
+          <p class="decision-summary__note">Choose one option. Nothing has been charged. Any applicable taxes or fees are shown at checkout.</p>
+          <a class="decision-details" href="#upgrade-details">See what the collection includes ↓</a>
+        </div>
         <div class="trustline"><span>4 complete guides + bonus</span><span>Digital PDFs</span><span>One-time purchase</span></div>
       </div>
       <div class="books" aria-label="Three additional HER POV digital guide covers">
@@ -66,7 +84,7 @@
       </div>
     </div>
   </section>
-  <section class="details" aria-label="What the upgrade includes">
+  <section class="details" id="upgrade-details" aria-label="What the upgrade includes">
     <div class="shell details-grid">
       <div class="details-main">
         <p class="eyebrow dark-eyebrow">ONE OPTIONAL OFFER. THREE MORE GUIDES.</p>
@@ -99,12 +117,13 @@
           <button class="offer-button" type="button" disabled aria-disabled="true">YES — GET ALL 4 FOR $21.90 <span class="offer-pending">CHECKOUT COMING SOON</span></button>
           {% endif %}
           {% if starter_checkout_ready %}
-          <a class="skip-offer skip-offer--active" href="{{ starter_checkout_url }}" rel="noopener noreferrer">NO — LOSE THIS OFFER, GET 1 FOR $9.90 <span aria-hidden="true">↗</span></a>
+          <a class="skip-offer skip-offer--active" href="{{ starter_checkout_url }}" rel="noopener noreferrer">CONTINUE WITH THE STARTER — $9.90 <span aria-hidden="true">↗</span></a>
           {% else %}
-          <button class="skip-offer skip-offer--disabled" type="button" disabled aria-disabled="true">NO — LOSE THIS OFFER, GET 1 FOR $9.90 <span class="offer-pending">CHECKOUT COMING SOON</span></button>
+          <button class="skip-offer skip-offer--disabled" type="button" disabled aria-disabled="true">CONTINUE WITH THE STARTER — $9.90 <span class="offer-pending">CHECKOUT COMING SOON</span></button>
           {% endif %}
         </div>
         <p class="no-charge">{% if offer_checkout_ready and starter_checkout_ready %}Both options use a separate secure checkout. You will be charged only for the option you select.{% else %}Preview only. No payment can be made through unavailable options. Checkout links activate only after verification.{% endif %}</p>
+        {% include "purchase_help.html" %}
       </aside>
     </div>
   </section>

@@ -19,8 +19,8 @@
 <link rel="stylesheet" href="{{ url_for('static',filename='css/landing.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/covers.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
-<link rel="stylesheet" href="/static/css/diagnostic.css?v=journey4">
-<script src="/static/js/diagnostic.js?v=journey5" defer></script>
+<link rel="stylesheet" href="/static/css/diagnostic.css?v=journey6">
+<script src="/static/js/diagnostic.js?v=journey6" defer></script>
 {% include 'tracking.html' %}
 </head>
 <body class="diagnostic-locked">
@@ -51,7 +51,8 @@
         <h2>A blank message box.<br>A better way to begin.</h2>
         <p>Choose your situation, a profile detail, and your natural tone. Get an example you can make your own.</p>
         <button class="btn btn--gold" type="button" id="diagnostic-start" hidden>FIND MY STARTING POINT <span aria-hidden="true">↗</span></button>
-        <noscript><p>This short interactive experience requires JavaScript to unlock the guide and offers.</p></noscript>
+        <p><a class="inline-link" href="/sample-page/first-message-formula.svg" target="_blank" rel="noopener noreferrer">Prefer to look inside first? Read a sample page <span aria-hidden="true">↗</span></a></p>
+        <noscript><p>This short interactive experience requires JavaScript to unlock the guide and offers. You can still open the sample page above.</p></noscript>
       </div>
       <div id="diagnostic-questions" hidden>
         <p id="diagnostic-progress" class="diagnostic__label"></p>
@@ -67,7 +68,9 @@
         <blockquote id="diagnostic-example"></blockquote>
         <p id="diagnostic-why" class="diagnostic__why"></p>
         <p class="diagnostic__note">Illustrative example based on your choices, not an analysis of a real profile. Adapt it to the actual conversation. No message guarantees a reply.</p>
-        <a class="btn btn--gold" href="#guide-introduction">SEE HOW TO BUILD YOUR OWN <span aria-hidden="true">↓</span></a>
+        <p id="diagnostic-next-step" class="journey-bridge"></p>
+        <a class="btn btn--gold" id="diagnostic-next-link" href="#guide-introduction">SEE HOW TO BUILD YOUR OWN</a>
+        <a class="inline-link" id="diagnostic-starter-link" href="#starter-choice" hidden>Prefer to start with first messages? View the $9.90 guide</a>
         <button type="button" class="diagnostic__back" id="diagnostic-restart">Try different answers</button>
       </div>
     </div>
@@ -200,7 +203,7 @@
           </div>
         </details></div>
     </div>
-    <div class="container"><p class="sample-scope">The source-page preview reproduces text and layout from the completed PDF. Browser fonts may differ slightly from the download. The complete guide includes additional chapters, examples and exercises.</p></div>
+    <div class="container"><div class="editorial-note"><p class="section-kicker">ABOUT THIS COLLECTION</p><h3>Know the material.<br><em>Know who to contact.</em></h3><p>HER POV is a collection of English-language educational guides sold by Vitrinyx Company. Explore the sample pages to see the writing, examples and frameworks before you buy.</p><p>The dating-app research above describes the wider context. It is not a study of these guides or proof of buyer results.</p><p>Product or order questions? <a href="mailto:vitrinyxcompany@gmail.com">vitrinyxcompany@gmail.com</a></p></div><p class="sample-scope">The source-page preview reproduces text and layout from the completed PDF. Browser fonts may differ slightly from the download. The complete guide includes additional chapters, examples and exercises.</p></div>
   </section>
 
   <section class="offer section-dark" id="offer">
@@ -225,6 +228,7 @@
           <div class="checkout-card__price"><span>$9.90</span><small>USD</small></div>
           <a class="btn btn--gold" style="width:100%" href="{{ url_for('last_offer') }}">GET THE GUIDE + BONUS — $9.90 <span aria-hidden="true">↗</span></a>
           <p class="checkout-card__secure">Next: review one optional final offer, then continue to secure checkout. You can keep just this guide and bonus for $9.90. Nothing is charged on the next page.{% if not checkout_ready %} STARTER CHECKOUT OPENING SOON — this is a preview.{% endif %}</p>
+          {% include "purchase_help.html" %}
           <div class="checkout-card__details"><div><span>✓</span> No subscription</div><div><span>✓</span> Digital PDF format</div><div><span>✓</span> Bonus included</div></div>
         </div>
       </aside>
@@ -252,6 +256,7 @@
           <div style="font-size:12px;color:#e5c791;font-weight:700;margin-bottom:13px">SAVE $12.70 · ONE-TIME</div>
           {% if bundle_checkout_ready %}<a href="{{ bundle_checkout_url }}" rel="noopener noreferrer" class="btn btn--gold" style="width:100%">GET ALL 4 GUIDES — $29.90 <span aria-hidden="true">↗</span></a>{% else %}<button type="button" disabled style="display:block;width:100%;min-height:49px;padding:13px 15px;background:#979084;color:#141a20;border:0;border-radius:4px;cursor:not-allowed;font-size:12px;font-weight:800;letter-spacing:.07em">BUNDLE CHECKOUT OPENING SOON</button>{% endif %}
           <small style="color:#aeb0ae;display:block;margin-top:8px">{% if bundle_checkout_ready %}Four complete guides and the bonus. One-time purchase, no subscription. Payment and delivery details are shown at secure checkout.{% else %}No payment collected until delivery is verified.{% endif %}</small>
+        {% include "purchase_help.html" %}
         </div>
       </div>
 
@@ -291,7 +296,7 @@
       </div>
 
       <div class="preview-intro"><div class="section-kicker">EXPLORE THE OTHER THREE GUIDES</div><h3>Support for what <em>comes next.</em></h3><p>Open a real excerpt from each additional guide. The Complete Library includes all four finished guides and the First Message Cheat Sheet.</p></div>
-      <div class="samples-grid"><details class="sample-card">
+      <div class="samples-grid"><details class="sample-card" id="reply-decoder-preview">
           <summary><span class="sample-card__number">02 / REPLIES</span><strong>The S.I.G.N.A.L. Check</strong><span class="sample-card__action">READ SAMPLE PAGE <span aria-hidden="true">+</span></span></summary>
           <div class="sample-paper"><div class="sample-paper__top"><span>HER POV · VOL. 02</span><span>PDF PAGE 6 OF 19</span></div>
             <div class="sample-paper__kicker">CHAPTER 02</div>
@@ -309,7 +314,7 @@
             <p>Example: "I make one ambitious dinner every Sunday. The results range from great to smoke alarm. Tell me which recipe I should attempt next." It offers a habit, a touch of personality and an easy topic.</p>
             <div class="sample-paper__watermark">EXCERPT · NOT THE FULL GUIDE</div>
           </div>
-        </details><details class="sample-card">
+        </details><details class="sample-card" id="first-date-preview">
           <summary><span class="sample-card__number">04 / FIRST DATES</span><strong>The C.L.E.A.R. Invitation</strong><span class="sample-card__action">READ SAMPLE PAGE <span aria-hidden="true">+</span></span></summary>
           <div class="sample-paper"><div class="sample-paper__top"><span>HER POV · VOL. 04</span><span>PDF PAGE 5 OF 19</span></div>
             <div class="sample-paper__kicker">CHAPTER 02</div>
