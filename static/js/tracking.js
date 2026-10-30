@@ -35,6 +35,7 @@
   }
   function createCore(config, sink) {
     let consent={analytics:false,marketing:false}; let google=false, meta=false; let localPage=false, googlePage=false, metaPage=false;
+    const viewedByVendor={local:new Set(),google:new Set(),meta:new Set()};
     function choose(next) {
       consent={analytics:next.analytics===true,marketing:next.marketing===true};
       sink.google('consent','update',{analytics_storage:consent.analytics?'granted':'denied',ad_storage:consent.marketing?'granted':'denied',ad_user_data:consent.marketing?'granted':'denied',ad_personalization:consent.marketing?'granted':'denied'});
@@ -60,12 +61,17 @@
         if (consent.marketing && config.metaPixel && !metaPage) {sink.meta('track','PageView');metaPage=true;}
         return true;
       }
-      sink.local(name,clean);
-      if (consent.analytics && config.ga4) sink.google('event',name,{...clean,send_to:config.ga4,...sink.page()});
-      if (consent.marketing && config.metaPixel) {
+      const oneView=name==='offer_view'||name==='library_view'||name==='sample_view';
+      if(!oneView||!viewedByVendor.local.has(name)){sink.local(name,clean);if(oneView)viewedByVendor.local.add(name);}
+      if (consent.analytics && config.ga4 && (!oneView||!viewedByVendor.google.has(name))) {
+        sink.google('event',name,{...clean,send_to:config.ga4,...sink.page()});
+        if(oneView)viewedByVendor.google.add(name);
+      }
+      if (consent.marketing && config.metaPixel && (!oneView||!viewedByVendor.meta.has(name))) {
         if(name==='begin_checkout')sink.meta('track','InitiateCheckout',{value:clean.value,currency:'USD',content_ids:[clean.offer],content_type:'product'});
         else if(name==='offer_view'||name==='library_view')sink.meta('track','ViewContent',{content_ids:[name==='offer_view'?'first-message-formula':'complete-library'],content_type:'product',value:name==='offer_view'?9.9:29.9,currency:'USD'});
         else sink.meta('trackCustom',name,clean);
+        if(oneView)viewedByVendor.meta.add(name);
       }
       if(name==='begin_checkout' && consent.marketing && config.googleAds && config.checkoutLabel) sink.google('event','conversion',{send_to:config.googleAds+'/'+config.checkoutLabel,...clean});
       return true;
@@ -96,10 +102,8 @@
     // Consent can be granted while an offer is already visible; that does not
     // cause IntersectionObserver to trigger again, so we also inspect visibility.
     const offerEvents={offer:'offer_view',bundle:'library_view',samples:'sample_view'};
-    const viewedOffers=new Set();
     function recordOffer(id){
-      if(viewedOffers.has(id)||!offerEvents[id])return;
-      if(core.track(offerEvents[id]))viewedOffers.add(id);
+      if(offerEvents[id])core.track(offerEvents[id]);
     }
     function syncVisibleOffers(){
       const height=w.innerHeight||d.documentElement?.clientHeight||0;
