@@ -1,0 +1,55 @@
+name: HER POV LIVE Hostinger tracking diagnostic
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/production-tracking-smoke.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  production-diagnostic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test real production domain and deployed tracking version
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import urllib.request
+          import urllib.error
+          base="https://vitrinyx.com"
+          def get(path):
+              url=base+path
+              req=urllib.request.Request(url,headers={"User-Agent":"HERPOV-Production-Verification/1.0"})
+              try:
+                  with urllib.request.urlopen(req, timeout=25) as res:
+                      data=res.read(1024*1024)
+                      print(path, "HTTP", res.status, "final", res.url, "bytes", len(data))
+                      return data
+              except urllib.error.HTTPError as e:
+                  print(path,"HTTP",e.code)
+                  raise
+          home=get("/")
+          assert b"HER POV" in home, "Production domain not serving HER POV page"
+          print("HOME OK")
+          tracker=get("/static/js/tracking.js")
+          new_pageview=b"track('page_view');" in tracker
+          view_content=b"'ViewContent'" in tracker
+          print("Deployed consented PageView fix:",new_pageview)
+          print("Deployed ViewContent fix:",view_content)
+          try:
+              h=json.loads(get("/health"))
+              print("HEALTH:",{k:h.get(k) for k in ["status","mode","checkout_enabled","integration_operational","delivery_tested","live_ready"]})
+          except Exception as e:
+              print("Health check failed:",repr(e))
+              raise
+          offer=get("/last-offer")
+          assert b"HER POV" in offer, "Last offer page unavailable"
+          assert new_pageview and view_content, "New Meta Pixel code not deployed on Hostinger yet"
+          assert h.get("checkout_enabled"), "Live checkout is not enabled on Hostinger"
+          print("PASS: live HER POV reachable with new tracking script and checkout enabled.")
+          PY
