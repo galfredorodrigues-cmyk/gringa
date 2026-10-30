@@ -45,3 +45,53 @@ test('HER POV campaign attribution is kept without forwarding arbitrary queries 
  const config=log.find(x=>x[0]==='config');assert.equal(config[2].campaign_source,'meta');assert.equal(config[2].campaign_content,'creative_b');assert.equal(config[2].allow_google_signals,false);
  const before=log.length;core.choose({analytics:false,marketing:false});assert.equal(log.length,before+1);assert.equal(core.track('quiz_complete'),false);
 });
+
+test('PageView is emitted automatically once when a visitor permits Meta or GA4',()=>{
+ const {core,log}=harness({googleAds:'',ga4:'G-D62D560WV7',metaPixel:'1175307691488519'});
+ core.choose({analytics:false,marketing:false});
+ assert.equal(log.some(x=>x[0]==='meta'),false);
+ core.choose({analytics:true,marketing:false});
+ core.choose({analytics:true,marketing:false});
+ assert.equal(log.filter(x=>x[0]==='google'&&x[1]==='event'&&x[2]==='page_view').length,1);
+ assert.equal(log.filter(x=>x[0]==='meta'&&x[2]==='PageView').length,0);
+ core.choose({analytics:true,marketing:true});
+ core.choose({analytics:true,marketing:true});
+ assert.equal(log.filter(x=>x[0]==='meta'&&x[1]==='track'&&x[2]==='PageView').length,1);
+});
+
+test('visible product views use standard Meta ViewContent only with marketing consent and never invent Purchase',()=>{
+ const {core,log}=harness({googleAds:'',ga4:'G-D62D560WV7',metaPixel:'1175307691488519'});
+ core.choose({analytics:true,marketing:false});
+ core.track('offer_view');
+ core.track('offer_view');
+ assert.equal(log.filter(x=>x[0]==='google'&&x[2]==='offer_view').length,1);
+ assert.equal(log.filter(x=>x[0]==='meta'&&x[2]==='ViewContent').length,0);
+ core.choose({analytics:true,marketing:true});
+ core.track('offer_view');
+ core.track('offer_view');
+ core.track('library_view');
+ core.track('library_view');
+ const viewed=log.filter(x=>x[0]==='meta'&&x[1]==='track'&&x[2]==='ViewContent');
+ assert.equal(viewed.length,2);
+ assert.deepEqual(viewed.map(x=>[x[3].content_ids[0],x[3].value]),[['first-message-formula',9.9],['complete-library',29.9]]);
+ assert.equal(log.filter(x=>x[0]==='google'&&x[2]==='offer_view').length,1);
+ assert.equal(log.filter(x=>x[0]==='meta'&&x[2]==='Purchase').length,0);
+});
+
+test('consent granted while an offer is already visible catches the missed visibility event once',()=>{
+ let click,observed;
+ const offer={id:'offer',getBoundingClientRect(){return {top:100,bottom:200,height:100};}};
+ const panel={setAttribute(){},querySelector(s){return s.includes('analytics')?{set checked(v){}}:s.includes('marketing')?{set checked(v){}}:{focus(){}};},addEventListener(type,fn){click=fn;}};
+ const d={title:'HER POV',documentElement:{clientHeight:800},head:{appendChild(){}},body:{appendChild(){}},getElementById(id){return id==='offer'?offer:null;},createElement(tag){return tag==='section'?panel:{addEventListener(){}};},addEventListener(){}};
+ const w={document:d,location:{origin:'https://vitrinyx.com',pathname:'/',href:'https://vitrinyx.com/'},localStorage:{getItem(){return null;},setItem(){}},innerHeight:800,
+   IntersectionObserver:function(fn){observed=fn;this.observe=()=>{};}};
+ install(w,d);
+ observed([{isIntersecting:true,target:offer}]);
+ assert.equal(w.fbq,undefined);
+ click({target:{closest(){return {dataset:{consent:'all'}};}}});
+ assert.ok(w.fbq);
+ assert.equal(w.fbq.queue.filter(x=>x[0]==='track'&&x[1]==='PageView').length,1);
+ assert.equal(w.fbq.queue.filter(x=>x[0]==='track'&&x[1]==='ViewContent').length,1);
+ observed([{isIntersecting:true,target:offer}]);
+ assert.equal(w.fbq.queue.filter(x=>x[0]==='track'&&x[1]==='ViewContent').length,1);
+});

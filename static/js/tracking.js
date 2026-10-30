@@ -35,6 +35,7 @@
   }
   function createCore(config, sink) {
     let consent={analytics:false,marketing:false}; let google=false, meta=false; let localPage=false, googlePage=false, metaPage=false;
+    const viewedByVendor={local:new Set(),google:new Set(),meta:new Set()};
     function choose(next) {
       consent={analytics:next.analytics===true,marketing:next.marketing===true};
       sink.google('consent','update',{analytics_storage:consent.analytics?'granted':'denied',ad_storage:consent.marketing?'granted':'denied',ad_user_data:consent.marketing?'granted':'denied',ad_personalization:consent.marketing?'granted':'denied'});
@@ -47,6 +48,9 @@
         if (!meta) {meta=true;sink.loadMeta(config.metaPixel);}
         sink.meta('consent','grant');
       } else if(meta) sink.meta('consent','revoke');
+      // Send each vendor one PageView as soon as permission is granted.
+      // A previously denied vendor receives no event until explicit consent.
+      track('page_view');
     }
     function track(name,data) {
       const clean=eventData(name,data);if(clean===null)return false;
@@ -57,11 +61,17 @@
         if (consent.marketing && config.metaPixel && !metaPage) {sink.meta('track','PageView');metaPage=true;}
         return true;
       }
-      sink.local(name,clean);
-      if (consent.analytics && config.ga4) sink.google('event',name,{...clean,send_to:config.ga4,...sink.page()});
-      if (consent.marketing && config.metaPixel) {
+      const oneView=name==='offer_view'||name==='library_view'||name==='sample_view';
+      if(!oneView||!viewedByVendor.local.has(name)){sink.local(name,clean);if(oneView)viewedByVendor.local.add(name);}
+      if (consent.analytics && config.ga4 && (!oneView||!viewedByVendor.google.has(name))) {
+        sink.google('event',name,{...clean,send_to:config.ga4,...sink.page()});
+        if(oneView)viewedByVendor.google.add(name);
+      }
+      if (consent.marketing && config.metaPixel && (!oneView||!viewedByVendor.meta.has(name))) {
         if(name==='begin_checkout')sink.meta('track','InitiateCheckout',{value:clean.value,currency:'USD',content_ids:[clean.offer],content_type:'product'});
+        else if(name==='offer_view'||name==='library_view')sink.meta('track','ViewContent',{content_ids:[name==='offer_view'?'first-message-formula':'complete-library'],content_type:'product',value:name==='offer_view'?9.9:29.9,currency:'USD'});
         else sink.meta('trackCustom',name,clean);
+        if(oneView)viewedByVendor.meta.add(name);
       }
       if(name==='begin_checkout' && consent.marketing && config.googleAds && config.checkoutLabel) sink.google('event','conversion',{send_to:config.googleAds+'/'+config.checkoutLabel,...clean});
       return true;
@@ -88,7 +98,25 @@
     panel.innerHTML='<h2>Your privacy choices</h2><p>Choose how this site measures visits. Site analytics measures progress through the questionnaire, guide previews and checkout links. You can allow analytics without advertising. Advertising enables our Google advertising tag and Meta Pixel. Your quiz answers are not sent to these platforms. Rejecting optional measurement keeps the site and checkout working. <a href="/privacy">Read our privacy notice</a>.</p><div class="privacy-options"><label><input type="checkbox" name="analytics"> Site analytics</label><label><input type="checkbox" name="marketing"> Advertising</label></div><div class="privacy-actions"><button type="button" data-consent="all">Accept all</button><button type="button" data-consent="analytics">Allow analytics only</button><button type="button" data-consent="none">Reject optional</button><button type="button" data-consent="save">Save choices</button></div>';
     d.body.appendChild(panel);
     const reopen=d.createElement('button');reopen.type='button';reopen.className='privacy-reopen';reopen.textContent='Privacy choices';reopen.addEventListener('click',()=>{panel.hidden=false;panel.querySelector('button').focus();});d.body.appendChild(reopen);
-    function setChoices(c,save){core.choose(c);panel.querySelector('[name="analytics"]').checked=c.analytics;panel.querySelector('[name="marketing"]').checked=c.marketing;if(save){try{w.localStorage.setItem(KEY,JSON.stringify({version:3,analytics:c.analytics,marketing:c.marketing,savedAt:Date.now()}));}catch{}}panel.hidden=true;core.track('page_view');}
+    // Count a visible offer once per page only when the visitor has opted in.
+    // Consent can be granted while an offer is already visible; that does not
+    // cause IntersectionObserver to trigger again, so we also inspect visibility.
+    const offerEvents={offer:'offer_view',bundle:'library_view',samples:'sample_view'};
+    function recordOffer(id){
+      if(offerEvents[id])core.track(offerEvents[id]);
+    }
+    function syncVisibleOffers(){
+      const height=w.innerHeight||d.documentElement?.clientHeight||0;
+      if(!height||typeof d.getElementById!=='function')return;
+      for(const id of Object.keys(offerEvents)){
+        const node=d.getElementById(id);
+        if(!node||typeof node.getBoundingClientRect!=='function')continue;
+        const rect=node.getBoundingClientRect();
+        const overlap=Math.max(0,Math.min(rect.bottom,height)-Math.max(rect.top,0));
+        if(rect.height>0&&overlap/rect.height>=0.15)recordOffer(id);
+      }
+    }
+    function setChoices(c,save){core.choose(c);panel.querySelector('[name="analytics"]').checked=c.analytics;panel.querySelector('[name="marketing"]').checked=c.marketing;if(save){try{w.localStorage.setItem(KEY,JSON.stringify({version:3,analytics:c.analytics,marketing:c.marketing,savedAt:Date.now()}));}catch{}}panel.hidden=true;syncVisibleOffers();}
     panel.addEventListener('click',e=>{const b=e.target.closest('button[data-consent]');if(!b)return;const a=b.dataset.consent;const c=a==='all'?{analytics:true,marketing:true}:a==='analytics'?{analytics:true,marketing:false}:a==='none'?{analytics:false,marketing:false}:{analytics:panel.querySelector('[name="analytics"]').checked,marketing:panel.querySelector('[name="marketing"]').checked};setChoices(c,true);});
     if(previous)setChoices(previous,false);
     d.addEventListener('click',e=>{const a=e.target.closest('a[href]');if(!a)return;let u;try{u=new URL(a.href,w.location.href);}catch{return;}
@@ -98,7 +126,7 @@
         core.track('begin_checkout',{offer:last?(full?'last-chance':'starter'):'bundle',value:last?(full?21.9:9.9):29.9});
       }else if(u.origin===w.location.origin && u.hash)core.track('navigation_click',{section:u.hash.slice(1)});
     });
-    if(w.IntersectionObserver){const viewed=new Set();const observer=new w.IntersectionObserver(entries=>entries.forEach(entry=>{if(!entry.isIntersecting||viewed.has(entry.target.id))return;const name={offer:'offer_view',bundle:'library_view',samples:'sample_view'}[entry.target.id];if(core.track(name))viewed.add(entry.target.id);}),{threshold:0.15});['offer','bundle','samples'].forEach(id=>{const e=d.getElementById(id);if(e)observer.observe(e);});}
+    if(w.IntersectionObserver&&typeof d.getElementById==='function'){const observer=new w.IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)recordOffer(entry.target.id);}),{threshold:0.15});Object.keys(offerEvents).forEach(id=>{const e=d.getElementById(id);if(e)observer.observe(e);});}
   }
   return {eventData,campaignData,readConsent,createCore,install};
 });
