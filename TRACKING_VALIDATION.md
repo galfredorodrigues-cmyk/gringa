@@ -6,7 +6,7 @@ This change improves **consented** Meta event coverage. It does **not** turn on 
 
 - On the HER POV home page or `/last-offer`, choosing **Accept all** loads Meta Pixel `1175307691488519` and emits one `PageView` per loaded page. Choosing **Analytics only** sends GA4 only. Choosing **Reject optional** sends no marketing tracking.
 - A visitor who accepts marketing tracking while already viewing an offer can produce `ViewContent` once for the starter guide (USD 9.90) or the Complete Library (USD 29.90). Standard `ViewContent` must be measured separately from `Purchase`.
-- Opening the Hotmart checkout through the site's offer buttons emits `InitiateCheckout` when advertising consent has been granted.
+- Clicking a Hotmart link on the storefront emits consented custom `CheckoutLinkClick` (and GA4 `begin_checkout`) only. **Do not** emit Meta standard `InitiateCheckout` from the link click: that is a navigation attempt, not a confirmed checkout load. The Hotmart checkout owns standard `InitiateCheckout` (its page-visit event), to avoid double-counting.
 - **No `Purchase` event should ever be generated on a button click or simply by visiting the storefront's thank-you page.** Only a verified completed Hotmart order may generate `Purchase`.
 - Product view events are deduplicated per consented analytics provider, including when someone switches from GA4-only to enabling Meta later.
 
