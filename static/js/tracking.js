@@ -68,7 +68,8 @@
         if(oneView)viewedByVendor.google.add(name);
       }
       if (consent.marketing && config.metaPixel && (!oneView||!viewedByVendor.meta.has(name))) {
-        if(name==='begin_checkout')sink.meta('track','InitiateCheckout',{value:clean.value,currency:'USD',content_ids:[clean.offer],content_type:'product'});
+        // A click is not a loaded Hotmart checkout. Hotmart owns the standard InitiateCheckout event.
+        if(name==='begin_checkout')sink.meta('trackCustom','CheckoutLinkClick',{value:clean.value,currency:'USD',content_ids:[clean.offer],content_type:'product'});
         else if(name==='offer_view'||name==='library_view')sink.meta('track','ViewContent',{content_ids:[name==='offer_view'?'first-message-formula':'complete-library'],content_type:'product',value:name==='offer_view'?9.9:29.9,currency:'USD'});
         else sink.meta('trackCustom',name,clean);
         if(oneView)viewedByVendor.meta.add(name);
