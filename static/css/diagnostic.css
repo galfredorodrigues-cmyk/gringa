@@ -10,3 +10,8 @@
 
 /* Clear next steps, real product evidence, and order support. */
 .diagnostic #diagnostic-next-step{color:#e0d1ba}.diagnostic #diagnostic-starter-link{font-size:13px;line-height:1.65}.editorial-note{border-top:1px solid #cfc5b5;padding-top:28px;margin-top:32px}.editorial-note h3{font:32px/1.2 Georgia,serif}.editorial-note p{line-height:1.7}.editorial-note a,.purchase-help a{color:inherit;text-underline-offset:3px;overflow-wrap:anywhere}.purchase-help{font-size:13px;line-height:1.65;margin:20px 0;padding-top:16px;border-top:1px solid #867963}.purchase-help p{margin:0 0 10px}.launch-bundle__offer .purchase-help{max-width:600px}#reply-decoder-preview,#first-date-preview{scroll-margin-top:35px}
+
+/* Keep long quiz links inside their cards on narrow screens. */
+.diagnostic__grid>*{min-width:0}.diagnostic .inline-link{white-space:normal;overflow-wrap:anywhere;max-width:100%}.diagnostic__card p,.diagnostic__card blockquote{overflow-wrap:anywhere}
+
+.problem__grid>*{min-width:0}.research-source .inline-link{white-space:normal;overflow-wrap:anywhere}
