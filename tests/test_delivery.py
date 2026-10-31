@@ -160,7 +160,7 @@ class StorefrontTests(unittest.TestCase):
             self.assertIn(("/sample-page/"+slug+".svg").encode(), html)
         # The shared tracking template is the source of truth for the cache-busted URL.
         self.assertEqual(html.count(b'src="/static/js/tracking.js?v=6"'), 1)
-        self.assertEqual(html.count(b'src="/static/js/diagnostic.js?v=journey5"'), 1)
+        self.assertEqual(html.count(b'src="/static/js/diagnostic.js?v=journey6"'), 1)
         self.assertNotIn(b'buy.stripe.com', html)
 
     def test_bundle_payment_url_needs_valid_link_and_every_approval(self):
