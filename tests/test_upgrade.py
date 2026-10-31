@@ -29,7 +29,7 @@ class LastOfferTests(unittest.TestCase):
             for item in (
                 b"Last Chance Offer", b"The Reply Decoder", b"The Profile Makeover",
                 b"From Chat to First Date", b"21.90", b"29.90",
-                b"9.90", b"YES", b"NO", b"LOSE THIS OFFER", b"CHECKOUT COMING SOON",
+                b"9.90", b"YES", b"NO", b"CONTINUE WITH THE STARTER", b"CHECKOUT COMING SOON",
             ):
                 self.assertIn(item, page)
             self.assertNotIn(b"$12", page)
@@ -81,7 +81,7 @@ class LastOfferTests(unittest.TestCase):
             self.assertIn(label, offer_grid)
         # The final offer is a pre-checkout choice; visuals must never alter payments.
         self.assertIn(b"YES", last_offer)
-        self.assertIn(b"LOSE THIS OFFER", last_offer)
+        self.assertIn(b"CONTINUE WITH THE STARTER", last_offer)
         self.assertIn(b"$21.90", last_offer)
         self.assertIn(b"$29.90", homepage)
 
