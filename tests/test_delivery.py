@@ -158,7 +158,8 @@ class StorefrontTests(unittest.TestCase):
             self.assertIn(framework, html)
         for slug in ("first-message-formula", "reply-decoder", "profile-makeover", "from-chat-to-first-date"):
             self.assertIn(("/sample-page/"+slug+".svg").encode(), html)
-        self.assertEqual(html.count(b'src="/static/js/tracking.js?v=4"'), 1)
+        # The shared tracking template is the source of truth for the cache-busted URL.
+        self.assertEqual(html.count(b'src="/static/js/tracking.js?v=6"'), 1)
         self.assertEqual(html.count(b'src="/static/js/diagnostic.js?v=journey5"'), 1)
         self.assertNotIn(b'buy.stripe.com', html)
 
